@@ -30,10 +30,10 @@ do not run more than one task concurrently, this will break things
 ## Access services
 
 ### [prometheus](http://localhost:9090)
-`kubectl -n monitoring port-forward svc/cprom-prometheus-operator-prometheus 9090`
+`kubectl -n monitor port-forward svc/cprom-prometheus-operator-prometheus 9090`
 
 ### [alertmanager](http://localhost:9093)
-`kubectl -n monitoring port-forward svc/cprom-prometheus-operator-alertmanager 9093`
+`kubectl -n monitor port-forward svc/cprom-prometheus-operator-alertmanager 9093`
 
 ### [grafana](http://localhost:3000)
-`kubectl -n monitoring port-forward svc/cprom-grafana 3000:80`
+`kubectl -n monitor port-forward svc/cprom-grafana 3000:80`
