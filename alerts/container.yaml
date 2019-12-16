@@ -1,0 +1,19 @@
+- alert: kubeletDockerErrors
+  expr: (rate(kubelet_docker_operations_errors{operation_type!~"inspect_image|inspect_container|stop_container|remove_container"}[5m])) > 0
+  for: 3m
+  labels:
+    alertgroup: dind_problem
+    severity: warning
+  annotations:
+    description: kubeletDockerErrors {{ $labels.operation_type }} on {{ $labels.node_label_node_type }} node {{ $labels.node_address_Hostname }} - {{ $labels.node_address_ExternalIP }}, Runtime Env = {{ $labels.runtime_env }}
+    summary: kubeletDockerErrors
+
+- alert: TooHighNetworkTransmitRate
+  expr: sum(rate(container_network_transmit_packets_total{pod_name =~ "(dind-).*", interface =~ "eth.*"}[2m])) > 15000
+  for: 30m
+  labels:
+    alertgroup: overloading
+    severity: warning
+  annotations:
+    description: Network Transmit Rate Too High
+    summary: Network Transmit Rate Too High

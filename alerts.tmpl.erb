@@ -1,0 +1,17 @@
+{{ define "cf.title.slack" }}
+<%= cluster_name %> [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }}
+{{ end }}
+
+{{ define "cf.title.victorops" }}
+<%= cluster_name %> {{ .CommonLabels.alertname }}
+{{ end }}
+
+{{ define "cf.text" }}
+{{ range $a := .Alerts }}
+[{{ .Labels.severity | toUpper }}] {{ $a.StartsAt.Format "2006-01-02 15:04:05 UTC" }}
+{{ $a.Annotations.message }}
+{{ end }}
+{{ if .CommonAnnotations.runbook_url }}
+{{ .CommonAnnotations.runbook_url }}
+{{ end }}
+{{ end }}

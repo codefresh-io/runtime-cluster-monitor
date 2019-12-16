@@ -1,0 +1,72 @@
+global:
+  resolve_timeout: 5m
+route:
+  group_by: [alertname, runtime_env, service, severity]
+  group_wait: 10s
+  group_interval: 5m
+  repeat_interval: 24h
+  receiver: slack_warnings
+  routes:
+    - match:
+        alertname: Watchdog
+      receiver: 'null'
+    - match:
+        alertname: ReminderCritical
+        severity: critical
+      repeat_interval: 3h
+      group_by: [severity]
+      group_wait: 10m
+      receiver: slack_errors
+      <% if defined? victorops_api_key %>
+    - match:
+        severity: critical
+      receiver: victorops
+      continue: true
+      <% end %>
+    - match:
+        severity: critical
+      receiver: slack_errors
+    - match_re:
+        alertgroup: downtime|nodedown
+      repeat_interval: 3h
+      receiver: slack_errors
+      continue: true
+    - match:
+        alertname: DockerNodeDown
+      repeat_interval: 10m
+      receiver: configurator
+receivers:
+  - name: 'null'
+  - name: slack_warnings
+    slack_configs:
+      - &slack
+        send_resolved: true
+        channel: '<%= slack_warnings %>'
+        api_url: <%= slack_hook %>
+        title: '{{ template "cf.title.slack" . }}'
+        title_link: 'http://localhost:9093/#/alerts'
+        text: '{{ template "cf.text" . }}'
+  - name: slack_errors
+    slack_configs:
+      - <<: *slack
+        channel: '<%= slack_errors %>'
+  - name: configurator
+    webhook_configs:
+      - send_resolved: false
+        url: http://cf-configurator.default.svc:5000/alerts/restart-docker-service
+    <% if defined? victorops_api_key %>
+  - name: victorops
+    victorops_configs:
+      - api_key: <%= victorops_api_key %>
+        routing_key: <%= victorops_routing %>
+        entity_display_name: '{{ template "cf.title.victorops" . }}'
+        state_message: '{{ template "cf.text" . }}'
+    <% end %>
+inhibit_rules:
+  - source_match:
+      severity: critical
+    target_match:
+      severity: warning
+    equal: [alertgroup, node, service]
+templates:
+  - /etc/alertmanager/config/alerts.tmpl

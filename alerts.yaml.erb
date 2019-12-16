@@ -1,0 +1,18 @@
+- name: container.alerts
+  rules:
+    <%= file 'alerts/container.yaml', 10 %>
+- name: dind.alerts
+  rules:
+    <%= file 'alerts/dind.yaml', 10 %>
+- name: downtime.alerts
+  rules:
+    <%= file 'alerts/downtime.yaml', 10 %>
+- name: event.alerts
+  rules:
+    <%= file 'alerts/event.yaml', 10 %>
+- name: node.alerts
+  rules:
+    <%= file 'alerts/node.yaml', 10 %>
+- name: system.alerts
+  rules:
+    <%= file 'alerts/system.yaml', 10 %>

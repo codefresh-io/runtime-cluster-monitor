@@ -1,0 +1,164 @@
+- alert: K8sEndpointsDown
+  expr: up{job="k8s-endpoints"} == 0
+  for: 2m
+  labels:
+    alertgroup: downtime
+    severity: warning
+  annotations:
+    description: kubeapi is down on {{ $labels.instance }}
+    summary: Kubernetes API server is down
+
+- alert: NodeDown
+  expr: up{job = "node"} == 0
+  for: 2m
+  labels:
+    alertgroup: downtime
+    severity: critical
+  annotations:
+    description: | 
+      {{ $labels.node_label_kubernetes_io_role }} {{ $labels.instance }} {{ $labels.node_address_InternalIP }} / {{ $labels.node_address_ExternalIP }} is down.
+      {{ $labels.node_label_node_type }} {{ $labels.runtime_env }}
+    summary: Kubernetes Node is down
+
+- alert: KubeApiDown
+  expr: up{job="kubelet",node_label_kubernetes_io_role="master"} unless on (instance) container_start_time_seconds{container_name = "kube-apiserver"}
+  # expr: absent(count(container_start_time_seconds{container_name="kube-apiserver",job="kubelet"}) >= count(up{job="kubelet",node_label_kubernetes_io_role="master"}))
+  for: 2m
+  labels:
+    alertgroup: downtime
+    severity: critical
+  annotations:
+    description: kube-apiserver is down
+    summary: kube-apiserver is down {{ $labels.node_label_kubernetes_io_role }} {{ $labels.instance }} {{ $labels.node_address_InternalIP }} - {{ $labels.node_address_ExternalIP }}
+# - alert: KubeEtcdDown
+#   expr: absent(count(container_start_time_seconds{container_name="etcd-container",job="kubelet"}) >= 2 * count(up{job="kubelet",node_label_kubernetes_io_role="master"}))
+#   for: 2m
+#   labels:
+#     alertgroup: downtime
+#     severity: critical
+#   annotations:
+#     description: etcd-container is down
+#     summary: etcd-container is down
+
+- alert: KubeSchedulerDown
+  expr: up{job="kubelet",node_label_kubernetes_io_role="master"} unless on (instance) container_start_time_seconds{container_name = "kube-scheduler"}
+  for: 2m
+  labels:
+    alertgroup: downtime
+    severity: critical
+  annotations:
+    description: kube-scheduler is down on {{ $labels.node_label_kubernetes_io_role }} {{ $labels.instance }} {{ $labels.node_address_InternalIP }} - {{ $labels.node_address_ExternalIP }}
+    summary: kube-scheduler is down
+
+- alert: KubeControllerDown
+  expr: up{job="kubelet",node_label_kubernetes_io_role="master"} unless on (instance) container_start_time_seconds{container_name = "kube-controller-manager"}
+  for: 2m
+  labels:
+    alertgroup: downtime
+    severity: critical
+  annotations:
+    description: kube-controller-manager is down on {{ $labels.node_label_kubernetes_io_role }} {{ $labels.instance }} {{ $labels.node_address_InternalIP }} - {{ $labels.node_address_ExternalIP }}
+    summary: kube-controller-manager is down
+
+- alert: CalicoNodeDown
+  expr: up{job="kubelet"} unless on (instance) container_start_time_seconds{container_name = "calico-node"}
+  for: 5m
+  labels:
+    alertgroup: downtime
+    severity: critical
+  annotations:
+    description: |
+      calico-node is down on {{ $labels.node_label_kubernetes_io_role }} {{ $labels.instance }} {{ $labels.node_address_InternalIP }} - {{ $labels.node_address_ExternalIP }}
+      {{ $labels.node_label_node_type }} {{ $labels.runtime_env }}
+    summary: calico-node is down
+
+- alert: DindVolumeProvisionerDown
+  expr: absent(count(container_start_time_seconds{container_name="dind-volume-provisioner",job="kubelet", namespace="kube-system"}) == 1)
+  for: 2m
+  labels:
+    alertgroup: downtime
+    severity: critical
+  annotations:
+    description: dind-volume-provisioner containers count != 1
+    summary: dind-volume-provisioner is down
+
+# - alert: CalicoKubeControllers
+#   expr: absent(count(container_start_time_seconds{container_name="calico-kube-controllers",job="kubelet"}) >= 1)
+#   for: 2m
+#   labels:
+#     alertgroup: downtime
+#     severity: critical
+#   annotations:
+#     description: calico-policy-controller is down
+#     summary: calico-policy-controller is down
+
+
+- alert: ReminderCritical
+  expr: label_replace(ALERTS{alertname!="ReminderCritical",alertstate="firing",severity="critical"}, "alert", "$1", "alertname", "(.*)") == 1
+  for: 1h
+  labels:
+    alertgroup: reminder
+    severity: critical
+  annotations:
+    description: '{{ $labels.alert}} for more than 1h'
+    summary: 'Reminder: there are critical alerts!'
+
+# - alert: ElasticsearchDown
+#   expr: absent(count(container_start_time_seconds{container_name="elasticsearch",job="kubelet"}) == 1)
+#   for: 2m
+#   labels:
+#     alertgroup: downtime
+#     severity: warning
+#   annotations:
+#     description: elasticsearch container count != 1
+#     summary: elasticsearch is down
+
+# - alert: LogstashDown
+#   expr: absent(count(container_start_time_seconds{container_name="logstash",job="kubelet"}) == 1)
+#   for: 2m
+#   labels:
+#     alertgroup: downtime
+#     severity: warning
+#   annotations:
+#     description: logstash container count != 1
+#     summary: logstash is down
+
+# - alert: KibanaDown
+#   expr: absent(count(container_start_time_seconds{container_name="kibana",job="kubelet"}) == 1)
+#   for: 2m
+#   labels:
+#     alertgroup: downtime
+#     severity: warning
+#   annotations:
+#     description: kibana container count != 1
+#     summary: kibana is down
+
+# - alert: CuratorDown
+#   expr: absent(count(container_start_time_seconds{container_name="curator",job="kubelet"}) == 1)
+#   for: 2m
+#   labels:
+#     alertgroup: downtime
+#     severity: warning
+#   annotations:
+#     description: curator container count != 1
+#     summary: curator is down
+
+# - alert: FilebeatDown
+#   expr: up{job = "node"} unless on (node_name) container_start_time_seconds{container_name = "filebeat"}
+#   for: 2m
+#   labels:
+#     alertgroup: downtime
+#     severity: warning
+#   annotations:
+#     description: 'filebeat is down on node {{ $labels.node_name }}'
+#     summary: filebeat is down on node
+
+- alert: AlertHandlerDown
+  expr: absent(count(container_start_time_seconds{container_name="am-alert-handler",job="kubelet"}) == 1)
+  for: 2m
+  labels:
+    alertgroup: downtime
+    severity: critical
+  annotations:
+    description: am-alert-handler container count != 1
+    summary: Alert Handler is down

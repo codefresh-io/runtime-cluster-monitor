@@ -1,0 +1,64 @@
+alertmanager:
+  config:
+    <%= template 'alertmanager.yaml.erb', 4, '_alertmanager', binding %>
+  templateFiles:
+    alerts.tmpl: |
+      <%= template 'alerts.tmpl.erb', 6, '_alerts', binding  %>
+  alertmanagerSpec:
+    storage:
+      volumeClaimTemplate:
+        spec:
+          accessModes: [ReadWriteOnce]
+          resources:
+            requests:
+              storage: 2Gi
+
+grafana:
+  adminPassword: '<%= grafana_pass %>'
+
+kubeControllerManager:
+  enabled: false
+
+coreDns:
+  enabled: false
+
+kubeDns:
+  enabled: true
+
+kubeEtcd:
+  enabled: false
+
+kubeProxy:
+  enabled: false
+
+kubeScheduler:
+  enabled: false
+
+prometheusOperator:
+  logLevel: error
+
+prometheus:
+  prometheusSpec:
+    external_labels:
+      cluster_name: <%= cluster_name %>
+    scrapeInterval: 10s
+    additionalScrapeConfigs:
+      <%= template 'scrape.yaml.erb', 6, '_scrape', binding %>
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: [ReadWriteOnce]
+          resources:
+            requests:
+              storage: 70Gi
+
+defaultRules:
+  rules:
+    time: false
+    kubernetesApps: false
+    kubernetesResources: false
+
+additionalPrometheusRules:
+  - name: cf-rules
+    groups:
+      <%= template 'alerts.yaml.erb', 6, '_rules', binding %>
