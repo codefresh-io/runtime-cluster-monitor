@@ -7,9 +7,8 @@
 ## Usage
 * switch your context to needed
 * `rake env=... args='--set cluster_name=...'` to install or update your installation  
-  you may need `rake env=... args='--set prometheusOperator.createCustomResource=false'`  
-  also available as `rake install ...`
-* `rake delete env=...` to remove the deployment
+  you may need `rake env=... args='--set prometheusOperator.createCustomResource=false'`
+* `rake destroy env=...` to remove the deployment
 
 `env` is `dev` or `prod`  
 `cluster_name` is desired cluster name for alerts
@@ -30,10 +29,10 @@ do not run more than one task concurrently, this will break things
 ## Access services
 
 ### [prometheus](http://localhost:9090)
-`kubectl -n monitor port-forward svc/cprom-prometheus-operator-prometheus 9090`
+`kubectl -n monitoring port-forward svc/cprom-prometheus-operator-prometheus 9090`
 
 ### [alertmanager](http://localhost:9093)
-`kubectl -n monitor port-forward svc/cprom-prometheus-operator-alertmanager 9093`
+`kubectl -n monitoring port-forward svc/cprom-prometheus-operator-alertmanager 9093`
 
 ### [grafana](http://localhost:3000)
-`kubectl -n monitor port-forward svc/cprom-grafana 3000:80`
+`kubectl -n monitoring port-forward svc/cprom-grafana 3000:80`

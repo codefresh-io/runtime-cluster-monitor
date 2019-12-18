@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: dind-monitor
+  namespace: monitoring
+  labels:
+    app: dind-monitor
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dind-monitor
+  namespace: monitoring
+  labels:
+    app: dind-monitor
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: dind-monitor
+  template:
+    metadata:
+      labels:
+        app: dind-monitor
+      annotations:
+        prometheus_io_port: '9100'
+        prometheus_io_scrape: 'true'
+    spec:
+      serviceAccountName: dind-monitor
+      tolerations:
+        - key: codefresh/dind
+          operator: Exists
+          effect: NoSchedule
+      containers:
+        - image: codefresh/dind-volume-utils:v14
+          name: dind-monitor
+          imagePullPolicy: Always
+          command: [/bin/dind-monitor]
+          resources:
+            requests:
+              cpu: 200m
+              memory: 100Mi
+            limits:
+              cpu: 1000m
+              memory: 1000Mi
