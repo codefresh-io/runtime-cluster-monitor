@@ -31,10 +31,6 @@ route:
       repeat_interval: 3h
       receiver: slack_errors
       continue: true
-    - match:
-        alertname: DockerNodeDown
-      repeat_interval: 10m
-      receiver: configurator
 receivers:
   - name: 'null'
   - name: slack_warnings
@@ -50,10 +46,10 @@ receivers:
     slack_configs:
       - <<: *slack
         channel: '<%= slack_errors %>'
-  - name: configurator
+  - name: alert_handler
     webhook_configs:
       - send_resolved: false
-        url: http://cf-configurator.default.svc:5000/alerts/restart-docker-service
+        url: http://am-alert-handler:4242
     <% if defined? victorops_api_key %>
   - name: victorops
     victorops_configs:
