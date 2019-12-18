@@ -2,7 +2,6 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: dind-monitor
-  namespace: monitoring
   labels:
     app: dind-monitor
 ---
@@ -10,7 +9,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: dind-monitor
-  namespace: monitoring
   labels:
     app: dind-monitor
 spec:

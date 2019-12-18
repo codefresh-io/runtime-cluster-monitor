@@ -10,21 +10,23 @@ charts = [
   { chart: 'stable/prometheus-operator', release: 'cprom',
     values: 'kube-prometheus.yaml', template: 'kube-prometheus.yaml.erb' },
 ]
-Helm4Rake.new(charts, contexts, 'monitoring')
 
+namespace = 'monitoring'
 manifests = %w[dind-monitor event-exporter]
+
+Helm4Rake.new(charts, contexts, namespace)
 
 desc 'kubectl apply'
 task :apply do
   manifests.each do |i|
-    sh "kubectl apply -f #{i}.yaml"
+    sh "kubectl apply -n #{namespace} -f #{i}.yaml"
   end
 end
 
 desc 'kubectl delete'
 task :remove do
   manifests.each do |i|
-    sh "kubectl delete -f #{i}.yaml"
+    sh "kubectl delete -n #{namespace} -f #{i}.yaml"
   end
 end
 
