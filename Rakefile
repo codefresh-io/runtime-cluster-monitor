@@ -12,14 +12,20 @@ charts = [
 ]
 Helm4Rake.new(charts, contexts, 'monitoring')
 
+manifests = %w[dind-monitor event-exporter]
+
 desc 'kubectl apply'
 task :apply do
-  sh 'kubectl apply -f dind-monitor.yaml'
+  manifests.each do |i|
+    sh "kubectl apply -f #{i}.yaml"
+  end
 end
 
 desc 'kubectl delete'
 task :remove do
-  sh 'kubectl delete -f dind-monitor.yaml'
+  manifests.each do |i|
+    sh "kubectl delete -f #{i}.yaml"
+  end
 end
 
 desc 'deploy releases and resources'

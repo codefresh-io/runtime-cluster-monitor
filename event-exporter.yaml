@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: event-exporter
+  namespace: monitoring
+  labels:
+    app: event-exporter
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-exporter
+  namespace: monitoring
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: event-exporter
+  template:
+    metadata:
+      labels:
+        app: event-exporter
+      annotations:
+        prometheus_io_port: '9102'
+        prometheus_io_scrape: 'true'
+    spec:
+      serviceAccountName: event-exporter
+      containers:
+        - name: event-exporter
+          image: codefresh/k8s-event-exporter
+          imagePullPolicy: Always
+          args: [--running-in-cluster=true]
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 500m
+              memory: 500Mi
