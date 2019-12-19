@@ -5,6 +5,32 @@ metadata:
   labels:
     app: dind-monitor
 ---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: dind-monitor
+  labels:
+    app: dind-monitor
+rules:
+  - apiGroups: [""]
+    resources: [pods, persistentvolumes, persistentvolumeclaims]
+    verbs: [get, list, watch]
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: dind-monitor
+  labels:
+    app: dind-monitor
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: dind-monitor
+subjects:
+  - kind: ServiceAccount
+    name: dind-monitor
+    namespace: monitoring
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
