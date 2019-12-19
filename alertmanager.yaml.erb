@@ -40,7 +40,7 @@ receivers:
         channel: '<%= slack_warnings %>'
         api_url: <%= slack_hook %>
         title: '{{ template "cf.title.slack" . }}'
-        title_link: 'http://localhost:9093/#/alerts'
+        title_link: 'https://<%= cluster_name%>/alertmanager/#/alerts'
         text: '{{ template "cf.text" . }}'
   - name: slack_errors
     slack_configs:

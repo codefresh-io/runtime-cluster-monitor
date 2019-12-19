@@ -5,6 +5,7 @@ alertmanager:
     alerts.tmpl: |
       <%= template 'alerts.tmpl.erb', 6, '_alerts', binding  %>
   alertmanagerSpec:
+    routePrefix: /alertmanager/
     storage:
       volumeClaimTemplate:
         spec:
@@ -14,7 +15,18 @@ alertmanager:
               storage: 2Gi
 
 grafana:
-  adminPassword: '<%= grafana_pass %>'
+  grafana.ini:
+    server:
+      root_url: '%(protocol)s://%(domain)s/grafana/'
+      serve_from_sub_path: 'true'
+    auth:
+      disable_login_form: 'true'
+      disable_signout_menu: 'true'
+    auth.basic:
+      enabled: 'false'
+    auth.anonymous:
+      enabled: 'true'
+      org_role: Admin
 
 kubeControllerManager:
   enabled: false
@@ -39,6 +51,8 @@ prometheusOperator:
 
 prometheus:
   prometheusSpec:
+    externalUrl: https://<%= cluster_name %>/prometheus/
+    routePrefix: /prometheus/
     external_labels:
       cluster_name: <%= cluster_name %>
     scrapeInterval: 10s
@@ -57,6 +71,7 @@ defaultRules:
     time: false
     kubernetesApps: false
     kubernetesResources: false
+    kubernetesSystem: false
 
 additionalPrometheusRules:
   - name: cf-rules

@@ -1,9 +1,9 @@
 {{ define "cf.title.slack" }}
-<%= cluster_name %> [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }}
+<%= cluster_name.delete_suffix ".cf-cd.com" %> [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }}
 {{ end }}
 
 {{ define "cf.title.victorops" }}
-<%= cluster_name %> {{ .CommonLabels.alertname }}
+<%= cluster_name.delete_suffix ".cf-cd.com" %> {{ .CommonLabels.alertname }}
 {{ end }}
 
 {{ define "cf.text" }}

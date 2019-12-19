@@ -10,8 +10,8 @@
   you may need `rake env=... args='--set prometheusOperator.createCustomResource=false'`
 * `rake destroy env=...` to remove the deployment
 
-`env` is `dev` or `prod`  
-`cluster_name` is desired cluster name for alerts
+`env` is `dev` or `prod` (`prod` sends alerts to VictorOps, `dev` does not)  
+`cluster_name` is cluster's full DNS name
 
 if you need to pass multiple args or whitespace, escape them:
 * `rake args='--dry-run --debug'`
@@ -28,11 +28,14 @@ do not run more than one task concurrently, this will break things
 
 ## Access services
 
-### [prometheus](http://localhost:9090)
+### [prometheus](http://localhost:9090/prometheus/)
 `kubectl -n monitoring port-forward svc/cprom-prometheus-operator-prometheus 9090`
 
-### [alertmanager](http://localhost:9093)
+### [alertmanager](http://localhost:9093/alertmanager/)
 `kubectl -n monitoring port-forward svc/cprom-prometheus-operator-alertmanager 9093`
 
-### [grafana](http://localhost:3000)
+### [grafana](http://localhost:3000/grafana/)
 `kubectl -n monitoring port-forward svc/cprom-grafana 3000:80`
+
+Please also note all services are exported through Octant, use `https://cluster_name` to access it.
+Use `/prometheus`, `/alertmanager` and `/grafana` on this domain.

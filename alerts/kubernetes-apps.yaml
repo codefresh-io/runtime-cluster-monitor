@@ -1,6 +1,15 @@
+- alert: KubePodCrashLooping
+  annotations:
+    message: Pod {{ $labels.namespace }}/{{ $labels.pod }} ({{ $labels.container }}) is restarting {{ printf "%.2f" $value }} times / 5 minutes.
+    runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubepodcrashlooping
+  expr: rate(kube_pod_container_status_restarts_total{job="kube-state-metrics"}[15m]) * 60 * 5 > 0
+  for: 15m
+  labels:
+    severity: critical
+
 - alert: KubePodNotReady
   expr: sum
-    by(namespace, pod) (kube_pod_status_phase{job="kube-state-metrics",phase=~"Pending|Unknown"})
+    by(namespace, pod) (kube_pod_status_phase{job="kube-state-metrics",phase=~"Failed|Pending|Unknown"})
     > 0
   for: 1h
   labels:
@@ -81,6 +90,15 @@
       }}/{{ $labels.daemonset }} are scheduled and ready.
     runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubedaemonsetrolloutstuck
 
+- alert: KubeContainerWaiting
+  annotations:
+    message: Pod {{ $labels.namespace }}/{{ $labels.pod }} container {{ $labels.container}} has been in waiting state for longer than 1 hour.
+    runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubecontainerwaiting
+  expr: sum by (namespace, pod, container) (kube_pod_container_status_waiting_reason{job="kube-state-metrics"}) > 0
+  for: 1h
+  labels:
+    severity: warning
+
 - alert: KubeDaemonSetNotScheduled
   expr: kube_daemonset_status_desired_number_scheduled{job="kube-state-metrics"}
     - kube_daemonset_status_current_number_scheduled{job="kube-state-metrics"}
@@ -133,3 +151,29 @@
   annotations:
     message: Job {{ $labels.namespace }}/{{ $labels.job_name }} failed to complete.
     runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubejobfailed
+
+- alert: KubeHpaReplicasMismatch
+  annotations:
+    message: HPA {{ $labels.namespace }}/{{ $labels.hpa }} has not matched the desired number of replicas for longer than 15 minutes.
+    runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubehpareplicasmismatch
+  expr: |-
+    (kube_hpa_status_desired_replicas{job="kube-state-metrics"}
+      !=
+    kube_hpa_status_current_replicas{job="kube-state-metrics"})
+      and
+    changes(kube_hpa_status_current_replicas[15m]) == 0
+  for: 15m
+  labels:
+    severity: warning
+
+- alert: KubeHpaMaxedOut
+  annotations:
+    message: HPA {{ $labels.namespace }}/{{ $labels.hpa }} has been running at max replicas for longer than 15 minutes.
+    runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubehpamaxedout
+  expr: |-
+    kube_hpa_status_current_replicas{job="kube-state-metrics"}
+      ==
+    kube_hpa_spec_max_replicas{job="kube-state-metrics"}
+  for: 15m
+  labels:
+    severity: warning

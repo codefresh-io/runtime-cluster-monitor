@@ -16,6 +16,9 @@
 - name: kubernetes-resources.alerts
   rules:
     <%= file 'alerts/kubernetes-resources.yaml', 10 %>
+- name: kubernetes-system.alerts
+  rules:
+    <%= file 'alerts/kubernetes-system.yaml', 10 %>
 - name: monitoring.alerts
   rules:
     <%= file 'alerts/monitoring.yaml', 10 %>
