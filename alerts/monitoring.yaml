@@ -1,0 +1,19 @@
+- alert: PrometheusMemoryWarning
+  expr: process_resident_memory_bytes{job="prom-prometheus-operator-prometheus",namespace="monitoring"} > 6300000000
+  for: 10m
+  labels:
+    alertgroup: MemoryLow
+    severity: warning
+  annotations:
+    message: 'prometheus: process_resident_memory_bytes = {{ $value }}'
+    summary: Prometheus memory warning
+
+- alert: ReminderCritical
+  expr: label_replace(ALERTS{alertname!="ReminderCritical",alertstate="firing",severity="critical"}, "alert", "$1", "alertname", "(.*)") == 1
+  for: 1h
+  labels:
+    alertgroup: reminder
+    severity: critical
+  annotations:
+    message: '{{ $labels.alert }} for {{ $labels.node }} - {{ $labels.service_name }}'
+    summary: 'Reminder: there are critical alerts!'

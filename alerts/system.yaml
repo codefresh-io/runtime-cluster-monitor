@@ -1,9 +1,0 @@
-- alert: PrometheusMemoryWarning
-  expr: process_resident_memory_bytes{job="prometheus"} > 4e+9
-  for: 15m
-  labels:
-    alertgroup: PrometheusSystem
-    severity: warning
-  annotations:
-    description: 'prometheus: process_resident_memory_bytes = {{ $value }}'
-    summary: Prometheus memory warning

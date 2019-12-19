@@ -9,6 +9,7 @@
     description: just alert handler test - ignore
     handler: test {{ $labels.node_address_Hostname }}
     summary: handler test
+
 # - alert: ScaleUpRequest
 #   expr: (sum(machine_cpu_cores * 0 + ON(node_name) GROUP_LEFT() label_replace(sum(dind_pod_cpu_request) BY (dind_node_name), "node_name", "$1", "dind_node_name", "(.*)")) BY (node_label_agentpool)) / sum(machine_cpu_cores{node_label_agentpool!=""} * 1000) BY (node_label_agentpool) > 0.66
 #   for: 2m
@@ -20,6 +21,7 @@
 #     description: '{{$labels.node_label_agentpool}} node group scale request'
 #     handler: scaleup-asg {{$labels.node_label_agentpool}}
 #     summary: '{{$labels.node_label_agentpool}} node group scale request'
+
 - alert: DindVolumeUnused
   expr: (time() -  dind_volume_last_mount_ts{backend_volume_type !="local"} ) / 3600 > 96
   for: 5m

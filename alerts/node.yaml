@@ -7,24 +7,47 @@
   annotations:
     description: CPU > 90% {{ $labels.node_label_node_type }} node {{ $labels.node_address_Hostname }} - {{ $labels.node_address_ExternalIP }}, Runtime Env = {{ $labels.runtime_env }}
     summary: Node CPU overloaded
+
 - alert: NodeMemoryLow
-  expr: container_memory_usage_bytes{id="/",image="",job="kubelet"} * 100 / container_spec_memory_limit_bytes{id="/",job="kubelet"} > 90
+  expr: container_memory_usage_bytes{id="/",image="",job="kubelet"} * 100 / container_spec_memory_limit_bytes{id="/",job="kubelet"} > 75
   for: 30m
   labels:
     alertgroup: NodeMemoryLow
     severity: warning
   annotations:
-    description: memory usage > 90% {{ $labels.node_label_node_type }} node {{ $labels.node_address_Hostname }} - {{ $labels.node_address_ExternalIP }}, Runtime Env = {{ $labels.runtime_env }}
+    description: memory usage > 75% {{ $labels.node_label_node_type }} node {{ $labels.node_address_Hostname }} - {{ $labels.node_address_ExternalIP }}, Runtime Env = {{ $labels.runtime_env }}
     summary: Node Memory Low
+
 - alert: NodeStorageExceededCritical
-  expr: container_fs_usage_bytes{container_name="",id="/",job="kubelet"} / container_fs_limit_bytes{id="/"} > 0.9
+  expr: container_fs_usage_bytes{id="/",job="kubelet"} / ON(instance, node, node_role, runtime_env, device) container_fs_limit_bytes{id="/",job="kubelet"} * 100 > 95
   for: 15m
   labels:
     alertgroup: NodeStorageExceeded
     severity: critical
   annotations:
-    description: ' disk {{ $labels.device }} usage more then 95% {{ $labels.node_label_node_type }} node {{ $labels.node_address_Hostname }} - {{ $labels.node_address_ExternalIP }}, Runtime Env = {{ $labels.runtime_env }}'
+    message: '{{ $labels.node_role }} node {{ $labels.node }} disk usage more then 95%   Runtime Env = {{ $labels.runtime_env }} '
     summary: Node Storage Exceeded
+
+- alert: NodeStorageExceededWarning
+  expr: container_fs_usage_bytes{id="/",job="kubelet"} / ON(instance, node, node_role, runtime_env, device) container_fs_limit_bytes{id="/",job="kubelet"} * 100 > 80
+  for: 15m
+  labels:
+    alertgroup: NodeStorageExceeded
+    severity: warning
+  annotations:
+    message: '{{ $labels.node_role }} node {{ $labels.node }} disk usage more then 80%   Runtime Env = {{ $labels.runtime_env }} '
+    summary: Node Storage Exceeded
+
+- alert: ContainerStorageExceeded
+  expr: container_fs_usage_bytes{id!="/",job="kubelet"} > 1.073741824e+10
+  for: 15m
+  labels:
+    alertgroup: ContainerStorageExceeded
+    severity: warning
+  annotations:
+    message: '{{ $labels.node_role }} {{ $labels.node }}: Container {{ $labels.name }} storage > 10G, image = {{ $labels.image }}, Account {{ $labels.container_label_io_codefresh_accountName }}, pipeline = {{ $labels.container_label_io_codefresh_pipelineName }}'
+    summary: Container Storage Warning
+
 - alert: KubeNodeScale
   expr: count(up{job="kubelet"}) BY (node_label_kubernetes_io_role, node_label_node_type, node_label_runtime_environment) - count(up{job="kubelet"} OFFSET 5m) BY (node_label_kubernetes_io_role, node_label_node_type, node_label_runtime_environment) != 0
   for: 2m
@@ -34,3 +57,11 @@
   annotations:
     description: 'Number of K8s {{ $labels.node_label_kubernetes_io_role }} {{ $labels.node_label_node_type }} {{ $labels.node_label_runtime_environment }} has been changed by {{ $value }} '
     summary: K8s Nodes Scale event
+
+- alert: ClockSkewDetected
+  expr: abs(node_timex_offset_seconds{job="node-exporter"}) > 0.03
+  for: 10m
+  labels:
+    severity: warning
+  annotations:
+    message: 'Clock skew detected on node-exporter {{ $labels.namespace }}/{{ $labels.pod }}. Ensure NTP is configured correctly on this host.'

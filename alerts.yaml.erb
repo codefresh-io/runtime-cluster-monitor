@@ -10,9 +10,16 @@
 - name: event.alerts
   rules:
     <%= file 'alerts/event.yaml', 10 %>
+- name: kubernetes-apps.alerts
+  rules:
+    <%= file 'alerts/kubernetes-apps.yaml', 10 %>
+- name: kubernetes-resources.alerts
+  rules:
+    <%= file 'alerts/kubernetes-resources.yaml', 10 %>
+- name: monitoring.alerts
+  rules:
+    <%= file 'alerts/monitoring.yaml', 10 %>
 - name: node.alerts
   rules:
     <%= file 'alerts/node.yaml', 10 %>
-- name: system.alerts
-  rules:
-    <%= file 'alerts/system.yaml', 10 %>
+
