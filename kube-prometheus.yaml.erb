@@ -51,10 +51,8 @@ prometheusOperator:
 
 prometheus:
   prometheusSpec:
-    externalUrl: https://<%= cluster_name %>/prometheus/
+    externalUrl: https://<%= ENV['cluster_name'] %>/prometheus/
     routePrefix: /prometheus/
-    external_labels:
-      cluster_name: <%= cluster_name %>
     scrapeInterval: 10s
     additionalScrapeConfigs:
       <%= template 'scrape.yaml.erb', 6, '_scrape', binding %>

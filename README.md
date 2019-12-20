@@ -1,19 +1,19 @@
 # prometheus for runtime clusters
 
 ## Required
-* helm v2, tiller
+* helm v2, tiller, sops
 * Ruby and `gem install rake erubis`
 
 ## Usage
 * switch your context to needed
-* `rake env=... args='--set cluster_name=...'` to install or update your installation  
-  you may need `rake env=... args='--set prometheusOperator.createCustomResource=false'`
+* `rake env=... cluster_name=...` to install or update your installation  
+  you may need `rake ... args='--set prometheusOperator.createCustomResource=false'`
 * `rake destroy env=...` to remove the deployment
 
 `env` is `dev` or `prod` (`prod` sends alerts to VictorOps, `dev` does not)  
 `cluster_name` is cluster's full DNS name
 
-if you need to pass multiple args or whitespace, escape them:
+if you need to pass multiple Helm args or whitespace, escape them:
 * `rake args='--dry-run --debug'`
 
 for modifying the secrets two helpers are avaliable:
@@ -37,5 +37,5 @@ do not run more than one task concurrently, this will break things
 ### [grafana](http://localhost:3000/grafana/)
 `kubectl -n monitoring port-forward svc/cprom-grafana 3000:80`
 
-Please also note all services are exported through Octant, use `https://cluster_name` to access it.
+Please also note all services are exported through Octant, use `https://cluster_name` to access it.  
 Use `/prometheus`, `/alertmanager` and `/grafana` on this domain.
