@@ -5,7 +5,7 @@
     alertgroup: dind_problem
     severity: warning
   annotations:
-    description: CPU > 90% {{ $labels.node_label_node_type }} node {{ $labels.node_address_Hostname }} - {{ $labels.node_address_ExternalIP }}, Runtime Env = {{ $labels.runtime_env }}
+    message: CPU > 90% {{ $labels.node_label_node_type }} node {{ $labels.node_address_Hostname }} - {{ $labels.node_address_ExternalIP }}, Runtime Env = {{ $labels.runtime_env }}
     summary: Node CPU overloaded
 
 - alert: NodeMemoryLow
@@ -15,7 +15,7 @@
     alertgroup: NodeMemoryLow
     severity: warning
   annotations:
-    description: memory usage > 75% {{ $labels.node_label_node_type }} node {{ $labels.node_address_Hostname }} - {{ $labels.node_address_ExternalIP }}, Runtime Env = {{ $labels.runtime_env }}
+    message: memory usage > 75% {{ $labels.node_label_node_type }} node {{ $labels.node_address_Hostname }} - {{ $labels.node_address_ExternalIP }}, Runtime Env = {{ $labels.runtime_env }}
     summary: Node Memory Low
 
 - alert: NodeStorageExceededCritical
@@ -55,7 +55,7 @@
     alertgroup: dind_problem
     severity: info
   annotations:
-    description: 'Number of K8s {{ $labels.node_label_kubernetes_io_role }} {{ $labels.node_label_node_type }} {{ $labels.node_label_runtime_environment }} has been changed by {{ $value }} '
+    message: 'Number of K8s {{ $labels.node_label_kubernetes_io_role }} {{ $labels.node_label_node_type }} {{ $labels.node_label_runtime_environment }} has been changed by {{ $value }} '
     summary: K8s Nodes Scale event
 
 - alert: ClockSkewDetected

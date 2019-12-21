@@ -5,7 +5,7 @@
     alertgroup: downtime
     severity: warning
   annotations:
-    description: kubeapi is down on {{ $labels.instance }}
+    message: kubeapi is down on {{ $labels.instance }}
     summary: Kubernetes API server is down
 
 - alert: NodeDown
@@ -15,7 +15,7 @@
     alertgroup: downtime
     severity: critical
   annotations:
-    description: | 
+    message: |
       {{ $labels.node_label_kubernetes_io_role }} {{ $labels.instance }} {{ $labels.node_address_InternalIP }} / {{ $labels.node_address_ExternalIP }} is down.
       {{ $labels.node_label_node_type }} {{ $labels.runtime_env }}
     summary: Kubernetes Node is down
@@ -27,7 +27,7 @@
     alertgroup: downtime
     severity: critical
   annotations:
-    description: kube-apiserver is down
+    message: kube-apiserver is down
     summary: kube-apiserver is down {{ $labels.node_label_kubernetes_io_role }} {{ $labels.instance }} {{ $labels.node_address_InternalIP }} - {{ $labels.node_address_ExternalIP }}
 
 - alert: KubeSchedulerDown
@@ -37,7 +37,7 @@
     alertgroup: downtime
     severity: critical
   annotations:
-    description: kube-scheduler is down on {{ $labels.node_label_kubernetes_io_role }} {{ $labels.instance }} {{ $labels.node_address_InternalIP }} - {{ $labels.node_address_ExternalIP }}
+    message: kube-scheduler is down on {{ $labels.node_label_kubernetes_io_role }} {{ $labels.instance }} {{ $labels.node_address_InternalIP }} - {{ $labels.node_address_ExternalIP }}
     summary: kube-scheduler is down
 
 - alert: KubeControllerDown
@@ -47,7 +47,7 @@
     alertgroup: downtime
     severity: critical
   annotations:
-    description: kube-controller-manager is down on {{ $labels.node_label_kubernetes_io_role }} {{ $labels.instance }} {{ $labels.node_address_InternalIP }} - {{ $labels.node_address_ExternalIP }}
+    message: kube-controller-manager is down on {{ $labels.node_label_kubernetes_io_role }} {{ $labels.instance }} {{ $labels.node_address_InternalIP }} - {{ $labels.node_address_ExternalIP }}
     summary: kube-controller-manager is down
 
 - alert: CalicoNodeDown
@@ -57,7 +57,7 @@
     alertgroup: downtime
     severity: critical
   annotations:
-    description: |
+    message: |
       calico-node is down on {{ $labels.node_label_kubernetes_io_role }} {{ $labels.instance }} {{ $labels.node_address_InternalIP }} - {{ $labels.node_address_ExternalIP }}
       {{ $labels.node_label_node_type }} {{ $labels.runtime_env }}
     summary: calico-node is down
@@ -69,7 +69,7 @@
     alertgroup: downtime
     severity: critical
   annotations:
-    description: dind-volume-provisioner containers count != 1
+    message: dind-volume-provisioner containers count != 1
     summary: dind-volume-provisioner is down
 
 - alert: CalicoKubeControllers
@@ -79,7 +79,7 @@
     alertgroup: downtime
     severity: critical
   annotations:
-    description: calico-policy-controller is down
+    message: calico-policy-controller is down
     summary: calico-policy-controller is down
 
 - alert: AlertHandlerDown
@@ -89,7 +89,7 @@
     alertgroup: downtime
     severity: critical
   annotations:
-    description: am-alert-handler container count != 1
+    message: am-alert-handler container count != 1
     summary: Alert Handler is down
 
 - alert: DeploymentDown

@@ -5,7 +5,7 @@
     alertgroup: downtime
     severity: critical
   annotations:
-    description: dind-monitor containers count != 1
+    message: dind-monitor containers count != 1
     summary: dind-monitor is down
 
 - alert: PodWarningEvent
@@ -15,7 +15,7 @@
     alertgroup: kube_event
     severity: warning
   annotations:
-    description: |
+    message: |
       {{ $labels.event_type }} event - reason={{ $labels.event_reason }} for pod {{ $labels.event_name }} in namespace={{ $labels.event_namespace }}
       event_source = {{ $labels.event_source }} event_subobject={{ $labels.event_subobject }}
     summary: Pod warning event
@@ -27,7 +27,7 @@
     alertgroup: kube_event
     severity: warning
   annotations:
-    description: |
+    message: |
       {{ $labels.event_type }} event - reason={{ $labels.event_reason }} for pod {{ $labels.event_name }} in namespace={{ $labels.event_namespace }}
       event_source = {{ $labels.event_source }} event_subobject={{ $labels.event_subobject }}
     summary: Pod Failed Mount
@@ -39,7 +39,7 @@
     alertgroup: dind_storage
     severity: warning
   annotations:
-    description: |
+    message: |
       Too many volume mount failures
     summary: Too Many Pod Failed Mount
 
@@ -50,7 +50,7 @@
     alertgroup: dind_storage
     severity: warning
   annotations:
-    description: |
+    message: |
       Failed to provision pvc {{ $labels.event_name }} in namespace={{ $labels.event_namespace }} pvc_name = {{ $labels.event_source }}
       event_source = {{ $labels.event_source }}
     summary: Failed to provision pvc
@@ -64,7 +64,7 @@
     alertgroup: dind_storage
     severity: warning
   annotations:
-    description: |
+    message: |
       PVC Provision failure for pvc {{ $labels.pvc_name }} namespace = {{ $labels.event_namespace }}
       StorageClass = {{ $labels.storage_class }} Runtime_env = {{ $labels.runtime_env }}
       Workflow URL = {{ $labels.workflow_url }}?noAccount=true
@@ -79,7 +79,7 @@
     alertgroup: dind_storage
     severity: critical
   annotations:
-    description: |
+    message: |
       Too Many PVC Provisioning failures. event_source = {{ $labels.event_source }}
     summary: Too Many PVC Provisioner failures
 
@@ -92,7 +92,7 @@
 #     alertgroup: downtime
 #     severity: critical
 #   annotations:
-#     description: Dind local volume cleaner is down on node {{ $labels.node }}
+#     message: Dind local volume cleaner is down on node {{ $labels.node }}
 #     summary: Dind local volume cleaner is down on node
 
 # - alert: dindPvcStorageUsageExceeded
@@ -102,7 +102,7 @@
 #     alertgroup: dind_storage
 #     severity: warning
 #   annotations:
-#     description: 'dind {{ $labels.pod_name }} storage usage > 85% on {{ $labels.volume_path }} in namespace={{ $labels.namespace }} runtime_env={{ $labels.runtime_env }}  io_codefresh_accountName={{ $labels.io_codefresh_accountName }} backend_volume_id={{ $labels.backend_volume_id }} volume_name={{ $labels.volume_name }}'
+#     message: 'dind {{ $labels.pod_name }} storage usage > 85% on {{ $labels.volume_path }} in namespace={{ $labels.namespace }} runtime_env={{ $labels.runtime_env }}  io_codefresh_accountName={{ $labels.io_codefresh_accountName }} backend_volume_id={{ $labels.backend_volume_id }} volume_name={{ $labels.volume_name }}'
 #     summary: dindPvc Storage Usage Exceeded
   
 - alert: dindPvcInodeUsageExceeded
@@ -112,7 +112,7 @@
     alertgroup: dind_storage
     severity: info
   annotations:
-    description: "dind {{ $labels.pod_name }} inode usage > 90% on {{ $labels.volume_path }} in namespace={{ $labels.namespace }} runtime_env={{ $labels.runtime_env }}  io_codefresh_accountName={{ $labels.io_codefresh_accountName }} backend_volume_id={{ $labels.backend_volume_id }} volume_name={{ $labels.volume_name }}\nWorkflow URL: {{ $labels.workflow_url }}?noAccount=true\nAccount: {{ $labels.io_codefresh_accountName }}"
+    message: "dind {{ $labels.pod_name }} inode usage > 90% on {{ $labels.volume_path }} in namespace={{ $labels.namespace }} runtime_env={{ $labels.runtime_env }}  io_codefresh_accountName={{ $labels.io_codefresh_accountName }} backend_volume_id={{ $labels.backend_volume_id }} volume_name={{ $labels.volume_name }}\nWorkflow URL: {{ $labels.workflow_url }}?noAccount=true\nAccount: {{ $labels.io_codefresh_accountName }}"
     summary: dindPvc Inode Usage Exceeded
 
 - alert: dindPvcNoStorageAvailable
@@ -122,7 +122,7 @@
     alertgroup: dind_storage
     severity: info
   annotations:
-    description: "dind {{ $labels.pod_name }} available storage less then 500M on {{ $labels.volume_path }} in namespace={{ $labels.namespace }} runtime_env={{ $labels.runtime_env }}  io_codefresh_accountName={{ $labels.io_codefresh_accountName }} backend_volume_id={{ $labels.backend_volume_id }} volume_name={{ $labels.volume_name }}\nWorkflow URL: {{ $labels.workflow_url }}?noAccount=true\nAccount: {{ $labels.io_codefresh_accountName }}"
+    message: "dind {{ $labels.pod_name }} available storage less then 500M on {{ $labels.volume_path }} in namespace={{ $labels.namespace }} runtime_env={{ $labels.runtime_env }}  io_codefresh_accountName={{ $labels.io_codefresh_accountName }} backend_volume_id={{ $labels.backend_volume_id }} volume_name={{ $labels.volume_name }}\nWorkflow URL: {{ $labels.workflow_url }}?noAccount=true\nAccount: {{ $labels.io_codefresh_accountName }}"
     summary: dindPvc no storage available 
 
 - alert: dockerOnDindIsDown
@@ -132,7 +132,7 @@
     alertgroup: dind_docker
     severity: warning
   annotations:
-    description: "dockerd failed on dind {{ $labels.pod_name }} in namespace={{ $labels.namespace }}\nWorkflow URL: {{ $labels.workflow_url }}?noAccount=true\nAccount: {{ $labels.io_codefresh_accountName }}"
+    message: "dockerd failed on dind {{ $labels.pod_name }} in namespace={{ $labels.namespace }}\nWorkflow URL: {{ $labels.workflow_url }}?noAccount=true\nAccount: {{ $labels.io_codefresh_accountName }}"
     summary: dockerd failed on dind pod
 - alert: dindRunTooLong
   expr: dind_pod_status{dind_pod_name=~"dind.*"} == 1
@@ -142,7 +142,7 @@
     severity: info
     handler: "true"
   annotations:
-    description: "{{ $labels.dind_pod_name }} has run more than 180 min on runtimeEnvironment {{ $labels.codefresh_runtime_environment}} in namespace {{ $labels.dind_pod_namespace }} on instance {{ $labels.instance }}\nWorkflow URL: {{ $labels.workflow_url }}?noAccount=true\nAccount: {{ $labels.io_codefresh_accountName }}"
+    message: "{{ $labels.dind_pod_name }} has run more than 180 min on runtimeEnvironment {{ $labels.codefresh_runtime_environment}} in namespace {{ $labels.dind_pod_namespace }} on instance {{ $labels.instance }}\nWorkflow URL: {{ $labels.workflow_url }}?noAccount=true\nAccount: {{ $labels.io_codefresh_accountName }}"
     summary: dind run more than 3h
     handler: delete-kubeobj {{ $labels.dind_pod_namespace }} pod/{{ $labels.dind_pod_name }}
 
@@ -154,7 +154,7 @@
     severity: warning
     handler: "true"
   annotations:
-    description: "{{ $labels.pod_name }} is running without engine on re {{ $labels.codefresh_runtime_environment}} in namespace {{ $labels.namespace }} on node {{ $labels.node }}"
+    message: "{{ $labels.pod_name }} is running without engine on re {{ $labels.codefresh_runtime_environment}} in namespace {{ $labels.namespace }} on node {{ $labels.node }}"
     summary: dind is running without engine
     handler: delete-pod-pvc {{ $labels.namespace }} {{ $labels.pod_name }}
 
@@ -166,7 +166,7 @@
     severity: warning
     handler: "true"
   annotations:
-    description: "PVC {{ $labels.pvc_name }} is bound without running dind on re {{ $labels.codefresh_runtime_environment}} in namespace {{ $labels.pvc_namespace }}"
+    message: "PVC {{ $labels.pvc_name }} is bound without running dind on re {{ $labels.codefresh_runtime_environment}} in namespace {{ $labels.pvc_namespace }}"
     summary: dind is running without engine
     handler: delete-kubeobj {{ $labels.pvc_namespace }} pvc/{{ $labels.pvc_name }}
 
@@ -178,7 +178,7 @@
     severity: info
     handler: "true"
   annotations:
-    description: "{{ $labels.dind_pod_name }} has run more than 3h on runtimeEnvironment {{ $labels.codefresh_runtime_environment}} in namespace {{ $labels.dind_pod_namespace }} on instance {{ $labels.instance }}\nWorkflow URL: {{ $labels.workflow_url }}?noAccount=true\nAccount: {{ $labels.io_codefresh_accountName }}"
+    message: "{{ $labels.dind_pod_name }} has run more than 3h on runtimeEnvironment {{ $labels.codefresh_runtime_environment}} in namespace {{ $labels.dind_pod_namespace }} on instance {{ $labels.instance }}\nWorkflow URL: {{ $labels.workflow_url }}?noAccount=true\nAccount: {{ $labels.io_codefresh_accountName }}"
     summary: engine run more than 3h
     handler: delete-kubeobj {{ $labels.dind_pod_namespace }} pod/{{ $labels.dind_pod_name }}
 - alert: dindPvcIsBoundTooLong
@@ -189,7 +189,7 @@
     severity: warning
     handler: "true"
   annotations:
-    description: "dind pvc is bound too long {{ $labels.pvc_name }} in namespace={{ $labels.pvc_namespace }} , storageClass={{ $labels.storage_class }} , Runtime Env = {{ $labels.runtime_env }}\nWorkflow URL: {{ $labels.workflow_url }}?noAccount=true\nAccount: {{ $labels.io_codefresh_accountName }}"
+    message: "dind pvc is bound too long {{ $labels.pvc_name }} in namespace={{ $labels.pvc_namespace }} , storageClass={{ $labels.storage_class }} , Runtime Env = {{ $labels.runtime_env }}\nWorkflow URL: {{ $labels.workflow_url }}?noAccount=true\nAccount: {{ $labels.io_codefresh_accountName }}"
     summary: dind pvc is bound too long
     handler: delete-kubeobj {{ $labels.pvc_namespace }} pvc/{{ $labels.pvc_name }}
 - alert: dindPvcPending
@@ -199,7 +199,7 @@
     alertgroup: dind_problem
     severity: warning
   annotations:
-    description: "Cannot bound dind pvc {{ $labels.dind_pod_name }} in namespace={{ $labels.dind_pod_namespace }} , storageClass={{ $labels.storage_class }},  Runtime Env = {{ $labels.runtime_env }}\nWorkflow URL: {{ $labels.workflow_url }}?noAccount=true\nAccount: {{ $labels.io_codefresh_accountName }}"
+    message: "Cannot bound dind pvc {{ $labels.dind_pod_name }} in namespace={{ $labels.dind_pod_namespace }} , storageClass={{ $labels.storage_class }},  Runtime Env = {{ $labels.runtime_env }}\nWorkflow URL: {{ $labels.workflow_url }}?noAccount=true\nAccount: {{ $labels.io_codefresh_accountName }}"
     summary: 'dind pvc: cannot bound'
 
 - alert: TooManyCephPVCPending
@@ -210,7 +210,7 @@
     severity: critical
     handler: "true"
   annotations:
-    description: Too Many dind Ceph PVC are pending
+    message: Too Many dind Ceph PVC are pending
     summary: Too Many dind Ceph PVC are pending
     handler: fix-dind-volume-provisioner
 
@@ -221,7 +221,7 @@
     alertgroup: downtime
     severity: critical
   annotations:
-    description: Too Many dind EBS PVC are pending
+    message: Too Many dind EBS PVC are pending
     summary: Too Many dind EBS PVC are pending
 
 - alert: dindPodPending
@@ -231,7 +231,7 @@
     alertgroup: dind_problem
     severity: warning
   annotations:
-    description: "Dind pod status = {{ $value }}: {{ $labels.dind_pod_name }} in namespace={{ $labels.dind_pod_namespace }} . 0-Pending, 1-Running, 2-Succeded, 3-Failed\nWorkflow URL: {{ $labels.workflow_url }}?noAccount=true\nAccount: {{ $labels.io_codefresh_accountName }}"
+    message: "Dind pod status = {{ $value }}: {{ $labels.dind_pod_name }} in namespace={{ $labels.dind_pod_namespace }} . 0-Pending, 1-Running, 2-Succeded, 3-Failed\nWorkflow URL: {{ $labels.workflow_url }}?noAccount=true\nAccount: {{ $labels.io_codefresh_accountName }}"
     summary: dind pod pending or failed
 
 - alert: TooManyDindPodFailures
@@ -241,7 +241,7 @@
     alertgroup: downtime
     severity: critical
   annotations:
-    description: Too Many dind POD Failure
+    message: Too Many dind POD Failure
     summary: Too Many dind POD Failures
 
 - alert: DindVolumeProvisionerCpuWarning
@@ -251,7 +251,7 @@
     alertgroup: dind_problem
     severity: warning
   annotations:
-    description: 'pod {{ $labels.pod_name }} cpu usage warning on node {{ $labels.instance }}'
+    message: 'pod {{ $labels.pod_name }} cpu usage warning on node {{ $labels.instance }}'
     summary: Dind Volume Provisioner CPU usage warning
 
 - alert: DindVolumeProvisionerMemoryWarning
@@ -261,5 +261,5 @@
     alertgroup: dind_problem
     severity: warning
   annotations:
-    description: 'pod {{ $labels.pod_name }} memory usage warning on node {{ $labels.instance }}'
+    message: 'pod {{ $labels.pod_name }} memory usage warning on node {{ $labels.instance }}'
     summary: Dind Volume Provisioner Memory usage warning

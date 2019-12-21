@@ -6,7 +6,7 @@
     handler: "true"
     severity: warning
   annotations:
-    description: just alert handler test - ignore
+    message: just alert handler test - ignore
     handler: test {{ $labels.node_address_Hostname }}
     summary: handler test
 
@@ -18,7 +18,7 @@
 #     handler: "true"
 #     severity: info
 #   annotations:
-#     description: '{{$labels.node_label_agentpool}} node group scale request'
+#     message: '{{$labels.node_label_agentpool}} node group scale request'
 #     handler: scaleup-asg {{$labels.node_label_agentpool}}
 #     summary: '{{$labels.node_label_agentpool}} node group scale request'
 
@@ -30,7 +30,7 @@
     handler: "true"
     severity: info
   annotations:
-    description: Dind volume {{ $labels.backend_volume_id }} of storage class {{ $labels.storage_class }} is unused for more than 4 days
+    message: Dind volume {{ $labels.backend_volume_id }} of storage class {{ $labels.storage_class }} is unused for more than 4 days
     handler: delete-dind-volume-by-md5id {{ $labels.backend_volume_type }} {{ $labels.backend_volume_id_md5 }}
     summary: Dind volume is unused for more than 4 days
 - alert: UnusedVolumeIsNotDeleted
@@ -40,7 +40,7 @@
     alertgroup: dind_problem
     severity: warning
   annotations:
-    description: Dind volume {{ $labels.backend_volume_id }} of storage class {{ $labels.storage_class }} wasn't deleted after 4 days
+    message: Dind volume {{ $labels.backend_volume_id }} of storage class {{ $labels.storage_class }} wasn't deleted after 4 days
     summary: 'unused volume with TTL more than 4 days has not been deleted yet'
 - alert: DindVolumeRareUsed
   expr: dind_pvc_volume_mount_count <= 2 and (time() - dind_pvc_volume_last_mount_ts{backend_volume_type!="local"}) / 3600 > 24 and on() day_of_week() != 6 != 0 != 1
@@ -50,7 +50,7 @@
     handler: "true"
     severity: info
   annotations:
-    description: Dind volume {{ $labels.backend_volume_id }} of account {{ $labels.io_codefresh_accountName }} storage class {{ $labels.storage_class }} is unused for more than 1 day and was mounted less then 2 times
+    message: Dind volume {{ $labels.backend_volume_id }} of account {{ $labels.io_codefresh_accountName }} storage class {{ $labels.storage_class }} is unused for more than 1 day and was mounted less then 2 times
     handler: delete-dind-volume-by-md5id {{ $labels.backend_volume_type }} {{ $labels.backend_volume_id_md5 }}
     summary: Dind volume is rare used
 
@@ -62,7 +62,7 @@
     handler: "nowait"
     severity: warning
   annotations:
-    description: "Spot instance {{ $labels.node }} is going down - sending SIGPWR to engine pod ${{ $labels.pod_name }}"
+    message: "Spot instance {{ $labels.node }} is going down - sending SIGPWR to engine pod ${{ $labels.pod_name }}"
     handler: signal-pod {{ $labels.namespace }} {{ $labels.pod_name }} SIGTERM
     summary: Spot termination - sending SIGPwR to engine
 
@@ -74,6 +74,6 @@
     handler: "nowait"
     severity: warning
   annotations:
-    description: "Spot instance {{ $labels.node }} is going down - cordon node"
+    message: "Spot instance {{ $labels.node }} is going down - cordon node"
     handler: cordon-node {{ $labels.node }}
     summary: Spot termination - cordon node
