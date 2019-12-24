@@ -27,6 +27,9 @@ grafana:
     auth.anonymous:
       enabled: 'true'
       org_role: Admin
+  persistence:
+    enabled: true
+    size: 10Gi
 
 kubeControllerManager:
   enabled: false
