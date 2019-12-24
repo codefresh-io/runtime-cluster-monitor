@@ -30,6 +30,29 @@ grafana:
   persistence:
     enabled: true
     size: 10Gi
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+        - name: 'codefresh'
+          orgId: 1
+          folder: Codefresh
+          type: file
+          disableDeletion: true
+          editable: false
+          options:
+            path: /var/lib/grafana/dashboards/codefresh
+  dashboards:
+    codefresh:
+      build_metrics:
+        json: |
+          <%= file 'dashboards/Build metrics.json', 10 %>
+      init_phase_duration_avg:
+        json: |
+          <%= file 'dashboards/Workflow init phase duration (avg).json', 10 %>
+      init_phase_duration_per_build:
+        json: |
+          <%= file 'dashboards/Workflow init phase duration (per build).json', 10 %>
 
 kubeControllerManager:
   enabled: false

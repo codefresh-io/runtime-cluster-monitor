@@ -1,0 +1,709 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 11,
+  "iteration": 1577103703431,
+  "links": [],
+  "panels": [
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "decimals": 0,
+      "fill": 1,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 11,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "sort": null,
+        "sortDesc": null,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "avg(kubernetes_events_duration{event_name=~\".*dind-.*\", event_reason=\"FailedScheduling\", event_message!~\"pod has unbound immediate PersistentVolumeClaims.*\"} !=0< $error_threshold) by (event_reason)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{Pod Scheduling}} (dind)",
+          "refId": "C"
+        },
+        {
+          "expr": "avg(kubernetes_events_timestamp{event_name=~\".*dind-.*\", event_reason=\"ProvisioningSucceeded\"} - on(event_name) kubernetes_events_timestamp{event_name=~\".*dind-.*\", event_reason=\"ExternalProvisioning\"} + scalar(avg(kubernetes_events_duration{event_name=~\".*dind-.*\", event_reason=\"FailedScheduling\", event_message=~\".*has unbound.*\"}))) by (event_reason)",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 1,
+          "legendFormat": "{{Volume Provisioning}}  (dind)",
+          "refId": "B"
+        },
+        {
+          "expr": "avg(kubernetes_events_timestamp{event_name=~\".*dind-.*\", event_reason=\"SuccessfulAttachVolume\"} - on(event_name) kubernetes_events_timestamp{event_name=~\".*dind-.*\", event_reason=\"Scheduled\"}) by (event_reason)",
+          "format": "time_series",
+          "hide": true,
+          "intervalFactor": 1,
+          "legendFormat": "{{Volume Attach}}  (dind)",
+          "refId": "G"
+        },
+        {
+          "expr": "avg(kubernetes_events_timestamp{event_name=~\".*dind-.*\", event_reason=\"Pulled\"} - on(event_name) label_replace(kubernetes_events_timestamp{event_reason=\"ProvisioningSucceeded\"}, \"event_name\", \"$2\", \"event_name\", \"(pvc-)(dind-.*)\")) by (event_reason)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{Volume Attach & Mount}}  (dind)",
+          "refId": "A"
+        },
+        {
+          "expr": "avg(kubernetes_events_timestamp{event_name=~\".*dind-.*\", event_reason=\"Created\"} - on(event_name) kubernetes_events_timestamp{event_name=~\".*dind-.*\", event_reason=\"Pulled\"}) by (event_reason)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{Pod Creation}}  (dind)",
+          "refId": "D"
+        },
+        {
+          "expr": "avg(kubernetes_events_duration{event_name=~\".*dind-.*\", event_reason!~\"Killing|FailedScheduling|ExternalProvisioning|Provisioning|NotTriggerScaleUp\", event_type!=\"Warning\"} !=0< $error_threshold) by (event_reason)",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 1,
+          "legendFormat": "{{event_reason}} (dind)",
+          "refId": "H"
+        },
+        {
+          "expr": "avg(kubernetes_events_duration{event_name=~\".*engine-.*\", event_reason=\"FailedScheduling\"} !=0< $error_threshold) by (event_reason)",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "{{Pod Scheduling}} (engine)",
+          "refId": "E"
+        },
+        {
+          "expr": "avg(kubernetes_events_timestamp{event_name=~\".*engine-.*\", event_reason=\"Created\"} - on(event_name) kubernetes_events_timestamp{event_name=~\".*engine-.*\", event_reason=\"Scheduled\"}) by (event_reason)",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 1,
+          "legendFormat": "{{Pod Creation}} (engine)",
+          "refId": "K"
+        },
+        {
+          "expr": "avg(kubernetes_events_duration{event_name=~\".*engine-.*\", event_reason!~\"Killing|FailedScheduling\", event_type!=\"Warning\"} !=0< $error_threshold) by (event_reason)",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 1,
+          "legendFormat": "{{event_reason}}",
+          "refId": "L"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "K8s Ops Average Duration (dinds)",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 0,
+          "format": "s",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "decimals": 2,
+      "fill": 1,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 12,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "avg(workflow_step_duration{phase_name=\"presteps\"} <$error_threshold) by (step_name)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{step_name}}",
+          "refId": "E"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Init Steps Average Duration",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 0,
+          "format": "s",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "Pulled": "#dedaf7"
+      },
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "decimals": 2,
+      "fill": 1,
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 4,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "hideEmpty": false,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "rightSide": true,
+        "show": true,
+        "sideWidth": null,
+        "total": false,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "repeat": null,
+      "repeatDirection": "h",
+      "seriesOverrides": [
+        {
+          "alias": "Pulled",
+          "yaxis": 1
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "avg(workflow_step_duration{phase_name=\"presteps\"} !=0<$error_threshold and on(pod_name) changes(workflow_phase_status{}[40s]) == 1) by (step_name)",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "intervalFactor": 1,
+          "legendFormat": "{{step_name}}",
+          "refId": "C"
+        },
+        {
+          "expr": "avg(kubernetes_events_timestamp{event_name=~\".*dind-.*\", event_reason=\"ProvisioningSucceeded\"} - on(event_name) kubernetes_events_timestamp{event_name=~\".*dind-.*\", event_reason=\"ExternalProvisioning\"} + scalar(avg(kubernetes_events_duration{event_name=~\".*dind-.*\", event_reason=\"FailedScheduling\", event_message=~\".*has unbound.*\"}))) by (event_reason)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "K8: {{Volume Provisioning}}  (dind)",
+          "refId": "D"
+        },
+        {
+          "expr": "avg(kubernetes_events_duration{event_name=~\".*dind-.*\", event_reason=\"FailedScheduling\", event_message!~\"pod has unbound immediate PersistentVolumeClaims.*\"} !=0< $error_threshold) by (event_reason)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "K8: {{Pod Scheduling}} (dind)",
+          "refId": "K"
+        },
+        {
+          "expr": "avg(kubernetes_events_timestamp{event_name=~\".*dind-.*\", event_reason=\"SuccessfulAttachVolume\"} - on(event_name) kubernetes_events_timestamp{event_name=~\".*dind-.*\", event_reason=\"Scheduled\"}) by (event_reason)",
+          "format": "time_series",
+          "hide": true,
+          "intervalFactor": 1,
+          "legendFormat": "K8: {{Volume Attach}}  (dind)",
+          "refId": "E"
+        },
+        {
+          "expr": "avg(kubernetes_events_timestamp{event_name=~\".*dind-.*\", event_reason=\"Pulled\"} - on(event_name) label_replace(kubernetes_events_timestamp{event_reason=\"ProvisioningSucceeded\"}, \"event_name\", \"$2\", \"event_name\", \"(pvc-)(dind-.*)\")) by (event_reason)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "K8: {{Volume Attach & Mount}}  (dind)",
+          "refId": "F"
+        },
+        {
+          "expr": "avg(kubernetes_events_timestamp{event_name=~\".*dind-.*\", event_reason=\"Created\"} - on(event_name) kubernetes_events_timestamp{event_name=~\".*dind-.*\", event_reason=\"Pulled\"}) by (event_reason)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "K8: {{Pod Creation}}  (dind)",
+          "refId": "G"
+        },
+        {
+          "expr": "avg(kubernetes_events_duration{event_type!=\"Warning\", event_name=~\".*dind-.*\", event_reason!~\"Killing|FailedScheduling|ExternalProvisioning|Provisioning|FailedAttachVolume|NotTriggerScaleUp\"} !=0<$error_threshold) by (event_reason)",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 1,
+          "legendFormat": "K8: {{event_reason}} (dind)",
+          "refId": "A"
+        },
+        {
+          "expr": "avg(kubernetes_events_duration{event_type!=\"Warning\", event_name=~\".*engine-.*\", event_reason!~\"Killing|FailedScheduling\"} !=0<$error_threshold) by (event_reason)",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 1,
+          "legendFormat": "K8: {{event_reason}} (engine)",
+          "refId": "B"
+        },
+        {
+          "expr": "avg(kubernetes_events_duration{event_name=~\".*engine-.*\", event_reason=\"FailedScheduling\"} !=0< $error_threshold) by (event_reason)",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 1,
+          "legendFormat": "K8:  {{Pod Scheduling}} (engine)",
+          "refId": "H"
+        },
+        {
+          "expr": "avg(kubernetes_events_timestamp{event_name=~\".*engine-.*\", event_reason=\"Created\"} - on(event_name) kubernetes_events_timestamp{event_name=~\".*engine-.*\", event_reason=\"Scheduled\"}) by (event_reason)",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 1,
+          "legendFormat": "K8:  {{Pod Creation}} (engine)",
+          "refId": "J"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Steps & K8s Ops Averages Diagram",
+      "tooltip": {
+        "shared": false,
+        "sort": 0,
+        "value_type": "cumulative"
+      },
+      "transparent": false,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "series",
+        "name": null,
+        "show": true,
+        "values": [
+          "avg"
+        ]
+      },
+      "yaxes": [
+        {
+          "decimals": 0,
+          "format": "s",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "Pulled": "#dedaf7"
+      },
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "decimals": 0,
+      "fill": 1,
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 19
+      },
+      "id": 5,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": false,
+        "hideEmpty": false,
+        "hideZero": false,
+        "max": true,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "sideWidth": null,
+        "total": false,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": true,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "repeatDirection": "h",
+      "seriesOverrides": [
+        {
+          "alias": "Pulled",
+          "yaxis": 1
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "workflow_step_duration{phase_name=\"presteps\"} !=0>$error_threshold",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "intervalFactor": 1,
+          "legendFormat": "{{step_name}} ({{pod_name}})",
+          "refId": "C"
+        },
+        {
+          "expr": "kubernetes_events_duration{event_reason!=\"Killing\", event_name=~\"engine-.*|dind-.*\", event_message!~\"pod has unbound immediate PersistentVolumeClaims.*\"} !=0>$error_threshold",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "{{event_reason}} ({{event_name}}) {{event_message}}",
+          "refId": "D"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Abnormal Durations",
+      "tooltip": {
+        "shared": false,
+        "sort": 0,
+        "value_type": "cumulative"
+      },
+      "transparent": false,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "series",
+        "name": null,
+        "show": false,
+        "values": [
+          "max"
+        ]
+      },
+      "yaxes": [
+        {
+          "decimals": null,
+          "format": "s",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "decimals": 0,
+      "fill": 1,
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 19
+      },
+      "id": 7,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": false,
+        "max": true,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "count(kubernetes_events_duration{event_type=\"Warning\", event_message!~\"pod has unbound immediate PersistentVolumeClaims.*\"}) by (event_reason)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{event_reason}} ",
+          "refId": "A"
+        },
+        {
+          "expr": "count(kubernetes_events_duration{event_type=\"Warning\", event_message!~\"pod has unbound immediate PersistentVolumeClaims.*\"}) by (event_reason,event_message)",
+          "format": "time_series",
+          "hide": true,
+          "intervalFactor": 1,
+          "legendFormat": "{{event_reason}} {{event_message}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "K8s Events Warnings Count",
+      "tooltip": {
+        "shared": false,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "series",
+        "name": null,
+        "show": true,
+        "values": [
+          "max"
+        ]
+      },
+      "yaxes": [
+        {
+          "decimals": null,
+          "format": "short",
+          "label": "Error Count",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    }
+  ],
+  "refresh": false,
+  "schemaVersion": 16,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "20",
+          "value": "20"
+        },
+        "hide": 0,
+        "label": null,
+        "name": "error_threshold",
+        "options": [
+          {
+            "text": "20",
+            "value": "20"
+          }
+        ],
+        "query": "20",
+        "type": "constant"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "",
+  "title": "Codefresh / Workflow init phase duration (avg)",
+  "uid": "YgxrXp7Zk",
+  "version": 4
+}

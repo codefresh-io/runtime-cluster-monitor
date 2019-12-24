@@ -1,0 +1,446 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "Prometheus",
+        "enable": true,
+        "expr": "",
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "limit": 100,
+        "name": "Steps",
+        "showIn": 0,
+        "step": "15s",
+        "titleFormat": "{{event_reason}} {{event_name}}",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "iteration": 1577198928883,
+  "links": [],
+  "panels": [
+    {
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "decimals": 0,
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 15,
+        "w": 11,
+        "x": 0,
+        "y": 0
+      },
+      "id": 12,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": false,
+        "max": true,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "kubernetes_events_timestamp{event_name=~\".*dind-$build_id.*\", event_reason=\"ProvisioningSucceeded\"} - on(event_name) kubernetes_events_timestamp{event_name=~\".*dind-$build_id.*\", event_reason=\"ExternalProvisioning\"} + scalar(kubernetes_events_duration{event_name=~\".*dind-$build_id.*\", event_reason=\"FailedScheduling\", event_message=~\".*has unbound.*\"})",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{Volume Provisioning}} (dind)",
+          "refId": "B"
+        },
+        {
+          "expr": "kubernetes_events_timestamp{event_name=~\".*dind-$build_id.*\", event_reason=\"SuccessfulAttachVolume\"} - on(event_name) kubernetes_events_timestamp{event_name=~\".*dind-$build_id.*\", event_reason=\"Scheduled\"}",
+          "format": "time_series",
+          "hide": true,
+          "intervalFactor": 1,
+          "legendFormat": "{{Volume Attach }} (dind)",
+          "refId": "A"
+        },
+        {
+          "expr": "kubernetes_events_timestamp{event_name=~\".*dind-$build_id.*\", event_reason=\"Pulled\"} - on(event_name) label_replace(kubernetes_events_timestamp{event_reason=\"ProvisioningSucceeded\"}, \"event_name\", \"$2\", \"event_name\", \"(pvc-)(dind-$build_id.*)\")",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{Volume Attach & Mount}} (dind)",
+          "refId": "C"
+        },
+        {
+          "expr": "kubernetes_events_timestamp{event_name=~\".dind-$build_id.*\", event_reason=\"Created\"} - on(event_name) kubernetes_events_timestamp{event_name=~\".*dind-$build_id.*\", event_reason=\"Pulled\"}",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{Pod Creation}} (dind)",
+          "refId": "E"
+        },
+        {
+          "expr": "kubernetes_events_duration{event_name=~\".*dind-$build_id.*\", event_reason!~\"Killing|FailedScheduling|ExternalProvisioning\", event_type!=\"Warning\"} != 0",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 1,
+          "legendFormat": "{{event_reason}} (dind)",
+          "refId": "H"
+        },
+        {
+          "expr": "kubernetes_events_timestamp{event_name=~\".*engine-$build_id.*\", event_reason=\"Created\"} - on(event_name) kubernetes_events_timestamp{event_name=~\".*engine-$build_id.*\", event_reason=\"Pulled\"}",
+          "format": "time_series",
+          "hide": true,
+          "intervalFactor": 1,
+          "legendFormat": "{{Pod Creation}} (engine)",
+          "refId": "F"
+        },
+        {
+          "expr": "kubernetes_events_duration{event_name=~\".*engine-$build_id.*\", event_reason!~\"Killing|FailedScheduling\", event_type!=\"Warning\"}",
+          "format": "time_series",
+          "hide": true,
+          "intervalFactor": 1,
+          "legendFormat": "{{event_reason}} (engine)",
+          "refId": "G"
+        },
+        {
+          "expr": "kubernetes_events_duration{event_name=~\".*dind-$build_id.*\", event_reason=\"FailedScheduling\", event_message!~\"pod has unbound immediate PersistentVolumeClaims.*\"}",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{Pod scheduling}}",
+          "refId": "D"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "K8s Events Duration Diagram",
+      "tooltip": {
+        "shared": false,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "series",
+        "name": null,
+        "show": true,
+        "values": [
+          "max"
+        ]
+      },
+      "yaxes": [
+        {
+          "decimals": 0,
+          "format": "s",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "Pulled": "#dedaf7"
+      },
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "decimals": 1,
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 13,
+        "w": 13,
+        "x": 11,
+        "y": 0
+      },
+      "id": 7,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": false,
+        "hideZero": false,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "Pulled",
+          "yaxis": 1
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "workflow_step_duration{phase_name=\"presteps\", pod_name=~\".*$build_id.*\"} !=0 ",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "intervalFactor": 1,
+          "legendFormat": "{{step_name}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Init Steps Duration Diagram",
+      "tooltip": {
+        "shared": false,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "series",
+        "name": null,
+        "show": true,
+        "values": [
+          "max"
+        ]
+      },
+      "yaxes": [
+        {
+          "format": "s",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "decimals": null,
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 15
+      },
+      "id": 10,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": false,
+        "max": true,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "sort": "max",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "kubernetes_events_timestamp{event_name=~\".*dind-$build_id.*\", event_reason!=\"Killing\"} * 1000",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 1,
+          "legendFormat": "{{event_reason}}(dind){{event_message}}",
+          "refId": "A"
+        },
+        {
+          "expr": "kubernetes_events_timestamp{event_name=~\".*engine-$build_id.*\", event_reason!=\"Killing\"} * 1000",
+          "format": "time_series",
+          "hide": true,
+          "intervalFactor": 1,
+          "legendFormat": "{{event_reason}}(engine)(dind){{event_message}}",
+          "refId": "C"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "K8s Events on Timeline",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "cumulative"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": false,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 2,
+          "format": "dateTimeAsUS",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    }
+  ],
+  "refresh": false,
+  "schemaVersion": 20,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "text": ".*",
+          "value": ".*"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "",
+        "multi": false,
+        "name": "build_id",
+        "options": [
+          {
+            "selected": true,
+            "text": "enter_build_id_here",
+            "value": "enter_build_id_here"
+          }
+        ],
+        "query": "enter_build_id_here",
+        "skipUrlSync": false,
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "",
+  "title": "Codefresh / Workflow init phase duration (per build)",
+  "uid": "JbgYVH7Wz",
+  "version": 1
+}
