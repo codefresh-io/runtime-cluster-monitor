@@ -13,6 +13,7 @@ alertmanager:
           resources:
             requests:
               storage: 2Gi
+    <%= template 'affinity.yaml.erb', 4, '_affinity', binding %>
 
 grafana:
   grafana.ini:
@@ -53,6 +54,10 @@ grafana:
       init_phase_duration_per_build:
         json: |
           <%= file 'dashboards/Workflow init phase duration (per build).json', 10 %>
+  <%= template 'affinity.yaml.erb', 2, '_affinity', binding %>
+
+kube-state-metrics:
+  <%= template 'affinity.yaml.erb', 2, '_affinity', binding %>
 
 kubeControllerManager:
   enabled: false
@@ -74,6 +79,7 @@ kubeScheduler:
 
 prometheusOperator:
   logLevel: error
+  <%= template 'affinity.yaml.erb', 2, '_affinity', binding %>
 
 prometheus:
   prometheusSpec:
@@ -89,6 +95,7 @@ prometheus:
           resources:
             requests:
               storage: 70Gi
+    <%= template 'affinity.yaml.erb', 4, '_affinity', binding %>
 
 defaultRules:
   rules:

@@ -1,0 +1,14 @@
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: 'node-type'
+          operator: In
+          values:
+            - internal
+tolerations:
+  - effect: NoSchedule
+    key: nodeType
+    operator: Equal
+    value: internal
