@@ -9,7 +9,7 @@
 {{ define "cf.text" }}
 {{ range $a := .Alerts }}
 [{{ .Labels.severity | toUpper }}] {{ $a.StartsAt.Format "2006-01-02 15:04:05 UTC" }}
-{{ $a.Annotations.message }}
+{{ $a.Annotations.message }}{{ $a.Annotations.description }}
 {{ end }}
 {{ if .CommonAnnotations.runbook_url }}
 {{ .CommonAnnotations.runbook_url }}
