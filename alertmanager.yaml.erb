@@ -11,6 +11,16 @@ route:
         alertname: Watchdog
       receiver: 'null'
     - match:
+        handler: 'true'
+      receiver: alert_handler
+      continue: true
+    - match:
+        handler: nowait
+      receiver: alert_handler
+      group_wait: 2s
+      group_interval: 2s
+      continue: true
+    - match:
         alertname: ReminderCritical
         severity: critical
       repeat_interval: 3h

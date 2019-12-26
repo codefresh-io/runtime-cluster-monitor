@@ -79,8 +79,8 @@
     alertgroup: downtime
     severity: critical
   annotations:
-    message: calico-policy-controller is down
-    summary: calico-policy-controller is down
+    message: calico-kube-controller is down
+    summary: calico-kube-controller is down
 
 - alert: AlertHandlerDown
   expr: absent(count(container_start_time_seconds{container_name="am-alert-handler",job="kubelet"}) == 1)
