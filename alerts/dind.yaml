@@ -1,5 +1,5 @@
 - alert: DindMonitorDown
-  expr: absent(count(container_start_time_seconds{container_name="dind-monitor",job="kubelet"}) == 1)
+  expr: absent(count(container_start_time_seconds{container="dind-monitor",job="kubelet"}) == 1)
   for: 2m
   labels:
     alertgroup: downtime
@@ -57,7 +57,7 @@
 
 - alert: PvcProvisionFailureAccInfo
   expr: |
-    label_replace(kubernetes_events{event_kind="PersistentVolumeClaim", event_reason="ProvisioningFailed"}, "pvc_name", "$1", "event_name", "(.*)") 
+    label_replace(kubernetes_events{event_kind="PersistentVolumeClaim", event_reason="ProvisioningFailed"}, "pvc_name", "$1", "event_name", "(.*)")
       + on (pvc_name) group_left(runtime_env,storage_class,workflow_url,io_codefresh_accountName) (dind_pvc_status == 0)
   for: 2m
   labels:
@@ -104,7 +104,7 @@
 #   annotations:
 #     message: 'dind {{ $labels.pod_name }} storage usage > 85% on {{ $labels.volume_path }} in namespace={{ $labels.namespace }} runtime_env={{ $labels.runtime_env }}  io_codefresh_accountName={{ $labels.io_codefresh_accountName }} backend_volume_id={{ $labels.backend_volume_id }} volume_name={{ $labels.volume_name }}'
 #     summary: dindPvc Storage Usage Exceeded
-  
+
 - alert: dindPvcInodeUsageExceeded
   expr: (docker_volume_inodes_usage > 0.9 ) + on (dind_pod_name) group_left(io_codefresh_accountName, runtime_env, backend_volume_id, volume_name) dind_pvc_volume_mount_count{dind_pod_name != "<no value>"} * 0
   for: 20s
@@ -255,7 +255,7 @@
     summary: Dind Volume Provisioner CPU usage warning
 
 - alert: DindVolumeProvisionerMemoryWarning
-  expr: container_memory_usage_bytes{job="kubelet", container_name = "dind-volume-provisioner"} > 2000000000
+  expr: container_memory_usage_bytes{job="kubelet", container = "dind-volume-provisioner"} > 2000000000
   for: 10m
   labels:
     alertgroup: dind_problem

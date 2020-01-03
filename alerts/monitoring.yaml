@@ -15,5 +15,5 @@
     alertgroup: reminder
     severity: critical
   annotations:
-    message: '{{ $labels.alert }} for {{ $labels.node }} - {{ $labels.service_name }}'
+    message: '{{ $labels.alert }} for {{ $labels.node }} - {{ $labels.service_name }}' # no service_name
     summary: 'Reminder: there are critical alerts!'
