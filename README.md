@@ -1,7 +1,7 @@
 # prometheus for runtime clusters
 
 ## Required
-* helm v2, tiller, sops
+* helm, sops
 * Ruby and `gem install rake erubis`
 
 ## Usage
