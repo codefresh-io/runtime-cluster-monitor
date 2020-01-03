@@ -12,7 +12,7 @@ charts = [
 ]
 
 namespace = 'monitoring'
-manifests = %w[dind-monitor event-exporter]
+manifests = %w[dind-volume-cleanup dind-monitor event-exporter]
 
 Helm4Rake.new(charts, contexts, namespace)
 
