@@ -1,5 +1,5 @@
 - alert: HandlerTest
-  expr: count(container_start_time_seconds{container=~"handler-test.*",job="kubelet"}) BY (node_address_Hostname) > 0
+  expr: count(container_start_time_seconds{container_name=~"handler-test.*",job="kubelet"}) BY (node_address_Hostname) > 0
   for: 20s
   labels:
     alertgroup: handler-test

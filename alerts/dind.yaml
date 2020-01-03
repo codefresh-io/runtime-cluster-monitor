@@ -1,5 +1,5 @@
 - alert: DindMonitorDown
-  expr: absent(count(container_start_time_seconds{container="dind-monitor",job="kubelet"}) == 1)
+  expr: absent(count(container_start_time_seconds{container_name="dind-monitor",job="kubelet"}) == 1)
   for: 2m
   labels:
     alertgroup: downtime
@@ -255,7 +255,7 @@
     summary: Dind Volume Provisioner CPU usage warning
 
 - alert: DindVolumeProvisionerMemoryWarning
-  expr: container_memory_usage_bytes{job="kubelet", container = "dind-volume-provisioner"} > 2000000000
+  expr: container_memory_usage_bytes{job="kubelet", container_name = "dind-volume-provisioner"} > 2000000000
   for: 10m
   labels:
     alertgroup: dind_problem
