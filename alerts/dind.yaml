@@ -16,7 +16,7 @@
     severity: warning
   annotations:
     message: |
-      {{ $labels.event_reason }} for pod {{ $labels.event_name }} in namespace={{ $labels.event_namespace }}
+      [{{ $labels.event_reason }}: pod={{ $labels.event_name }} ns={{ $labels.event_namespace }}]
       {{ $labels.event_subobject }}
     summary: Pod warning event
 
@@ -28,7 +28,7 @@
     severity: warning
   annotations:
     message: |
-      {{ $labels.event_reason }} for pod {{ $labels.event_name }} in namespace={{ $labels.event_namespace }}
+      [{{ $labels.event_reason }}: pod={{ $labels.event_name }} ns={{ $labels.event_namespace }}]
       {{ $labels.event_subobject }}
     summary: Pod Failed Mount
 
