@@ -9,14 +9,14 @@
     summary: dind-monitor is down
 
 - alert: PodWarningEvent
-  expr: kubernetes_events{event_type!="Normal", event_reason!="FailedScheduling", event_reason!="FailedCreatePodSandBox", event_kind="Pod", event_name !~ "filebeat.*" } offset 4m  unless on (event_name) kubernetes_events{event_type="Normal", event_reason="Started"}
+  expr: kubernetes_events{event_type!="Normal", event_reason!~"FailedScheduling|FailedCreatePodSandBox|FailedMount|FailedAttachVolume", event_kind="Pod", event_name !~ "filebeat.*" } offset 4m  unless on (event_name) kubernetes_events{event_type="Normal", event_reason="Started"}
   for: 2m
   labels:
     alertgroup: kube_event
     severity: warning
   annotations:
     message: |
-      [{{ $labels.event_reason }}: pod={{ $labels.event_name }} ns={{ $labels.event_namespace }}]
+      [{{ $labels.event_reason | toUpper }}] pod={{ $labels.event_name }} ns={{ $labels.event_namespace }}
       {{ $labels.event_subobject }}
     summary: Pod warning event
 
@@ -28,7 +28,7 @@
     severity: warning
   annotations:
     message: |
-      [{{ $labels.event_reason }}: pod={{ $labels.event_name }} ns={{ $labels.event_namespace }}]
+      pod={{ $labels.event_name }} ns={{ $labels.event_namespace }}
       {{ $labels.event_subobject }}
     summary: Pod Failed Mount
 
