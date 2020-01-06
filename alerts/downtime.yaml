@@ -57,9 +57,7 @@
     alertgroup: downtime
     severity: critical
   annotations:
-    message: |
-      calico-node is down on {{ $labels.node_label_kubernetes_io_role }} {{ $labels.instance }} {{ $labels.node_address_InternalIP }} - {{ $labels.node_address_ExternalIP }}
-      {{ $labels.node_label_node_type }} {{ $labels.runtime_env }}
+    message: calico-node is down on {{ $labels.node }}
     summary: calico-node is down
 
 - alert: DindVolumeProvisionerDown

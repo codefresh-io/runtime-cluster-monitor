@@ -16,7 +16,7 @@
     alertgroup: NodeMemoryLow
     severity: warning
   annotations:
-    message: memory usage > 75%{{ if $labels.node_label_node_type }} {{ $labels.node_label_node_type }}{{ end }} node {{ $labels.node }}
+    message: memory usage > 75% on {{ $labels.node }}
     summary: Node Memory Low
 
 - alert: NodeStorageExceededCritical

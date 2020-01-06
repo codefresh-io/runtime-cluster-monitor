@@ -5,7 +5,7 @@
     alertgroup: dind_problem
     severity: warning
   annotations:
-    message: kubeletDockerErrors {{ $labels.operation_type }} on{{ if $labels.node_label_node_type }} {{ $labels.node_label_node_type }}{{ end }} node {{ $labels.node }}
+    message: kubeletDockerErrors {{ $labels.operation_type }} on {{ $labels.node }}
     summary: kubeletDockerErrors
 
 - alert: TooHighNetworkTransmitRate
