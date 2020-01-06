@@ -83,7 +83,7 @@ prometheusOperator:
 
 prometheus:
   prometheusSpec:
-    externalUrl: https://<%= ENV['cluster_name'] %>/prometheus/
+    externalUrl: https://<%= ENV['cluster'] %>/prometheus/
     routePrefix: /prometheus/
     scrapeInterval: 10s
     additionalScrapeConfigs:

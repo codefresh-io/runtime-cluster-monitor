@@ -6,12 +6,12 @@
 
 ## Usage
 * switch your context to needed
-* `rake env=... cluster_name=...` to install or update your installation  
+* `rake env=... cluster=...` to install or update your installation  
   you may need `rake ... args='--set prometheusOperator.createCustomResource=false'`
 * `rake destroy env=...` to remove the deployment
 
 `env` is `dev` or `prod` (`prod` sends alerts to VictorOps, `dev` does not)  
-`cluster_name` is cluster's full DNS name
+`cluster` is cluster's full DNS name
 
 if you need to pass multiple Helm args or whitespace, escape them:
 * `rake args='--dry-run --debug'`
@@ -37,5 +37,5 @@ do not run more than one task concurrently, this will break things
 ### [grafana](http://localhost:3000/grafana/)
 `kubectl -n monitoring port-forward svc/cprom-grafana 3000:80`
 
-Please also note all services are exported through Octant, use `https://cluster_name` to access it.  
+Please also note all services are exported through Octant, use `https://cluster` to access it.  
 Use `/prometheus`, `/alertmanager` and `/grafana` on this domain.
