@@ -16,7 +16,7 @@
     alertgroup: NodeMemoryLow
     severity: warning
   annotations:
-    message: memory usage > 75% {{ $labels.node_label_node_type }} node {{ $labels.node_address_Hostname }} - {{ $labels.node_address_ExternalIP }}, Runtime Env = {{ $labels.runtime_env }}
+    message: memory usage > 75%{{ if $labels.node_label_node_type }} {{ $labels.node_label_node_type }}{{ end }} node {{ $labels.node }}
     summary: Node Memory Low
 
 - alert: NodeStorageExceededCritical
