@@ -16,8 +16,8 @@
     severity: warning
   annotations:
     message: |
-      {{ $labels.event_type }} event - reason={{ $labels.event_reason }} for pod {{ $labels.event_name }} in namespace={{ $labels.event_namespace }}
-      event_source = {{ $labels.event_source }} event_subobject={{ $labels.event_subobject }}
+      {{ $labels.event_reason }} for pod {{ $labels.event_name }} in namespace={{ $labels.event_namespace }}
+      {{ $labels.event_subobject }}
     summary: Pod warning event
 
 - alert: PodFailedMount
@@ -28,8 +28,8 @@
     severity: warning
   annotations:
     message: |
-      {{ $labels.event_type }} event - reason={{ $labels.event_reason }} for pod {{ $labels.event_name }} in namespace={{ $labels.event_namespace }}
-      event_source = {{ $labels.event_source }} event_subobject={{ $labels.event_subobject }}
+      {{ $labels.event_reason }} for pod {{ $labels.event_name }} in namespace={{ $labels.event_namespace }}
+      {{ $labels.event_subobject }}
     summary: Pod Failed Mount
 
 - alert: TooManyPodFailedMounts
