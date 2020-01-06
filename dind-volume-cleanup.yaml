@@ -39,6 +39,7 @@ metadata:
     app: dind-volume-cleanup
 spec:
   schedule: "0,10,20,30,40,50 * * * *"
+  concurrencyPolicy: Forbid
   jobTemplate:
     spec:
       template:
@@ -57,6 +58,7 @@ metadata:
     app: dind-volume-cleanup
 spec:
   schedule: "5,15,25,35,45,55 * * * 2-5"
+  concurrencyPolicy: Forbid
   jobTemplate:
     spec:
       template:
