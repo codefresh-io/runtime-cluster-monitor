@@ -38,13 +38,13 @@ metadata:
   labels:
     app: dind-volume-cleanup
 spec:
-  schedule: "0 6 * * *"
+  schedule: "0,10,20,30,40,50 * * * *"
   jobTemplate:
     spec:
       template:
         spec:
           serviceAccountName: dind-volume-cleanup
-          restartPolicy: OnFailure
+          restartPolicy: Never
           containers:
             - name: dind-volume-cleanup
               image: codefresh/dind-volume-cleanup
@@ -56,13 +56,13 @@ metadata:
   labels:
     app: dind-volume-cleanup
 spec:
-  schedule: "15 6 * * 2-5"
+  schedule: "5,15,25,35,45,55 * * * 2-5"
   jobTemplate:
     spec:
       template:
         spec:
           serviceAccountName: dind-volume-cleanup
-          restartPolicy: OnFailure
+          restartPolicy: Never
           containers:
             - name: dind-volume-cleanup-m
               image: codefresh/dind-volume-cleanup
