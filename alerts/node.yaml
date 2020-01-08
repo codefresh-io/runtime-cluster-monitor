@@ -8,7 +8,6 @@
     message: CPU > 90% {{ $labels.node_label_node_type }} node {{ $labels.node_address_Hostname }} - {{ $labels.node_address_ExternalIP }}, Runtime Env = {{ $labels.runtime_env }}
     summary: Node CPU overloaded
 
-# no runtime env here
 - alert: NodeMemoryLow
   expr: container_memory_usage_bytes{id="/",image="",job="kubelet"} * 100 / container_spec_memory_limit_bytes{id="/",job="kubelet"} > 75
   for: 30m
@@ -20,13 +19,13 @@
     summary: Node Memory Low
 
 - alert: NodeStorageExceededCritical
-  expr: container_fs_usage_bytes{id="/",job="kubelet"} / ON(instance, node, node_role, runtime_env, device) container_fs_limit_bytes{id="/",job="kubelet"} * 100 > 95
-  for: 15m
+  expr: container_fs_usage_bytes{id="/",job="kubelet"} / ON(instance, node, node_role, runtime_env, device) container_fs_limit_bytes{id="/",job="kubelet"} * 100 > 90
+  for: 2m
   labels:
     alertgroup: NodeStorageExceeded
     severity: critical
   annotations:
-    message: '{{ $labels.node_role }} node {{ $labels.node }} disk usage more then 95%   Runtime Env = {{ $labels.runtime_env }} '
+    message: '{{ $labels.node_role }} node {{ $labels.node }} disk usage more then 90%'
     summary: Node Storage Exceeded
 
 - alert: NodeStorageExceededWarning
@@ -36,7 +35,7 @@
     alertgroup: NodeStorageExceeded
     severity: warning
   annotations:
-    message: '{{ $labels.node_role }} node {{ $labels.node }} disk usage more then 80%   Runtime Env = {{ $labels.runtime_env }} '
+    message: '{{ $labels.node_role }} node {{ $labels.node }} disk usage more then 80%'
     summary: Node Storage Exceeded
 
 - alert: ContainerStorageExceeded
