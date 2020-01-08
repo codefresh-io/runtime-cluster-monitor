@@ -10,7 +10,7 @@
 
 - alert: NodeMemoryLow
   expr: container_memory_usage_bytes{id="/",image="",job="kubelet"} * 100 / container_spec_memory_limit_bytes{id="/",job="kubelet"} > 75
-  for: 30m
+  for: 10m
   labels:
     alertgroup: NodeMemoryLow
     severity: warning
