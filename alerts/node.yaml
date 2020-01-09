@@ -48,16 +48,15 @@
     message: '{{ $labels.node_role }} {{ $labels.node }}: Container {{ $labels.name }} storage > 10G, image = {{ $labels.image }}, Account {{ $labels.container_label_io_codefresh_accountName }}, pipeline = {{ $labels.container_label_io_codefresh_pipelineName }}'
     summary: Container Storage Warning
 
-# broken output format
 - alert: KubeNodeScale
-  expr: count(up{job="kubelet"}) BY (node_label_kubernetes_io_role, node_label_node_type, node_label_runtime_environment) - count(up{job="kubelet"} OFFSET 5m) BY (node_label_kubernetes_io_role, node_label_node_type, node_label_runtime_environment) != 0
+  expr: count(up{job="kubelet"}) - count(up{job="kubelet"} OFFSET 5m) != 0
   for: 2m
   labels:
     alertgroup: dind_problem
     severity: info
   annotations:
-    message: 'Number of K8s {{ $labels.node_label_kubernetes_io_role }} {{ $labels.node_label_node_type }} {{ $labels.node_label_runtime_environment }} has been changed by {{ $value }} '
-    summary: K8s Nodes Scale event
+    message: 'Number of nodes has been changed by {{ $value }}'
+    summary: Node Scale Event
 
 - alert: ClockSkewDetected
   expr: abs(node_timex_offset_seconds{job="node-exporter"}) > 0.03
