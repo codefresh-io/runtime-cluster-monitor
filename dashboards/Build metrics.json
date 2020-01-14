@@ -5,7 +5,7 @@
         "builtIn": 1,
         "datasource": "Prometheus",
         "enable": true,
-        "expr": "changes(workflow_step_status{pod_name=~\".*$dind_pod_name\", step_name!=\"\"}[15s])",
+        "expr": "changes(workflow_step_status{pod_name=\"dind-$build_id\", step_name!=\"\"}[15s])",
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "limit": 100,
@@ -20,8 +20,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 42,
-  "iteration": 1577191634299,
+  "id": 26,
+  "iteration": 1579019601184,
   "links": [],
   "panels": [
     {
@@ -39,6 +39,7 @@
         "x": 0,
         "y": 0
       },
+      "hiddenSeries": false,
       "id": 7,
       "legend": {
         "avg": false,
@@ -66,14 +67,14 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "(docker_volume_kb_total{dind_pod_name=~\".*$dind_pod_name.*\"} - docker_volume_kb_available{dind_pod_name=~\".*$dind_pod_name.*\"})/1024^2",
+          "expr": "(docker_volume_kb_total{dind_pod_name=\"dind-$build_id\"} - docker_volume_kb_available{dind_pod_name=\"dind-$build_id\"})/1024^2",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Volume usage (GB)",
           "refId": "A"
         },
         {
-          "expr": "docker_volume_kb_total{dind_pod_name=~\".*$dind_pod_name.*\"}/1024^2",
+          "expr": "docker_volume_kb_total{dind_pod_name=\"dind-$build_id\"}/1024^2",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -138,6 +139,7 @@
         "x": 0,
         "y": 8
       },
+      "hiddenSeries": false,
       "id": 2,
       "legend": {
         "avg": false,
@@ -166,7 +168,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(container_cpu_usage_seconds_total{name=~\".*dind_.*$dind_pod_name.*\"}[120s]))",
+          "expr": "sum(rate(container_cpu_usage_seconds_total{pod=\"dind-$build_id\"}[120s]))",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -174,7 +176,7 @@
           "refId": "A"
         },
         {
-          "expr": "rate(container_cpu_usage_seconds_total{name=~\".*dind_.*$dind_pod_name.*\"}[120s])",
+          "expr": "rate(container_cpu_usage_seconds_total{pod=\"dind-$build_id\"}[120s])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -237,6 +239,7 @@
         "x": 0,
         "y": 17
       },
+      "hiddenSeries": false,
       "id": 4,
       "legend": {
         "avg": false,
@@ -264,14 +267,14 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "container_memory_usage_bytes{name=~\".*dind_.*$dind_pod_name.*\"} / 1000000000",
+          "expr": "container_memory_usage_bytes{pod=\"dind-$build_id\"} / 1000000000",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Memory usage (GB)",
           "refId": "A"
         },
         {
-          "expr": "container_spec_memory_limit_bytes{name=~\".*dind_.*$dind_pod_name.*\"} / 1000000000",
+          "expr": "container_spec_memory_limit_bytes{pod=\"dind-$build_id\"} / 1000000000",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Memory limit (GB)",
@@ -327,12 +330,14 @@
       "datasource": "Prometheus",
       "decimals": 2,
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 24,
         "x": 0,
         "y": 26
       },
+      "hiddenSeries": false,
       "id": 5,
       "legend": {
         "avg": false,
@@ -347,7 +352,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {},
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -358,14 +365,14 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(container_network_receive_bytes_total{pod_name=~\".*$dind_pod_name.*\"}[100s])) * 8 / 1000000",
+          "expr": "sum(rate(container_network_receive_bytes_total{pod_name=\"dind-$build_id\"}[100s])) * 8 / 1000000",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Network Receive Mbit/s",
           "refId": "A"
         },
         {
-          "expr": "sum(rate(container_network_transmit_bytes_total{pod_name=~\".*$dind_pod_name.*\"}[100s])) * 8 / 1000000",
+          "expr": "sum(rate(container_network_transmit_bytes_total{pod_name=\"dind-$build_id\"}[100s])) * 8 / 1000000",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Network Transmit Mbit/s",
@@ -374,6 +381,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Dind Container Network Usage",
       "tooltip": {
@@ -414,31 +422,26 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 20,
+  "schemaVersion": 21,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": [
       {
         "allValue": null,
-        "current": {
-          "isNone": true,
-          "text": "None",
-          "value": ""
-        },
         "datasource": "Prometheus",
-        "definition": "",
+        "definition": "label_values(kube_pod_info{namespace=\"workflow\"}, pod)",
         "hide": 0,
         "includeAll": false,
-        "label": null,
+        "label": "Build ID",
         "multi": false,
-        "name": "dind_pod_name",
+        "name": "build_id",
         "options": [],
-        "query": "label_values(pod_name)",
+        "query": "label_values(kube_pod_info{namespace=\"workflow\"}, pod)",
         "refresh": 1,
-        "regex": ".*pvc-dind.*",
+        "regex": "dind-(.*)",
         "skipUrlSync": false,
-        "sort": 0,
+        "sort": 2,
         "tagValuesQuery": "",
         "tags": [],
         "tagsQuery": "",
@@ -446,6 +449,10 @@
         "useTags": false
       }
     ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -475,5 +482,5 @@
   "timezone": "",
   "title": "Codefresh / Build Metrics",
   "uid": "thvUvkFmz",
-  "version": 2
+  "version": 3
 }

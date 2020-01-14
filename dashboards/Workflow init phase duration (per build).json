@@ -20,7 +20,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1577198928883,
+  "id": 27,
+  "iteration": 1579017686144,
   "links": [],
   "panels": [
     {
@@ -38,6 +39,7 @@
         "x": 0,
         "y": 0
       },
+      "hiddenSeries": false,
       "id": 12,
       "legend": {
         "alignAsTable": true,
@@ -67,14 +69,14 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "kubernetes_events_timestamp{event_name=~\".*dind-$build_id.*\", event_reason=\"ProvisioningSucceeded\"} - on(event_name) kubernetes_events_timestamp{event_name=~\".*dind-$build_id.*\", event_reason=\"ExternalProvisioning\"} + scalar(kubernetes_events_duration{event_name=~\".*dind-$build_id.*\", event_reason=\"FailedScheduling\", event_message=~\".*has unbound.*\"})",
+          "expr": "kubernetes_events_timestamp{event_name=\"dind-$build_id\", event_reason=\"ProvisioningSucceeded\"} - on(event_name) kubernetes_events_timestamp{event_name=\"dind-$build_id\", event_reason=\"ExternalProvisioning\"} + scalar(kubernetes_events_duration{event_name=\"dind-$build_id\", event_reason=\"FailedScheduling\", event_message=~\".*has unbound.*\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{Volume Provisioning}} (dind)",
           "refId": "B"
         },
         {
-          "expr": "kubernetes_events_timestamp{event_name=~\".*dind-$build_id.*\", event_reason=\"SuccessfulAttachVolume\"} - on(event_name) kubernetes_events_timestamp{event_name=~\".*dind-$build_id.*\", event_reason=\"Scheduled\"}",
+          "expr": "kubernetes_events_timestamp{event_name=\"dind-$build_id\", event_reason=\"SuccessfulAttachVolume\"} - on(event_name) kubernetes_events_timestamp{event_name=\"dind-$build_id\", event_reason=\"Scheduled\"}",
           "format": "time_series",
           "hide": true,
           "intervalFactor": 1,
@@ -82,21 +84,21 @@
           "refId": "A"
         },
         {
-          "expr": "kubernetes_events_timestamp{event_name=~\".*dind-$build_id.*\", event_reason=\"Pulled\"} - on(event_name) label_replace(kubernetes_events_timestamp{event_reason=\"ProvisioningSucceeded\"}, \"event_name\", \"$2\", \"event_name\", \"(pvc-)(dind-$build_id.*)\")",
+          "expr": "kubernetes_events_timestamp{event_name=\"dind-$build_id\", event_reason=\"Pulled\"} - on(event_name) label_replace(kubernetes_events_timestamp{event_reason=\"ProvisioningSucceeded\"}, \"event_name\", \"$2\", \"event_name\", \"(pvc-)(dind-$build_id.*)\")",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{Volume Attach & Mount}} (dind)",
           "refId": "C"
         },
         {
-          "expr": "kubernetes_events_timestamp{event_name=~\".dind-$build_id.*\", event_reason=\"Created\"} - on(event_name) kubernetes_events_timestamp{event_name=~\".*dind-$build_id.*\", event_reason=\"Pulled\"}",
+          "expr": "kubernetes_events_timestamp{event_name=\"dind-$build_id\", event_reason=\"Created\"} - on(event_name) kubernetes_events_timestamp{event_name=\"dind-$build_id\", event_reason=\"Pulled\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{Pod Creation}} (dind)",
           "refId": "E"
         },
         {
-          "expr": "kubernetes_events_duration{event_name=~\".*dind-$build_id.*\", event_reason!~\"Killing|FailedScheduling|ExternalProvisioning\", event_type!=\"Warning\"} != 0",
+          "expr": "kubernetes_events_duration{event_name=\"dind-$build_id\", event_reason!~\"Killing|FailedScheduling|ExternalProvisioning\", event_type!=\"Warning\"} != 0",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -104,7 +106,7 @@
           "refId": "H"
         },
         {
-          "expr": "kubernetes_events_timestamp{event_name=~\".*engine-$build_id.*\", event_reason=\"Created\"} - on(event_name) kubernetes_events_timestamp{event_name=~\".*engine-$build_id.*\", event_reason=\"Pulled\"}",
+          "expr": "kubernetes_events_timestamp{event_name=\"engine-$build_id\", event_reason=\"Created\"} - on(event_name) kubernetes_events_timestamp{event_name=\"engine-$build_id\", event_reason=\"Pulled\"}",
           "format": "time_series",
           "hide": true,
           "intervalFactor": 1,
@@ -112,7 +114,7 @@
           "refId": "F"
         },
         {
-          "expr": "kubernetes_events_duration{event_name=~\".*engine-$build_id.*\", event_reason!~\"Killing|FailedScheduling\", event_type!=\"Warning\"}",
+          "expr": "kubernetes_events_duration{event_name=\"engine-$build_id\", event_reason!~\"Killing|FailedScheduling\", event_type!=\"Warning\"}",
           "format": "time_series",
           "hide": true,
           "intervalFactor": 1,
@@ -120,7 +122,7 @@
           "refId": "G"
         },
         {
-          "expr": "kubernetes_events_duration{event_name=~\".*dind-$build_id.*\", event_reason=\"FailedScheduling\", event_message!~\"pod has unbound immediate PersistentVolumeClaims.*\"}",
+          "expr": "kubernetes_events_duration{event_name=\"dind-$build_id\", event_reason=\"FailedScheduling\", event_message!~\"pod has unbound immediate PersistentVolumeClaims.*\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{Pod scheduling}}",
@@ -188,6 +190,7 @@
         "x": 11,
         "y": 0
       },
+      "hiddenSeries": false,
       "id": 7,
       "legend": {
         "alignAsTable": true,
@@ -223,7 +226,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "workflow_step_duration{phase_name=\"presteps\", pod_name=~\".*$build_id.*\"} !=0 ",
+          "expr": "workflow_step_duration{phase_name=\"presteps\", kubernetes_pod_name=\"engine-$build_id\"} !=0 ",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -290,6 +293,7 @@
         "x": 0,
         "y": 15
       },
+      "hiddenSeries": false,
       "id": 10,
       "legend": {
         "alignAsTable": true,
@@ -321,7 +325,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "kubernetes_events_timestamp{event_name=~\".*dind-$build_id.*\", event_reason!=\"Killing\"} * 1000",
+          "expr": "kubernetes_events_timestamp{event_name=\"dind-$build_id\", event_reason!=\"Killing\"} * 1000",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -329,7 +333,7 @@
           "refId": "A"
         },
         {
-          "expr": "kubernetes_events_timestamp{event_name=~\".*engine-$build_id.*\", event_reason!=\"Killing\"} * 1000",
+          "expr": "kubernetes_events_timestamp{event_name=\"engine-$build_id\", event_reason!=\"Killing\"} * 1000",
           "format": "time_series",
           "hide": true,
           "intervalFactor": 1,
@@ -381,32 +385,31 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 20,
+  "schemaVersion": 21,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": [
       {
         "allValue": null,
-        "current": {
-          "text": ".*",
-          "value": ".*"
-        },
+        "datasource": "Prometheus",
+        "definition": "label_values(kube_pod_info{namespace=\"workflow\"}, pod)",
         "hide": 0,
         "includeAll": false,
-        "label": "",
+        "label": "Build ID",
         "multi": false,
         "name": "build_id",
-        "options": [
-          {
-            "selected": true,
-            "text": "enter_build_id_here",
-            "value": "enter_build_id_here"
-          }
-        ],
-        "query": "enter_build_id_here",
+        "options": [],
+        "query": "label_values(kube_pod_info{namespace=\"workflow\"}, pod)",
+        "refresh": 1,
+        "regex": "dind-(.*)",
         "skipUrlSync": false,
-        "type": "custom"
+        "sort": 2,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
       }
     ]
   },
@@ -442,5 +445,5 @@
   "timezone": "",
   "title": "Codefresh / Workflow init phase duration (per build)",
   "uid": "JbgYVH7Wz",
-  "version": 1
+  "version": 4
 }
