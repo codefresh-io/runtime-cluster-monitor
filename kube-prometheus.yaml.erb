@@ -45,9 +45,9 @@ grafana:
             path: /var/lib/grafana/dashboards/codefresh
   dashboards:
     codefresh:
-      build_metrics:
+      dind_and_engine_resources:
         json: |
-          <%= file 'dashboards/Build metrics.json', 10 %>
+          <%= file 'dashboards/Dind and engine resources.json', 10 %>
       init_phase_duration_avg:
         json: |
           <%= file 'dashboards/Workflow init phase duration (avg).json', 10 %>
