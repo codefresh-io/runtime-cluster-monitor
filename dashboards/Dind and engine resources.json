@@ -15,10 +15,101 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 25,
-  "iteration": 1578412654660,
+  "id": 130,
+  "iteration": 1579524182272,
   "links": [],
   "panels": [
+    {
+      "aliasColors": {},
+      "bars": true,
+      "cacheTimeout": null,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "hiddenSeries": false,
+      "id": 22,
+      "interval": "",
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": true,
+      "pluginVersion": "6.5.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "increase(workflow_step_duration{phase_name=~\"(presteps|poststeps|user)\", kubernetes_pod_name=\"engine-$build_id\", step_name != \"\"}[20s]) != 0",
+          "legendFormat": "{{phase_name}}: {{step_name}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Build Steps",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
     {
       "collapsed": false,
       "datasource": null,
@@ -26,7 +117,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 3
       },
       "id": 11,
       "panels": [],
@@ -37,6 +128,7 @@
     {
       "aliasColors": {},
       "bars": false,
+      "cacheTimeout": null,
       "dashLength": 10,
       "dashes": false,
       "datasource": "Prometheus",
@@ -46,7 +138,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 1
+        "y": 4
       },
       "hiddenSeries": false,
       "id": 1,
@@ -67,6 +159,7 @@
         "dataLinks": []
       },
       "percentage": false,
+      "pluginVersion": "6.5.2",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -76,7 +169,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate{namespace=\"workflow\", pod=~\"(dind|engine)-$build_id\", container!=\"POD\", cluster=\"$cluster\"}) by (container)",
+          "datasource": "Prometheus",
+          "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate{namespace=\"workflow\", pod=~\"(dind|engine)-$build_id\", container!=\"POD\", cluster=\"\"}) by (container)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{container}}",
@@ -133,7 +227,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 8
+        "y": 11
       },
       "id": 13,
       "panels": [],
@@ -153,7 +247,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 9
+        "y": 12
       },
       "hiddenSeries": false,
       "id": 3,
@@ -258,7 +352,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 19
       },
       "id": 15,
       "panels": [],
@@ -278,7 +372,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 17
+        "y": 20
       },
       "hiddenSeries": false,
       "id": 5,
@@ -365,7 +459,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 24
+        "y": 27
       },
       "id": 16,
       "panels": [],
@@ -385,7 +479,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 25
+        "y": 28
       },
       "hiddenSeries": false,
       "id": 6,
@@ -472,7 +566,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 35
       },
       "id": 19,
       "panels": [],
@@ -492,7 +586,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 33
+        "y": 36
       },
       "hiddenSeries": false,
       "id": 9,
@@ -579,7 +673,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 40
+        "y": 43
       },
       "id": 20,
       "panels": [],
@@ -599,7 +693,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 41
+        "y": 44
       },
       "hiddenSeries": false,
       "id": 10,
@@ -680,7 +774,7 @@
       }
     }
   ],
-  "refresh": "10s",
+  "refresh": "",
   "schemaVersion": 21,
   "style": "dark",
   "tags": [],
@@ -690,7 +784,7 @@
         "allValue": null,
         "current": {
           "isNone": true,
-          "selected": false,
+          "selected": true,
           "text": "None",
           "value": ""
         },
@@ -802,5 +896,5 @@
   "timezone": "",
   "title": "Codefresh / Dind and Engine resources",
   "uid": "TEJt9mEZk",
-  "version": 1
+  "version": 2
 }
