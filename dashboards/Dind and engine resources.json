@@ -75,7 +75,7 @@
       "timeShift": null,
       "title": "Build Steps",
       "tooltip": {
-        "shared": true,
+        "shared": false,
         "sort": 0,
         "value_type": "individual"
       },
@@ -185,7 +185,7 @@
       "timeShift": null,
       "title": "CPU Usage",
       "tooltip": {
-        "shared": false,
+        "shared": true,
         "sort": 0,
         "value_type": "individual"
       },
@@ -310,7 +310,7 @@
       "timeShift": null,
       "title": "Memory Usage",
       "tooltip": {
-        "shared": false,
+        "shared": true,
         "sort": 0,
         "value_type": "individual"
       },
@@ -417,7 +417,7 @@
       "timeShift": null,
       "title": "Receive Bandwidth",
       "tooltip": {
-        "shared": false,
+        "shared": true,
         "sort": 0,
         "value_type": "individual"
       },
@@ -524,7 +524,7 @@
       "timeShift": null,
       "title": "Transmit Bandwidth",
       "tooltip": {
-        "shared": false,
+        "shared": true,
         "sort": 0,
         "value_type": "individual"
       },
@@ -631,7 +631,7 @@
       "timeShift": null,
       "title": "Rate of Received Packets Dropped",
       "tooltip": {
-        "shared": false,
+        "shared": true,
         "sort": 0,
         "value_type": "individual"
       },
@@ -738,7 +738,7 @@
       "timeShift": null,
       "title": "Rate of Transmitted Packets Dropped",
       "tooltip": {
-        "shared": false,
+        "shared": true,
         "sort": 0,
         "value_type": "individual"
       },
@@ -896,5 +896,5 @@
   "timezone": "",
   "title": "Codefresh / Dind and Engine resources",
   "uid": "TEJt9mEZk",
-  "version": 2
+  "version": 3
 }
