@@ -45,6 +45,9 @@ grafana:
             path: /var/lib/grafana/dashboards/codefresh
   dashboards:
     codefresh:
+      build_metrics:
+        json: |
+          <%= file 'dashboards/Build metrics.json', 10 %>
       dind_and_engine_resources:
         json: |
           <%= file 'dashboards/Dind and engine resources.json', 10 %>
