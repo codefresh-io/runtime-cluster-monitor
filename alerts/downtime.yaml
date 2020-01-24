@@ -92,7 +92,7 @@
 
 - alert: DeploymentDown
   expr: kube_deployment_status_replicas_unavailable > 0
-  for: 3m
+  for: 10m
   labels:
     alertgroup: downtime
     severity: warning

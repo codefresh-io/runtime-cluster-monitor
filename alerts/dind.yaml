@@ -236,12 +236,12 @@
 
 - alert: TooManyDindPodFailures
   expr: count(dind_pod_status !=1 !=2) > 10
-  for: 5m
+  for: 15m
   labels:
     alertgroup: downtime
     severity: critical
   annotations:
-    message: Too Many dind POD Failure
+    message: Too Many dind POD Failures
     summary: Too Many dind POD Failures
 
 - alert: DindVolumeProvisionerCpuWarning
