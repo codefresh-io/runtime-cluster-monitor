@@ -13,7 +13,7 @@
     > 0
   for: 1h
   labels:
-    severity: critical
+    severity: warning
   annotations:
     message: Pod {{ $labels.namespace }}/{{ $labels.pod }} has been in a non-ready state
       for longer than an hour.
