@@ -45,18 +45,7 @@ grafana:
             path: /var/lib/grafana/dashboards/codefresh
   dashboards:
     codefresh:
-      build_metrics:
-        json: |
-          <%= file 'dashboards/Build metrics.json', 10 %>
-      dind_and_engine_resources:
-        json: |
-          <%= file 'dashboards/Dind and engine resources.json', 10 %>
-      init_phase_duration_avg:
-        json: |
-          <%= file 'dashboards/Workflow init phase duration (avg).json', 10 %>
-      init_phase_duration_per_build:
-        json: |
-          <%= file 'dashboards/Workflow init phase duration (per build).json', 10 %>
+      <%= template 'dashboards.yaml.erb', 6, '_dashboards', binding %>
   <%= template 'affinity.yaml.erb', 2, '_affinity', binding %>
 
 kube-state-metrics:
@@ -89,6 +78,7 @@ prometheus:
     externalUrl: https://<%= ENV['cluster'] %>/prometheus/
     routePrefix: /prometheus/
     scrapeInterval: 10s
+    retention: 20d
     additionalScrapeConfigs:
       <%= template 'scrape.yaml.erb', 6, '_scrape', binding %>
     storageSpec:
