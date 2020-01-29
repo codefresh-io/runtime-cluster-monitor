@@ -323,7 +323,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "kube_pod_status_phase{job=\"kube-state-metrics\",namespace=\"$namespace\",phase=\"Evicted\"} > 0",
+          "expr": "kube_pod_status_phase{job=\"kube-state-metrics\",phase=\"Evicted\"} > 0",
           "interval": "",
           "legendFormat": "{{pod}}",
           "refId": "A"
@@ -573,5 +573,5 @@
   "timezone": "",
   "title": "Codefresh / Cluster Performance",
   "uid": "fOw3vXsZk",
-  "version": 1
+  "version": 2
 }
