@@ -60,9 +60,9 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "100 *\nsum(increase(container_cpu_cfs_throttled_periods_total{container_name!=\"\", namespace=\"$namespace\"}[$__interval]))\nby (container_name, pod_name, namespace)\n/ sum(increase(container_cpu_cfs_periods_total{}[$__interval]))\nby (container_name, pod_name, namespace) > $throttle_threshold",
+          "expr": "100 *\nsum(increase(container_cpu_cfs_throttled_periods_total{container!=\"\", namespace=\"$namespace\"}[$__interval]))\nby (container, pod, namespace)\n/ sum(increase(container_cpu_cfs_periods_total{}[$__interval]))\nby (container, pod, namespace) > $throttle_threshold",
           "instant": false,
-          "legendFormat": "{{pod_name}}",
+          "legendFormat": "{{pod}}",
           "refId": "A"
         }
       ],
@@ -664,5 +664,5 @@
   "timezone": "",
   "title": "Codefresh / Cluster Performance",
   "uid": "fOw3vXsZk",
-  "version": 2
+  "version": 3
 }

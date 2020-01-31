@@ -5,7 +5,7 @@
         "builtIn": 1,
         "datasource": "Prometheus",
         "enable": true,
-        "expr": "changes(workflow_step_status{pod_name=\"dind-$build_id\", step_name!=\"\"}[15s])",
+        "expr": "changes(workflow_step_status{kubernetes_pod_name=\"dind-$build_id\", step_name!=\"\"}[15s])",
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "limit": 100,
@@ -365,14 +365,14 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(container_network_receive_bytes_total{pod_name=\"dind-$build_id\"}[100s])) * 8 / 1000000",
+          "expr": "sum(rate(container_network_receive_bytes_total{pod=\"dind-$build_id\"}[100s])) * 8 / 1000000",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Network Receive Mbit/s",
           "refId": "A"
         },
         {
-          "expr": "sum(rate(container_network_transmit_bytes_total{pod_name=\"dind-$build_id\"}[100s])) * 8 / 1000000",
+          "expr": "sum(rate(container_network_transmit_bytes_total{pod=\"dind-$build_id\"}[100s])) * 8 / 1000000",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Network Transmit Mbit/s",
@@ -482,5 +482,5 @@
   "timezone": "",
   "title": "Codefresh / Build Metrics",
   "uid": "thvUvkFmz",
-  "version": 3
+  "version": 4
 }

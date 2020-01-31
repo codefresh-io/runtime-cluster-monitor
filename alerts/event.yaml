@@ -1,5 +1,5 @@
 - alert: HandlerTest
-  expr: count(container_start_time_seconds{container_name=~"handler-test.*",job="kubelet"}) BY (node_address_Hostname) > 0
+  expr: count(container_start_time_seconds{container=~"handler-test.*",job="kubelet"}) BY (node_address_Hostname) > 0
   for: 20s
   labels:
     alertgroup: handler-test
@@ -33,15 +33,15 @@
     summary: 'unused volume with TTL more than 4 days has not been deleted yet'
 
 - alert: SpotInstanceTerminationSignal
-  expr: (up{app=~"dind|runtime"}  and on(node) aws_instance_termination_imminent == 1 ) + on(workflow_url) group_left(pod_name, node) up{app="runtime", pod_name =~"engine-.*"}
+  expr: (up{app=~"dind|runtime"}  and on(node) aws_instance_termination_imminent == 1 ) + on(workflow_url) group_left(pod, node) up{app="runtime", pod =~"engine-.*"}
   for: 20s
   labels:
     alertgroup: dind_problem
     handler: "nowait"
     severity: warning
   annotations:
-    message: "Spot instance {{ $labels.node }} is going down - sending SIGPWR to engine pod ${{ $labels.pod_name }}"
-    handler: signal-pod {{ $labels.namespace }} {{ $labels.pod_name }} SIGTERM
+    message: "Spot instance {{ $labels.node }} is going down - sending SIGPWR to engine pod ${{ $labels.pod }}"
+    handler: signal-pod {{ $labels.namespace }} {{ $labels.pod }} SIGTERM
     summary: Spot termination - sending SIGPwR to engine
 
 - alert: SpotInstanceTermination

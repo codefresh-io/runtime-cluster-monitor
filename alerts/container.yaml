@@ -9,7 +9,7 @@
     summary: kubeletDockerErrors
 
 - alert: TooHighNetworkTransmitRate
-  expr: sum(rate(container_network_transmit_packets_total{pod_name =~ "(dind-).*", interface =~ "eth.*"}[2m])) > 15000
+  expr: sum(rate(container_network_transmit_packets_total{pod =~ "(dind-).*", interface =~ "eth.*"}[2m])) > 15000
   for: 30m
   labels:
     alertgroup: overloading

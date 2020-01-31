@@ -1,5 +1,5 @@
 - alert: DindMonitorDown
-  expr: absent(count(container_start_time_seconds{container_name="dind-monitor",job="kubelet"}) == 1)
+  expr: absent(count(container_start_time_seconds{container="dind-monitor",job="kubelet"}) == 1)
   for: 2m
   labels:
     alertgroup: downtime
@@ -306,21 +306,21 @@
     summary: Too Many dind POD Failures
 
 - alert: DindVolumeProvisionerCpuWarning
-  expr: (rate(container_cpu_user_seconds_total{pod_name=~"dind-volume-provisioner.*"}[5m])) / on(node) group_left() machine_cpu_cores > 0.3
+  expr: (rate(container_cpu_user_seconds_total{pod=~"dind-volume-provisioner.*"}[5m])) / on(node) group_left() machine_cpu_cores > 0.3
   for: 10m
   labels:
     alertgroup: dind_problem
     severity: warning
   annotations:
-    message: 'pod {{ $labels.pod_name }} cpu usage warning on node {{ $labels.instance }}'
+    message: 'pod {{ $labels.pod }} cpu usage warning on node {{ $labels.instance }}'
     summary: Dind Volume Provisioner CPU usage warning
 
 - alert: DindVolumeProvisionerMemoryWarning
-  expr: container_memory_usage_bytes{job="kubelet", container_name = "dind-volume-provisioner"} > 2000000000
+  expr: container_memory_usage_bytes{job="kubelet", container = "dind-volume-provisioner"} > 2000000000
   for: 10m
   labels:
     alertgroup: dind_problem
     severity: warning
   annotations:
-    message: 'pod {{ $labels.pod_name }} memory usage warning on node {{ $labels.instance }}'
+    message: 'pod {{ $labels.pod }} memory usage warning on node {{ $labels.instance }}'
     summary: Dind Volume Provisioner Memory usage warning
