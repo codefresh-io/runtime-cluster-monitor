@@ -70,16 +70,6 @@
     message: dind-volume-provisioner containers count != 1
     summary: dind-volume-provisioner is down
 
-- alert: CalicoKubeControllers
-  expr: absent(count(container_start_time_seconds{container="calico-kube-controllers",job="kubelet"}) >= 1)
-  for: 2m
-  labels:
-    alertgroup: downtime
-    severity: critical
-  annotations:
-    message: calico-kube-controller is down
-    summary: calico-kube-controller is down
-
 - alert: AlertHandlerDown
   expr: absent(count(container_start_time_seconds{container="am-alert-handler",job="kubelet"}) == 1)
   for: 2m
