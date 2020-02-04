@@ -101,3 +101,4 @@ additionalPrometheusRules:
   - name: cf-rules
     groups:
       <%= template 'alerts.yaml.erb', 6, '_rules', binding %>
+      <%= file 'dind-rules.yaml', 6 %>

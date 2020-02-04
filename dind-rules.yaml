@@ -1,0 +1,27 @@
+- name: dind_pod_status
+  rules:
+  - record: dind_pod_status
+    expr:
+      label_replace(
+        (kube_pod_labels{label_app=~"runtime|dind"}) + on(pod,namespace) group_left (phase) (0*(kube_pod_status_phase == 1)),
+        "workflow_url",
+        "https://g.codefresh.io/build/$1?noAccount=true",
+        "pod",
+        ".*-(.*)"
+      )
+
+- name: dind_pvc_status
+  rules:
+  - record: dind_pvc_status
+    expr: |
+      label_replace(
+        (
+         kube_persistentvolumeclaim_labels{label_codefresh_app="dind"}
+         + on(persistentvolumeclaim, namespace) group_left (phase) (0*(kube_persistentvolumeclaim_status_phase == 1))
+         + on(persistentvolumeclaim) group_left (storageclass) (0*kube_persistentvolumeclaim_info)
+        ),
+        "workflow_url",
+        "https://g.codefresh.io/build/$1?noAccount=true",
+        "persistentvolumeclaim",
+        ".*-(.*)"
+      )
