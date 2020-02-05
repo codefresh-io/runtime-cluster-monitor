@@ -12,7 +12,7 @@ require_relative 'template'
 class Helm4Rake < ::Rake::TaskLib
   # Define Rake tasks taken:
   #
-  # * array of charts (items required to have `:chart`, `:release` and `:values`; `:template` is optional)
+  # * array of charts (items required to have `:chart`, `:release` and `:values`; `:template` and `:version:` are optional)
   # * array of contexts (items required to have `:name`, `:project`, `:cluster` and `:zone`)
   # * k8s namespace (string)
   def initialize(charts, contexts, namespace)
@@ -58,7 +58,8 @@ class Helm4Rake < ::Rake::TaskLib
     desc 'helm upgrade -i'
     task install: %i[context template] do
       @charts.each do |i|
-        sh "helm -f #{i[:values]} upgrade #{i[:release]} #{i[:chart]} --namespace #{@namespace} -i #{ENV['args']}"
+        i[:version] ||= 'latest'
+        sh "helm -f #{i[:values]} upgrade #{i[:release]} #{i[:chart]} --version #{i[:version]} --namespace #{@namespace} -i #{ENV['args']}"
       end
     end
   end
@@ -91,9 +92,7 @@ class Helm4Rake < ::Rake::TaskLib
   def sops_task_decrypt
     desc 'sops -d'
     task :decrypt do
-      if File.exist? "#{@env_dir}/#{ENV['env']}.yaml"
-        sh "sops -d #{@env_dir}/#{ENV['env']}.yaml > #{@env_dir}/#{ENV['env']}_raw.yaml"
-      end
+      sh "sops -d #{@env_dir}/#{ENV['env']}.yaml > #{@env_dir}/#{ENV['env']}_raw.yaml" if File.exist? "#{@env_dir}/#{ENV['env']}.yaml"
     end
   end
 

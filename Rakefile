@@ -7,7 +7,7 @@ contexts = [
   { name: 'prod' },
 ]
 charts = [
-  { chart: 'stable/prometheus-operator', release: 'cprom',
+  { chart: 'stable/prometheus-operator', version: '8.5.1', release: 'cprom',
     values: 'kube-prometheus.yaml', template: 'kube-prometheus.yaml.erb' },
 ]
 
