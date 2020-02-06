@@ -1,4 +1,4 @@
 Layout/LineLength:
-  Max: 140
+  Max: 130
 Style/TrailingCommaInArrayLiteral:
   Enabled: false

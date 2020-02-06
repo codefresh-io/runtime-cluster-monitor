@@ -92,7 +92,9 @@ class Helm4Rake < ::Rake::TaskLib
   def sops_task_decrypt
     desc 'sops -d'
     task :decrypt do
-      sh "sops -d #{@env_dir}/#{ENV['env']}.yaml > #{@env_dir}/#{ENV['env']}_raw.yaml" if File.exist? "#{@env_dir}/#{ENV['env']}.yaml"
+      if File.exist? "#{@env_dir}/#{ENV['env']}.yaml"
+        sh "sops -d #{@env_dir}/#{ENV['env']}.yaml > #{@env_dir}/#{ENV['env']}_raw.yaml"
+      end
     end
   end
 
