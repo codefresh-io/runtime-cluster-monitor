@@ -58,8 +58,8 @@ class Helm4Rake < ::Rake::TaskLib
     desc 'helm upgrade -i'
     task install: %i[context template] do
       @charts.each do |i|
-        i[:version] ||= 'latest'
-        sh "helm -f #{i[:values]} upgrade #{i[:release]} #{i[:chart]} --version #{i[:version]} --namespace #{@namespace} -i #{ENV['args']}"
+        i[:version] && i[:version] = " --version #{i[:version]}"
+        sh "helm -f #{i[:values]} upgrade #{i[:release]} #{i[:chart]}#{i[:version]} --namespace #{@namespace} -i #{ENV['args']}"
       end
     end
   end
