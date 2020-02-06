@@ -168,20 +168,12 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(container_cpu_usage_seconds_total{pod=\"dind-$build_id\"}[120s]))",
+          "expr": "rate(container_cpu_usage_seconds_total{pod=\"dind-$build_id\",container!=\"POD\"}[40s])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "CPUs Total (units)",
+          "legendFormat": "{{container}}",
           "refId": "A"
-        },
-        {
-          "expr": "rate(container_cpu_usage_seconds_total{pod=\"dind-$build_id\"}[120s])",
-          "format": "time_series",
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "{{cpu}}",
-          "refId": "B"
         }
       ],
       "thresholds": [],
