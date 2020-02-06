@@ -87,7 +87,7 @@ prometheus:
           accessModes: [ReadWriteOnce]
           resources:
             requests:
-              storage: 70Gi
+              storage: 200Gi
     <%= template 'affinity.yaml.erb', 4, '_affinity', binding %>
 
 defaultRules:
