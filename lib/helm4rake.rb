@@ -15,17 +15,17 @@ class Helm4Rake < ::Rake::TaskLib
   # * array of charts (items required to have `:chart`, `:release` and `:values`; `:template` and `:version:` are optional)
   # * array of contexts (items required to have `:name`, `:project`, `:cluster` and `:zone`)
   # * k8s namespace (string)
-  # * template directory (optional)
-  def initialize(charts, contexts, namespace, template_dir = '.')
+  # * template directory (optional, defaults to '.')
+  # * env directory (optional, defaults to 'env')
+  def initialize(charts, contexts, namespace, template_dir = '.', env_dir = 'env')
     @charts = charts
     @contexts = contexts
     @namespace = namespace
     @template_dir = template_dir
-    @env_dir = 'env'
+    @env_dir = env_dir
 
     context_task
     helm_tasks
-    sops_tasks
     template_tasks
   end
 
@@ -76,30 +76,6 @@ class Helm4Rake < ::Rake::TaskLib
     end
   end
 
-  def sops_tasks
-    sops_task_encrypt
-    sops_task_decrypt
-  end
-
-  def sops_task_encrypt
-    desc 'sops -e'
-    task :encrypt do
-      if File.exist? "#{@env_dir}/#{ENV['env']}_raw.yaml"
-        sh "sops -e #{@env_dir}/#{ENV['env']}_raw.yaml > #{@env_dir}/#{ENV['env']}.yaml"
-        rm "#{@env_dir}/#{ENV['env']}_raw.yaml"
-      end
-    end
-  end
-
-  def sops_task_decrypt
-    desc 'sops -d'
-    task :decrypt do
-      if File.exist? "#{@env_dir}/#{ENV['env']}.yaml"
-        sh "sops -d #{@env_dir}/#{ENV['env']}.yaml > #{@env_dir}/#{ENV['env']}_raw.yaml"
-      end
-    end
-  end
-
   def template_tasks
     template_task_render
     template_task_clean
@@ -107,7 +83,7 @@ class Helm4Rake < ::Rake::TaskLib
 
   def template_task_render
     task :template do
-      values = ENV['env'] ? YAML.safe_load(`sops -d #{@env_dir}/#{ENV['env']}.yaml`) : {}
+      values = read_values
 
       @charts.each do |i|
         next unless i[:template]
@@ -115,6 +91,10 @@ class Helm4Rake < ::Rake::TaskLib
         render_template(i[:template], i[:values], values)
       end
     end
+  end
+
+  def read_values
+    ENV['env'] ? YAML.safe_load(File.read("#{@env_dir}/#{ENV['env']}.yaml")) : {}
   end
 
   def render_template(template, destination, values)

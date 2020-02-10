@@ -5,5 +5,10 @@ CHARTS = [
     values: 'kube-prometheus.yaml', template: 'kube-prometheus.yaml.erb' },
 ].freeze
 
+CONTEXTS = [
+  { name: 'dev' },
+  { name: 'prod' },
+].freeze
+
 NAMESPACE = 'monitoring'
 MANIFESTS = %w[dind-volume-cleanup dind-monitor event-exporter].freeze
