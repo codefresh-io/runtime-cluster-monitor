@@ -15,10 +15,12 @@ class Helm4Rake < ::Rake::TaskLib
   # * array of charts (items required to have `:chart`, `:release` and `:values`; `:template` and `:version:` are optional)
   # * array of contexts (items required to have `:name`, `:project`, `:cluster` and `:zone`)
   # * k8s namespace (string)
-  def initialize(charts, contexts, namespace)
+  # * template directory (optional)
+  def initialize(charts, contexts, namespace, template_dir = '.')
     @charts = charts
     @contexts = contexts
     @namespace = namespace
+    @template_dir = template_dir
     @env_dir = 'env'
 
     context_task
@@ -105,15 +107,26 @@ class Helm4Rake < ::Rake::TaskLib
 
   def template_task_render
     task :template do
-      values = YAML.safe_load(`sops -d #{@env_dir}/#{ENV['env']}.yaml`)
+      values = ENV['env'] ? YAML.safe_load(`sops -d #{@env_dir}/#{ENV['env']}.yaml`) : {}
+
       @charts.each do |i|
         next unless i[:template]
 
-        template = Template.new(File.read(i[:template])).result(values)
-        File.open(i[:values], 'w') do |f|
-          f.write template
-        end
+        render_template(i[:template], i[:values], values)
       end
+    end
+  end
+
+  def render_template(template, destination, values)
+    if @template_dir != '.'
+      base_dir = Dir.pwd
+      Dir.chdir @template_dir
+    end
+    template = Template.new(File.read(template)).result(values)
+
+    Dir.chdir base_dir if @template_dir != '.'
+    File.open(destination, 'w') do |f|
+      f.write template
     end
   end
 
