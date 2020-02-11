@@ -18,7 +18,7 @@ Please note that if you set `slack_hook`, you're reqiuired to set both `slack_wa
 If you set `victorops_api_key`, `victorops_routing` is also required.
 
 ## Usage
-* switch your context to needed
+* switch your k8s context to needed
 * `rake [env=prod] cluster=...` to install or update your installation  
   you may need `rake ... args='--set prometheusOperator.createCustomResource=false'`
 * `rake destroy` to remove the deployment
@@ -28,9 +28,6 @@ use `env=prod` if you have `env/prod.yaml`, if you don't, just omit this part.
 
 if you need to pass multiple Helm args or whitespace, escape them:
 * `rake args='--dry-run --debug'`
-
-## Warning
-do not run more than one task concurrently, this will break things
 
 ## Access services
 
