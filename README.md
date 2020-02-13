@@ -2,7 +2,7 @@
 
 ## Required
 * kubectl, helm
-* Ruby 2.5+ and `gem install rake erubis`
+* Ruby and `gem install rake erubis`
 
 ## Configuration
 If you want Slack or VictorOps notifications write a file: `env/prod.yaml`.

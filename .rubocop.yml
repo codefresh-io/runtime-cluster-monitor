@@ -2,5 +2,3 @@ Layout/LineLength:
   Max: 130
 Style/TrailingCommaInArrayLiteral:
   Enabled: false
-AllCops:
-  TargetRubyVersion: 2.5

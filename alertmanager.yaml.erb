@@ -76,7 +76,7 @@ receivers:
       - api_key: <%= victorops_api_key %>
         routing_key: <%= victorops_routing %>
         entity_display_name: '{{ template "cf.title.victorops" . }}'
-        state_message: '{{ .CommonAnnotations.summary }}'
+        state_message: '{{ template "cf.text" . }}'
     <% end %>
 inhibit_rules:
   - source_match:
