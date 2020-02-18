@@ -26,3 +26,13 @@
   annotations:
     message: 'autoscaler pool {{ $labels.name }} runs at maximum capability\nplease consider enlarging the pool'
     summary: 'autoscaler pool {{ $labels.name }} hit the ceiling'
+
+- alert: AutoscalerExporterDown
+  expr: absent(count(container_start_time_seconds{container="cluster-autoscaler-exporter",job="kubelet"}) == 1)
+  for: 2m
+  labels:
+    alertgroup: downtime
+    severity: critical
+  annotations:
+    message: cluster-autoscaler-exporter containers count != 1
+    summary: cluster-autoscaler-exporter is down
