@@ -17,3 +17,12 @@
   annotations:
     message: '{{ $labels.alert }} {{ if $labels.node }}node={{ $labels.node }} {{ end }}{{ if $labels.pod }}pod={{ $labels.pod }} {{ end }}{{ if $labels.namespace }}ns={{ $labels.namespace }} {{ end }}{{ if $labels.service_name }}svc={{ $labels.service_name }}{{ end }}'
     summary: 'Reminder: there are critical alerts!'
+
+- alert: AutoscalerMax
+  expr: cluster_autoscaler_pool == 1
+  labels:
+    alertgroup: autoscaler
+    severity: critical
+  annotations:
+    message: 'autoscaler pool {{ $labels.name }} runs at maximum capability\nplease consider enlarging the pool'
+    summary: 'autoscaler pool {{ $labels.name }} hit the ceiling'
