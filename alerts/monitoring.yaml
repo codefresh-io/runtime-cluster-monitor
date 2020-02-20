@@ -24,7 +24,9 @@
     alertgroup: autoscaler
     severity: critical
   annotations:
-    message: 'autoscaler pool {{ $labels.name }} runs at maximum capability\nplease consider enlarging the pool'
+    message: |
+      autoscaler pool {{ $labels.name }} runs at maximum capability
+      please consider enlarging the pool
     summary: 'autoscaler pool {{ $labels.name }} hit the ceiling'
 
 - alert: AutoscalerExporterDown
