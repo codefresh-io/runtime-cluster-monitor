@@ -237,6 +237,19 @@
     summary: engine run more than 3h
     handler: delete-kubeobj {{ $labels.namespace }} pod/{{ $labels.pod }}
 
+- alert: engineCompletedTooLongTimeAgo
+  expr: kube_pod_status_phase{pod =~ "engine-.*", phase =~ "Failed|Succeeded"} == 1
+  for: 3h
+  labels:
+    alertgroup: dind_problem
+    handler: "true"
+    severity: warning
+  annotations:
+    handler: delete-kubeobj {{ $labels.namespace }} pod/{{ $labels.pod}}
+    message: |-
+      pod {{ $labels.pod }} in {{ $labels.namespace }} namespace is {{$labels.phase}} more than 180 
+    summary: engine pod completed too long time ago
+    
 - alert: dindPvcIsBoundTooLong
   expr: dind_pvc_status{phase="Bound"} == 1
   for: 183m
