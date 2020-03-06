@@ -25,3 +25,16 @@
         "persistentvolumeclaim",
         ".*-(.*)"
       )
+
+- name: cpu:container:usage:ratio1m
+  rules:
+  - expr: |
+      sum by (pod_name, container_name) (rate(container_cpu_usage_seconds_total{image!="", container_name!="POD"}[1m]))
+      /
+      sum by (pod_name, container_name)
+      (
+        container_spec_cpu_quota{image!="", container_name!="POD"}
+        /
+        container_spec_cpu_period{image!="", container_name!="POD"}
+      )
+    record: cpu:container:usage:ratio1m
