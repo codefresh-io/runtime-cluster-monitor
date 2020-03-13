@@ -82,7 +82,7 @@
   expr: kube_daemonset_status_number_ready{job="kube-state-metrics"}
     / kube_daemonset_status_desired_number_scheduled{job="kube-state-metrics"}
     * 100 < 100
-  for: 15m
+  for: 30m
   labels:
     severity: critical
   annotations:
