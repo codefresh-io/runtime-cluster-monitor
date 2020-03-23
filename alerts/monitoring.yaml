@@ -19,13 +19,13 @@
     summary: 'Reminder: there are critical alerts!'
 
 - alert: AutoscalerMax
-  expr: cluster_autoscaler_pool >= 0.9
+  expr: cluster_autoscaler_pool >= 0.8
   labels:
     alertgroup: autoscaler
     severity: critical
   annotations:
     message: |
-      autoscaler pool {{ $labels.name }} runs at maximum capability
+      autoscaler pool {{ $labels.name }} is close to maximum capability
       please consider enlarging the pool
     summary: 'autoscaler pool {{ $labels.name }} hit the ceiling'
 
