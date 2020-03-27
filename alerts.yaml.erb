@@ -25,4 +25,7 @@
 - name: node.alerts
   rules:
     <%= file 'alerts/node.yaml', 10 %>
+- name: kube-apiserver-error.alerts
+  rules:
+    <%= file 'alerts/kube-apiserver-error.yaml', 10 %>
 

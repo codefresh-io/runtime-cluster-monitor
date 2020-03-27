@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 CHARTS = [
-  { chart: 'stable/prometheus-operator', version: '8.5.14', release: 'cprom',
+  { chart: 'stable/prometheus-operator', version: '8.12.3', release: 'cprom',
     values: 'kube-prometheus.yaml', template: 'kube-prometheus.yaml.erb' },
 ].freeze
 
