@@ -46,6 +46,11 @@ grafana:
   dashboards:
     codefresh:
       <%= template 'dashboards.yaml.erb', 6, '_dashboards', binding %>
+  additionalDataSources:
+    - name: Loki
+      type: loki
+      url: http://loki-boltdb.loki-boltdb:3100
+      access: proxy
   <%= template 'affinity.yaml.erb', 2, '_affinity', binding %>
 
 kube-state-metrics:
