@@ -51,6 +51,8 @@ grafana:
       type: loki
       url: http://loki-boltdb.loki-boltdb:3100
       access: proxy
+      jsonData:
+        maxLines: 10000
   <%= template 'affinity.yaml.erb', 2, '_affinity', binding %>
 
 kube-state-metrics:
