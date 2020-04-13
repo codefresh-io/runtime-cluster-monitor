@@ -110,3 +110,4 @@ additionalPrometheusRules:
     groups:
       <%= template 'alerts.yaml.erb', 6, '_rules', binding %>
       <%= file 'dind-rules.yaml', 6 %>
+      <%= file 'loki-rules.yaml', 6 %>

@@ -1,0 +1,19 @@
+- name: loki_rules
+  rules:
+    - record: job:loki_request_duration_seconds:99quantile
+      expr: sum(histogram_quantile(0.99, rate(loki_request_duration_seconds_bucket[1m]))) by (job)
+
+    - record: job:loki_request_duration_seconds:50quantile
+      expr: sum(histogram_quantile(0.5, rate(loki_request_duration_seconds_bucket[1m]))) by (job)
+
+    - record: job_route:loki_request_duration_seconds:99quantile
+      expr: sum(histogram_quantile(0.99, rate(loki_request_duration_seconds_bucket[1m]))) by (job,route)
+
+    - record: job_route:loki_request_duration_seconds:50quantile
+      expr: sum(histogram_quantile(0.5, rate(loki_request_duration_seconds_bucket[1m]))) by (job,route)
+
+    - record: namespace_job_route:loki_request_duration_seconds:99quantile
+      expr: sum(histogram_quantile(0.99, rate(loki_request_duration_seconds_bucket[1m]))) by (kubernetes_namespace,job,route)
+
+    - record: namespace_job_route:loki_request_duration_seconds:50quantile
+      expr: sum(histogram_quantile(0.5, rate(loki_request_duration_seconds_bucket[1m]))) by (kubernetes_namespace,job,route)

@@ -19,6 +19,9 @@
 - name: kubernetes-system.alerts
   rules:
     <%= file 'alerts/kubernetes-system.yaml', 10 %>
+- name: loki.alerts
+  rules:
+    <%= file 'alerts/loki.yaml', 10 %>
 - name: monitoring.alerts
   rules:
     <%= file 'alerts/monitoring.yaml', 10 %>
