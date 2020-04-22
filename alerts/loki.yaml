@@ -34,6 +34,6 @@
     severity: critical
     alertgroup: downtime
   annotations:
-    message: Promtail is down
+    message: '{{ labels.kubernetes_pod_name }} is down'
 
 # TODO: pv -- enough space
