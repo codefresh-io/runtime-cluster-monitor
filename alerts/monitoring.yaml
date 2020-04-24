@@ -19,7 +19,7 @@
     summary: 'Reminder: there are critical alerts!'
 
 - alert: AutoscalerMax
-  expr: round(cluster_autoscaler_pool_max <= cluster_autoscaler_pool * 1.25)
+  expr: cluster_autoscaler_pool_max <= cluster_autoscaler_pool * 1.25
   labels:
     alertgroup: autoscaler
     severity: critical
