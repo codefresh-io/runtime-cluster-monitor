@@ -29,7 +29,7 @@
 
 - alert: PromtailDown
   expr: up{app="promtail", kubernetes_namespace="loki-boltdb"} == 0
-  for: 15m
+  for: 25m
   labels:
     severity: critical
     alertgroup: downtime
