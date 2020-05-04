@@ -21,6 +21,9 @@ grafana:
       root_url: '%(protocol)s://%(domain)s/grafana/'
       serve_from_sub_path: 'true'
   <% if defined? grafana_pass %>
+  <% if defined? grafana_user %>
+  adminUser: <%= grafana_user %>
+  <% end %>
   adminPassword: <%= grafana_pass %>
   <% else %>
     auth:
