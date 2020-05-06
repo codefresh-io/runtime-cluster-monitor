@@ -80,6 +80,15 @@
     message: am-alert-handler container count != 1
     summary: Alert Handler is down
 
+- alert: GrafanaDown
+  expr: absent(container_start_time_seconds{container="grafana",job="kubelet"})
+  for: 10m
+  labels:
+    alertgroup: downtime
+    severity: critical
+  annotations:
+    message: Grafana is down
+
 - alert: DeploymentDown
   expr: kube_deployment_status_replicas_unavailable > 0
   for: 10m
