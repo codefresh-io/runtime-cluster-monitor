@@ -17,6 +17,7 @@
   annotations:
     message: |
       {{ $labels.event_reason }} pod={{ $labels.event_name }} ns={{ $labels.event_namespace }}
+
       {{ $labels.event_subobject }}
     summary: Pod warning event
 
@@ -29,6 +30,7 @@
   annotations:
     message: |
       {{ $labels.event_reason }} pod={{ $labels.event_name }} ns={{ $labels.event_namespace }}
+
       {{ $labels.event_subobject }}
     summary: Pod Failed Mount
 
