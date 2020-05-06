@@ -1,5 +1,5 @@
 - alert: DindMonitorDown
-  expr: absent(count(container_start_time_seconds{container="dind-monitor",job="kubelet"}) == 1)
+  expr: absent(count(container_start_time_seconds{container="dind-monitor",namespace="monitoring",job="kubelet"}) == 1)
   for: 2m
   labels:
     alertgroup: downtime

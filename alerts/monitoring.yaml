@@ -30,7 +30,7 @@
     summary: 'autoscaler pool {{ $labels.name }} hit the ceiling'
 
 - alert: AutoscalerExporterDown
-  expr: absent(count(container_start_time_seconds{container="cluster-autoscaler-exporter",job="kubelet"}) == 1)
+  expr: absent(count(container_start_time_seconds{container="cluster-autoscaler-exporter",namespace="monitoring",job="kubelet"}) == 1)
   for: 2m
   labels:
     alertgroup: downtime
