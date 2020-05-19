@@ -8,6 +8,7 @@
     alertgroup: loki
   annotations:
     message: '{{ $labels.job }} {{ $labels.route }} is experiencing {{ printf "%.2f" $value }}% errors.'
+    summary: Loki is experiencing API errors
 
 - alert: LokiRequestLatency
   expr: namespace_job_route:loki_request_duration_seconds:99quantile{route!~"(?i).*tail.*"} > 1
@@ -17,6 +18,7 @@
     alertgroup: loki
   annotations:
     message: '{{ $labels.job }} {{ $labels.route }} is experiencing {{ printf "%.2f" $value }}s 99th percentile latency.'
+    summary: Loki is experiencing latency
 
 - alert: LokiDown
   expr: up{app="loki", kubernetes_namespace="loki-boltdb"} == 0
@@ -26,6 +28,7 @@
     alertgroup: downtime
   annotations:
     message: Loki is down
+    summary: Loki is down
 
 - alert: PromtailDown
   expr: up{app="promtail", kubernetes_namespace="loki-boltdb"} == 0
@@ -35,5 +38,6 @@
     alertgroup: downtime
   annotations:
     message: '{{ $labels.kubernetes_pod_name }} is down'
+    summary: Promtail is down
 
 # TODO: pv -- enough space

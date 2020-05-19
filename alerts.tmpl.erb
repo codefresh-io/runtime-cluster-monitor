@@ -3,7 +3,7 @@
 {{ end }}
 
 {{ define "cf.title.victorops" }}
-<%= ENV['cluster'].chomp(".cf-cd.com") %> {{ .CommonLabels.alertname }}
+<%= ENV['cluster'].chomp(".cf-cd.com") %> {{ if .CommonAnnotations.summary }}{{ .CommonAnnotations.summary }}{{ else }}{{ .CommonLabels.alertname }}{{ end }}
 {{ end }}
 
 {{ define "cf.text" }}
