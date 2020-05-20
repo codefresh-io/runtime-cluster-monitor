@@ -1,9 +1,9 @@
 {{ define "cf.title.slack" }}
-<%= ENV['cluster'].chomp(".cf-cd.com") %> [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }}
+<%= ENV['cluster'].chomp(".cf-cd.com").chomp(".cf-op.com") %> [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }}
 {{ end }}
 
 {{ define "cf.title.victorops" }}
-<%= ENV['cluster'].chomp(".cf-cd.com") %> {{ if .CommonAnnotations.summary }}{{ .CommonAnnotations.summary }}{{ else }}{{ .CommonLabels.alertname }}{{ end }}
+<%= ENV['cluster'].chomp(".cf-cd.com").chomp(".cf-op.com") %> - {{ if .CommonAnnotations.summary }}{{ .CommonAnnotations.summary }}{{ else }}{{ .CommonLabels.alertname }}{{ end }}
 {{ end }}
 
 {{ define "cf.text" }}
@@ -11,7 +11,9 @@
 [{{ .Labels.severity | toUpper }}] {{ $a.StartsAt.Format "2006-01-02 15:04:05 UTC" }}
 {{ $a.Annotations.message }}{{ $a.Annotations.description }}
 {{ end }}
-{{ if .CommonAnnotations.runbook_url }}
-{{ .CommonAnnotations.runbook_url }}
+{{ if .CommonAnnotations.runbook_url }}{{ .CommonAnnotations.runbook_url }}{{ end }}
 {{ end }}
+
+{{ define "cf.text.victorops" }}
+{{ template "cf.title.slack" . }}{{ template "cf.text" . }}
 {{ end }}
