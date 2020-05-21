@@ -290,8 +290,8 @@
     alertgroup: downtime
     severity: critical
   annotations:
-    message: Too Many dind EBS PVC are pending
-    summary: Too Many dind EBS PVC are pending
+    message: Too many dind EBS PVC are pending
+    summary: Too many dind EBS PVC are pending
 
 - alert: dindPodPending
   expr: dind_pod_status{pod=~"dind.*", phase!="Running"} == 1
@@ -315,8 +315,18 @@
     alertgroup: downtime
     severity: critical
   annotations:
-    message: Too Many dind POD Failures
-    summary: Too Many dind POD Failures
+    message: Too many dind Pod failures
+    summary: Too many dind Pod failures
+
+- alert: TooManyEnginePodFailures
+  expr: kube_pod_container_status_terminated_reason{pod=~"engine-.*", reason="Failed"} > 2
+  for: 5m
+  labels:
+    alertgroup: downtime
+    severity: critical
+  annotations:
+    message: Too many engine Pod failures
+    summary: Too many engine Pod failures
 
 - alert: DindVolumeProvisionerCpuWarning
   expr: (rate(container_cpu_user_seconds_total{pod=~"dind-volume-provisioner.*"}[5m])) / on(node) group_left() machine_cpu_cores > 0.3
