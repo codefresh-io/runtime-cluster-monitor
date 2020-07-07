@@ -61,14 +61,14 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(kubernetes_events_duration{event_name=~\"dind-.*\", event_reason=\"FailedScheduling\", event_message!~\"pod has unbound immediate PersistentVolumeClaims.*\"} !=0< $error_threshold) by (event_reason)",
+          "expr": "avg(kubernetes_events_duration{event_name=~\"dind-[0-9].*\", event_reason=\"FailedScheduling\", event_message!~\"pod has unbound immediate PersistentVolumeClaims.*\"} !=0< $error_threshold) by (event_reason)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{Pod Scheduling}} (dind)",
           "refId": "C"
         },
         {
-          "expr": "avg(kubernetes_events_timestamp{event_name=~\"dind-.*\", event_reason=\"ProvisioningSucceeded\"} - on(event_name) kubernetes_events_timestamp{event_name=~\"dind-.*\", event_reason=\"ExternalProvisioning\"} + scalar(avg(kubernetes_events_duration{event_name=~\"dind-.*\", event_reason=\"FailedScheduling\", event_message=~\".*has unbound.*\"}))) by (event_reason)",
+          "expr": "avg(kubernetes_events_timestamp{event_name=~\"dind-[0-9].*\", event_reason=\"ProvisioningSucceeded\"} - on(event_name) kubernetes_events_timestamp{event_name=~\"dind-[0-9].*\", event_reason=\"ExternalProvisioning\"} + scalar(avg(kubernetes_events_duration{event_name=~\"dind-[0-9].*\", event_reason=\"FailedScheduling\", event_message=~\".*has unbound.*\"}))) by (event_reason)",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -76,7 +76,7 @@
           "refId": "B"
         },
         {
-          "expr": "avg(kubernetes_events_timestamp{event_name=~\"dind-.*\", event_reason=\"SuccessfulAttachVolume\"} - on(event_name) kubernetes_events_timestamp{event_name=~\"dind-.*\", event_reason=\"Scheduled\"}) by (event_reason)",
+          "expr": "avg(kubernetes_events_timestamp{event_name=~\"dind-[0-9].*\", event_reason=\"SuccessfulAttachVolume\"} - on(event_name) kubernetes_events_timestamp{event_name=~\"dind-[0-9].*\", event_reason=\"Scheduled\"}) by (event_reason)",
           "format": "time_series",
           "hide": true,
           "intervalFactor": 1,
@@ -84,21 +84,21 @@
           "refId": "G"
         },
         {
-          "expr": "avg(kubernetes_events_timestamp{event_name=~\"dind-.*\", event_reason=\"Pulled\"} - on(event_name) label_replace(kubernetes_events_timestamp{event_reason=\"ProvisioningSucceeded\"}, \"event_name\", \"$2\", \"event_name\", \"(pvc-)(dind-.*)\")) by (event_reason)",
+          "expr": "avg(kubernetes_events_timestamp{event_name=~\"dind-[0-9].*\", event_reason=\"Pulled\"} - on(event_name) label_replace(kubernetes_events_timestamp{event_reason=\"ProvisioningSucceeded\"}, \"event_name\", \"$2\", \"event_name\", \"(pvc-)(dind-[0-9].*)\")) by (event_reason)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{Volume Attach & Mount}}  (dind)",
           "refId": "A"
         },
         {
-          "expr": "avg(kubernetes_events_timestamp{event_name=~\"dind-.*\", event_reason=\"Created\"} - on(event_name) kubernetes_events_timestamp{event_name=~\"dind-.*\", event_reason=\"Pulled\"}) by (event_reason)",
+          "expr": "avg(kubernetes_events_timestamp{event_name=~\"dind-[0-9].*\", event_reason=\"Created\"} - on(event_name) kubernetes_events_timestamp{event_name=~\"dind-[0-9].*\", event_reason=\"Pulled\"}) by (event_reason)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{Pod Creation}}  (dind)",
           "refId": "D"
         },
         {
-          "expr": "avg(kubernetes_events_duration{event_name=~\"dind-.*\", event_reason!~\"Killing|FailedScheduling|ExternalProvisioning|Provisioning|NotTriggerScaleUp\", event_type!=\"Warning\"} !=0< $error_threshold) by (event_reason)",
+          "expr": "avg(kubernetes_events_duration{event_name=~\"dind-[0-9].*\", event_reason!~\"Killing|FailedScheduling|ExternalProvisioning|Provisioning|NotTriggerScaleUp\", event_type!=\"Warning\"} !=0< $error_threshold) by (event_reason)",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -106,7 +106,7 @@
           "refId": "H"
         },
         {
-          "expr": "avg(kubernetes_events_duration{event_name=~\"engine-.*\", event_reason=\"FailedScheduling\"} !=0< $error_threshold) by (event_reason)",
+          "expr": "avg(kubernetes_events_duration{event_name=~\"engine-[0-9].*\", event_reason=\"FailedScheduling\"} !=0< $error_threshold) by (event_reason)",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -115,7 +115,7 @@
           "refId": "E"
         },
         {
-          "expr": "avg(kubernetes_events_timestamp{event_name=~\"engine-.*\", event_reason=\"Created\"} - on(event_name) kubernetes_events_timestamp{event_name=~\"engine-.*\", event_reason=\"Scheduled\"}) by (event_reason)",
+          "expr": "avg(kubernetes_events_timestamp{event_name=~\"engine-[0-9].*\", event_reason=\"Created\"} - on(event_name) kubernetes_events_timestamp{event_name=~\"engine-[0-9].*\", event_reason=\"Scheduled\"}) by (event_reason)",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -123,7 +123,7 @@
           "refId": "K"
         },
         {
-          "expr": "avg(kubernetes_events_duration{event_name=~\"engine-.*\", event_reason!~\"Killing|FailedScheduling\", event_type!=\"Warning\"} !=0< $error_threshold) by (event_reason)",
+          "expr": "avg(kubernetes_events_duration{event_name=~\"engine-[0-9].*\", event_reason!~\"Killing|FailedScheduling\", event_type!=\"Warning\"} !=0< $error_threshold) by (event_reason)",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -323,21 +323,21 @@
           "refId": "C"
         },
         {
-          "expr": "avg(kubernetes_events_timestamp{event_name=~\"dind-.*\", event_reason=\"ProvisioningSucceeded\"} - on(event_name) kubernetes_events_timestamp{event_name=~\"dind-.*\", event_reason=\"ExternalProvisioning\"} + scalar(avg(kubernetes_events_duration{event_name=~\"dind-.*\", event_reason=\"FailedScheduling\", event_message=~\".*has unbound.*\"}))) by (event_reason)",
+          "expr": "avg(kubernetes_events_timestamp{event_name=~\"dind-[0-9].*\", event_reason=\"ProvisioningSucceeded\"} - on(event_name) kubernetes_events_timestamp{event_name=~\"dind-[0-9].*\", event_reason=\"ExternalProvisioning\"} + scalar(avg(kubernetes_events_duration{event_name=~\"dind-[0-9].*\", event_reason=\"FailedScheduling\", event_message=~\".*has unbound.*\"}))) by (event_reason)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "K8: {{Volume Provisioning}}  (dind)",
           "refId": "D"
         },
         {
-          "expr": "avg(kubernetes_events_duration{event_name=~\"dind-.*\", event_reason=\"FailedScheduling\", event_message!~\"pod has unbound immediate PersistentVolumeClaims.*\"} !=0< $error_threshold) by (event_reason)",
+          "expr": "avg(kubernetes_events_duration{event_name=~\"dind-[0-9].*\", event_reason=\"FailedScheduling\", event_message!~\"pod has unbound immediate PersistentVolumeClaims.*\"} !=0< $error_threshold) by (event_reason)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "K8: {{Pod Scheduling}} (dind)",
           "refId": "K"
         },
         {
-          "expr": "avg(kubernetes_events_timestamp{event_name=~\"dind-.*\", event_reason=\"SuccessfulAttachVolume\"} - on(event_name) kubernetes_events_timestamp{event_name=~\"dind-.*\", event_reason=\"Scheduled\"}) by (event_reason)",
+          "expr": "avg(kubernetes_events_timestamp{event_name=~\"dind-[0-9].*\", event_reason=\"SuccessfulAttachVolume\"} - on(event_name) kubernetes_events_timestamp{event_name=~\"dind-[0-9].*\", event_reason=\"Scheduled\"}) by (event_reason)",
           "format": "time_series",
           "hide": true,
           "intervalFactor": 1,
@@ -345,21 +345,21 @@
           "refId": "E"
         },
         {
-          "expr": "avg(kubernetes_events_timestamp{event_name=~\"dind-.*\", event_reason=\"Pulled\"} - on(event_name) label_replace(kubernetes_events_timestamp{event_reason=\"ProvisioningSucceeded\"}, \"event_name\", \"$2\", \"event_name\", \"(pvc-)(dind-.*)\")) by (event_reason)",
+          "expr": "avg(kubernetes_events_timestamp{event_name=~\"dind-[0-9].*\", event_reason=\"Pulled\"} - on(event_name) label_replace(kubernetes_events_timestamp{event_reason=\"ProvisioningSucceeded\"}, \"event_name\", \"$2\", \"event_name\", \"(pvc-)(dind-[0-9].*)\")) by (event_reason)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "K8: {{Volume Attach & Mount}}  (dind)",
           "refId": "F"
         },
         {
-          "expr": "avg(kubernetes_events_timestamp{event_name=~\"dind-.*\", event_reason=\"Created\"} - on(event_name) kubernetes_events_timestamp{event_name=~\"dind-.*\", event_reason=\"Pulled\"}) by (event_reason)",
+          "expr": "avg(kubernetes_events_timestamp{event_name=~\"dind-[0-9].*\", event_reason=\"Created\"} - on(event_name) kubernetes_events_timestamp{event_name=~\"dind-[0-9].*\", event_reason=\"Pulled\"}) by (event_reason)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "K8: {{Pod Creation}}  (dind)",
           "refId": "G"
         },
         {
-          "expr": "avg(kubernetes_events_duration{event_type!=\"Warning\", event_name=~\"dind-.*\", event_reason!~\"Killing|FailedScheduling|ExternalProvisioning|Provisioning|FailedAttachVolume|NotTriggerScaleUp\"} !=0<$error_threshold) by (event_reason)",
+          "expr": "avg(kubernetes_events_duration{event_type!=\"Warning\", event_name=~\"dind-[0-9].*\", event_reason!~\"Killing|FailedScheduling|ExternalProvisioning|Provisioning|FailedAttachVolume|NotTriggerScaleUp\"} !=0<$error_threshold) by (event_reason)",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -367,7 +367,7 @@
           "refId": "A"
         },
         {
-          "expr": "avg(kubernetes_events_duration{event_type!=\"Warning\", event_name=~\"engine-.*\", event_reason!~\"Killing|FailedScheduling\"} !=0<$error_threshold) by (event_reason)",
+          "expr": "avg(kubernetes_events_duration{event_type!=\"Warning\", event_name=~\"engine-[0-9].*\", event_reason!~\"Killing|FailedScheduling\"} !=0<$error_threshold) by (event_reason)",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -375,7 +375,7 @@
           "refId": "B"
         },
         {
-          "expr": "avg(kubernetes_events_duration{event_name=~\"engine-.*\", event_reason=\"FailedScheduling\"} !=0< $error_threshold) by (event_reason)",
+          "expr": "avg(kubernetes_events_duration{event_name=~\"engine-[0-9].*\", event_reason=\"FailedScheduling\"} !=0< $error_threshold) by (event_reason)",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -383,7 +383,7 @@
           "refId": "H"
         },
         {
-          "expr": "avg(kubernetes_events_timestamp{event_name=~\"engine-.*\", event_reason=\"Created\"} - on(event_name) kubernetes_events_timestamp{event_name=~\"engine-.*\", event_reason=\"Scheduled\"}) by (event_reason)",
+          "expr": "avg(kubernetes_events_timestamp{event_name=~\"engine-[0-9].*\", event_reason=\"Created\"} - on(event_name) kubernetes_events_timestamp{event_name=~\"engine-[0-9].*\", event_reason=\"Scheduled\"}) by (event_reason)",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -495,7 +495,7 @@
           "refId": "C"
         },
         {
-          "expr": "kubernetes_events_duration{event_reason!=\"Killing\", event_name=~\"engine-.*|dind-.*\", event_message!~\"pod has unbound immediate PersistentVolumeClaims.*\"} !=0>$error_threshold",
+          "expr": "kubernetes_events_duration{event_reason!=\"Killing\", event_name=~\"engine-[0-9].*|dind-[0-9].*\", event_message!~\"pod has unbound immediate PersistentVolumeClaims.*\"} !=0>$error_threshold",
           "format": "time_series",
           "hide": false,
           "instant": false,

@@ -170,7 +170,7 @@
       "targets": [
         {
           "datasource": "Prometheus",
-          "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate{namespace=\"workflow\", pod=~\"(dind|engine)-$build_id\", container!=\"POD\", cluster=\"\"}) by (container)",
+          "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate{pod=~\"(dind|engine)-$build_id\", container!=\"POD\", cluster=\"\"}) by (container)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{container}}",
@@ -277,7 +277,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(container_memory_rss{cluster=\"$cluster\", namespace=\"workflow\", pod=~\"(dind|engine)-$build_id\", container!=\"POD\", container!=\"\"}) by (container)",
+          "expr": "sum(container_memory_rss{cluster=\"$cluster\", pod=~\"(dind|engine)-$build_id\", container!=\"POD\", container!=\"\"}) by (container)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{container}} (RSS)",
@@ -286,7 +286,7 @@
           "step": 10
         },
         {
-          "expr": "sum(container_memory_cache{cluster=\"$cluster\", namespace=\"workflow\", pod=~\"(dind|engine)-$build_id\", container!=\"POD\", container!=\"\"}) by (container)",
+          "expr": "sum(container_memory_cache{cluster=\"$cluster\", pod=~\"(dind|engine)-$build_id\", container!=\"POD\", container!=\"\"}) by (container)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{container}} (Cache)",
@@ -295,7 +295,7 @@
           "step": 10
         },
         {
-          "expr": "sum(container_memory_swap{cluster=\"$cluster\", namespace=\"workflow\", pod=~\"(dind|engine)-$build_id\", container!=\"POD\", container!=\"\"}) by (container)",
+          "expr": "sum(container_memory_swap{cluster=\"$cluster\", pod=~\"(dind|engine)-$build_id\", container!=\"POD\", container!=\"\"}) by (container)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{container}} (Swap)",
@@ -402,7 +402,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(irate(container_network_receive_bytes_total{namespace=~\"workflow\", pod=~\"(dind|engine)-$build_id\"}[$interval])) by (pod)",
+          "expr": "sum(irate(container_network_receive_bytes_total{pod=~\"(dind|engine)-$build_id\"}[$interval])) by (pod)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{pod}}",
@@ -509,7 +509,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(irate(container_network_transmit_bytes_total{namespace=~\"workflow\", pod=~\"(dind|engine)-$build_id\"}[$interval])) by (pod)",
+          "expr": "sum(irate(container_network_transmit_bytes_total{pod=~\"(dind|engine)-$build_id\"}[$interval])) by (pod)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{pod}}",
@@ -616,7 +616,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(irate(container_network_receive_packets_dropped_total{namespace=~\"workflow\", pod=~\"(dind|engine)-$build_id\"}[$interval])) by (pod)",
+          "expr": "sum(irate(container_network_receive_packets_dropped_total{pod=~\"(dind|engine)-$build_id\"}[$interval])) by (pod)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{pod}}",
@@ -723,7 +723,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(irate(container_network_transmit_packets_dropped_total{namespace=~\"workflow\", pod=~\"(dind|engine)-$build_id\"}[$interval])) by (pod)",
+          "expr": "sum(irate(container_network_transmit_packets_dropped_total{pod=~\"(dind|engine)-$build_id\"}[$interval])) by (pod)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{pod}}",
@@ -810,16 +810,16 @@
       {
         "allValue": null,
         "datasource": "Prometheus",
-        "definition": "label_values(kube_pod_info{cluster=\"$cluster\", namespace=\"workflow\"}, pod)",
+        "definition": "label_values(kube_pod_info{cluster=\"$cluster\"}, pod)",
         "hide": 0,
         "includeAll": false,
         "label": "Build ID",
         "multi": false,
         "name": "build_id",
         "options": [],
-        "query": "label_values(kube_pod_info{cluster=\"$cluster\", namespace=\"workflow\"}, pod)",
+        "query": "label_values(kube_pod_info{cluster=\"$cluster\"}, pod)",
         "refresh": 1,
-        "regex": "engine-(.*)",
+        "regex": "engine-([0-9].*)",
         "skipUrlSync": false,
         "sort": 2,
         "tagValuesQuery": "",
