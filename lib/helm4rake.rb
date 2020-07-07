@@ -24,6 +24,7 @@ class Helm4Rake < ::Rake::TaskLib
     @template_dir = template_dir
     @env_dir = env_dir
 
+    cluster_task
     context_task
     helm_tasks
     template_tasks
@@ -31,9 +32,15 @@ class Helm4Rake < ::Rake::TaskLib
 
   private
 
+  def cluster_task
+    task :cluster do
+      abort 'Usage: rake cluster=...' if ENV['cluster'].nil?
+    end
+  end
+
   def context_task
     task :context do
-      success = false
+      success = ENV['env'].nil?
       @contexts.each do |i|
         next unless ENV['env'] == i[:name]
 
@@ -41,7 +48,8 @@ class Helm4Rake < ::Rake::TaskLib
         success = true
         break
       end
-      abort "Usage: rake install|delete env=#{@contexts.map { |i| i[:name] }.join('|')}" unless success
+
+      abort "Usage: rake env=#{@contexts.map { |i| i[:name] }.join('|')} cluster=..." unless success
     end
   end
 
@@ -58,7 +66,7 @@ class Helm4Rake < ::Rake::TaskLib
   def helm_task_install
     task default: :install
     desc 'helm upgrade -i'
-    task install: %i[context template] do
+    task install: %i[context cluster template] do
       @charts.each do |i|
         i[:version] && i[:version] = " --version #{i[:version]}"
         sh "helm -f #{i[:values]} upgrade #{i[:release]} #{i[:chart]}#{i[:version]} --namespace #{@namespace} -i #{ENV['args']}"
