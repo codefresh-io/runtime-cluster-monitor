@@ -238,7 +238,7 @@
     handler: delete-kubeobj {{ $labels.namespace }} pod/{{ $labels.pod }}
 
 - alert: engineCompletedTooLongTimeAgo
-  expr: kube_pod_status_phase{pod =~ "engine-.*", phase =~ "Failed|Succeeded"} == 1
+  expr: kube_pod_status_phase{pod =~ "engine-[0-9].*", phase =~ "Failed|Succeeded"} == 1
   for: 3h
   labels:
     alertgroup: dind_problem
@@ -319,7 +319,7 @@
     summary: Too many dind Pod failures
 
 - alert: TooManyEnginePodFailures
-  expr: kube_pod_container_status_terminated_reason{pod=~"engine-.*", reason="Failed"} > 2
+  expr: kube_pod_container_status_terminated_reason{pod=~"engine-[0-9].*", reason="Failed"} > 2
   for: 5m
   labels:
     alertgroup: downtime
