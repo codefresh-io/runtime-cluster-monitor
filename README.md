@@ -19,15 +19,23 @@ If you set `victorops_api_key`, `victorops_routing` is also required.
 
 ## Usage
 * switch your k8s context to needed
-* `rake [env=prod] cluster=...` to install or update your installation  
-  you may need `rake ... args='--set prometheusOperator.createCustomResource=false'`
+* `rake cluster=... [env=prod] [args=...]` to install or update your installation
 * `rake destroy` to remove the deployment
 
 `cluster` could be any helpful string to identify alerts.  
-use `env=prod` if you have `env/prod.yaml`, if you don't, just omit this part.
+use `env=prod` if you have `env/prod.yaml`, if you don't, just omit this part.  
+`args` are additional args to Helm, if you don't need it, skip it.
 
 if you need to pass multiple Helm args or whitespace, escape them:
-* `rake args='--dry-run --debug'`
+* `rake cluster=... args='--dry-run --debug'`
+
+sometimes there's a problem with Prometheus CRDs, a workaround is to install them manually:
+* `kubectl apply -f https://raw.githubusercontent.com/coreos/prometheus-operator/release-0.32/example/prometheus-operator-crd/alertmanager.crd.yaml`
+* `kubectl apply -f https://raw.githubusercontent.com/coreos/prometheus-operator/release-0.32/example/prometheus-operator-crd/podmonitor.crd.yaml`
+* `kubectl apply -f https://raw.githubusercontent.com/coreos/prometheus-operator/release-0.32/example/prometheus-operator-crd/prometheus.crd.yaml`
+* `kubectl apply -f https://raw.githubusercontent.com/coreos/prometheus-operator/release-0.32/example/prometheus-operator-crd/prometheusrule.crd.yaml`
+* `kubectl apply -f https://raw.githubusercontent.com/coreos/prometheus-operator/release-0.32/example/prometheus-operator-crd/servicemonitor.crd.yaml`
+* `rake cluster=... args='--set prometheusOperator.createCustomResource=false'`
 
 ## Access services
 
