@@ -1,4 +1,4 @@
-affinity:
+<% if defined? affinity %>affinity:
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
       nodeSelectorTerms:
@@ -6,9 +6,10 @@ affinity:
         - key: 'node-type'
           operator: In
           values:
-            - internal
+            - <%= affinity %>
 tolerations:
   - effect: NoSchedule
     key: nodeType
     operator: Equal
-    value: internal
+    value: <%= affinity %>
+<% end %>
