@@ -66,7 +66,7 @@ class Helm4Rake < ::Rake::TaskLib
   def helm_task_install
     task default: :install
     desc 'helm upgrade -i'
-    task install: %i[context cluster template] do
+    task install: %i[context cluster template namespace] do
       @charts.each do |i|
         i[:version] && i[:version] = " --version #{i[:version]}"
         sh "helm -f #{i[:values]} upgrade #{i[:release]} #{i[:chart]}#{i[:version]} --namespace #{@namespace} -i #{ENV['args']}"
