@@ -1,5 +1,15 @@
 # prometheus for runtime clusters
 
+These scripts deploy a Prometheus Operator installation (Prometheus, Alertmanager, Grafana)
+that's pre-configured for Codefresh runtime clusters. It includes alerts and dashboards for monitoring
+the runtime cluster, as well as configures exporters and cron jobs. What's included:
+
+* [Prometheus Operator](https://github.com/coreos/prometheus-operator)
+* [cluster-autoscaler-exporter](https://github.com/codefresh-io/cluster-autoscaler-exporter)
+* `dind-volume-cleanup`, `dind-monitor` and `event-exporter` (custom parts with source code not provided)
+
+We create a `monitoring` namespace and put all the things there.
+
 ## Required
 * kubectl, helm
 * Ruby and `gem install rake erubis`
@@ -13,6 +23,7 @@ It may specify:
 * `slack_errors`: channel name for errors, full name like `#ops-errors`
 * `victorops_api_key`: API key to VictorOps
 * `victorops_routing`: VictorOps routing policy name
+* `affinity`: string to set up monitoring affinity/tolerations (see [template](https://github.com/codefresh-io/runtime-cluster-monitor/blob/master/affinity.yaml.erb) for more details)
 
 Please note that if you set `slack_hook`, you're reqiuired to set both `slack_warnings` and `slack_errors`.  
 If you set `victorops_api_key`, `victorops_routing` is also required.
