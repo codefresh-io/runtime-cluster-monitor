@@ -78,8 +78,10 @@ class Helm4Rake < ::Rake::TaskLib
     task destroy: :delete
     desc 'helm delete'
     task delete: :context do
+      helm_version = `helm version -c`
+      helm_args = helm_version.include?('SemVer:"v2.') ? '--purge' : ''
       @charts.each do |i|
-        sh "helm delete --purge #{i[:release]} #{ENV['args']}"
+        sh "helm delete #{helm_args} #{i[:release]} #{ENV['args']}"
       end
     end
   end
