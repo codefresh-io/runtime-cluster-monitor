@@ -51,7 +51,7 @@ spec:
               image: codefresh/dind-volume-cleanup
               resources:
                 requests:
-                  memory: 128Mi
+                  memory: 96Mi
                 limits:
                   memory: 128Mi
 ---
@@ -76,6 +76,6 @@ spec:
               args: [-m]
               resources:
                 requests:
-                  memory: 128Mi
+                  memory: 96Mi
                 limits:
                   memory: 128Mi
