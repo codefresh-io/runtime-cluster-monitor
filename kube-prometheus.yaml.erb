@@ -1,3 +1,10 @@
+prometheus-node-exporter:
+  resources:
+    limits:
+      memory: 48Mi
+    requests:
+      memory: 32Mi
+
 alertmanager:
   config:
     <%= template 'alertmanager.yaml.erb', 4, '_alertmanager', binding %>
@@ -5,6 +12,11 @@ alertmanager:
     alerts.tmpl: |
       <%= template 'alerts.tmpl.erb', 6, '_alerts', binding  %>
   alertmanagerSpec:
+    resources:
+      limits:
+        memory: 64Mi
+      requests:
+        memory: 48Mi
     routePrefix: /alertmanager/
     storage:
       volumeClaimTemplate:
@@ -16,6 +28,11 @@ alertmanager:
     <%= template 'affinity.yaml.erb', 4, '_affinity', binding %>
 
 grafana:
+  resources:
+    limits:
+      memory: 96Mi
+    requests:
+      memory: 64Mi
   grafana.ini:
     server:
       root_url: '%(protocol)s://%(domain)s/grafana/'
@@ -63,6 +80,11 @@ grafana:
   <%= template 'affinity.yaml.erb', 2, '_affinity', binding %>
 
 kube-state-metrics:
+  resources:
+    limits:
+      memory: 128Mi
+    requests:
+      memory: 128Mi
   <%= template 'affinity.yaml.erb', 2, '_affinity', binding %>
 
 kubeControllerManager:
@@ -84,11 +106,22 @@ kubeScheduler:
   enabled: false
 
 prometheusOperator:
+  resources:
+    limits:
+      memory: 64Mi
+    requests:
+      memory: 48Mi
   logLevel: error
   <%= template 'affinity.yaml.erb', 2, '_affinity', binding %>
 
 prometheus:
   prometheusSpec:
+    resources:
+      limits:
+        memory: '<%= defined?(prom_ram) ? prom_ram : "6Gi" %>'
+      requests:
+        memory: '<%= defined?(prom_ram) ? prom_ram : "6Gi" %>'
+        cpu: '<%= defined?(prom_cpu) ? prom_cpu : "2" %>'
     externalUrl: https://<%= ENV['cluster'] %>/prometheus/
     routePrefix: /prometheus/
     scrapeInterval: 10s

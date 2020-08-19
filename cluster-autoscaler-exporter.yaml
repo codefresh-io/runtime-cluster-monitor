@@ -61,3 +61,8 @@ spec:
       containers:
         - image: codefresh/cluster-autoscaler-exporter
           name: cluster-autoscaler-exporter
+          resources:
+            requests:
+              memory: 64Mi
+            limits:
+              memory: 96Mi
