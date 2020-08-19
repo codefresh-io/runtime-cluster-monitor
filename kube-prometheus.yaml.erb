@@ -30,9 +30,9 @@ alertmanager:
 grafana:
   resources:
     limits:
-      memory: 96Mi
+      memory: 128Mi
     requests:
-      memory: 64Mi
+      memory: 96Mi
   grafana.ini:
     server:
       root_url: '%(protocol)s://%(domain)s/grafana/'
@@ -108,9 +108,9 @@ kubeScheduler:
 prometheusOperator:
   resources:
     limits:
-      memory: 64Mi
+      memory: 96Mi
     requests:
-      memory: 48Mi
+      memory: 64Mi
   logLevel: error
   <%= template 'affinity.yaml.erb', 2, '_affinity', binding %>
 

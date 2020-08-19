@@ -58,6 +58,6 @@ spec:
           args: [--running-in-cluster=true]
           resources:
             requests:
-              memory: 64Mi
+              memory: 96Mi
             limits:
               memory: 128Mi
