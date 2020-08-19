@@ -24,8 +24,8 @@ It may specify:
 * `victorops_api_key`: API key to VictorOps
 * `victorops_routing`: VictorOps routing policy name
 * `affinity`: string to set up monitoring affinity/tolerations (see [template](https://github.com/codefresh-io/runtime-cluster-monitor/blob/master/affinity.yaml.erb) for more details)
-* `prom_ram`: Prometheus memory requests and limits (defaults to `6Gi` for a 8GB instance; use `14Gi` if using a 16GB instance; use `30Gi` if using a 32GB instance)
-* `prom_cpu`: Prometheus CPU requests and limits (defaults to 1 you may want to increase it)
+* `prom_ram`: Prometheus memory requests and limits (defaults to `6Gi` for a 8GB instance; use `14Gi` if using a 16GB instance; use `24Gi` if using a 32GB instance)
+* `prom_cpu`: Prometheus CPU requests (defaults to `1`, you may want to increase it)
 
 Please note that if you set `slack_hook`, you're reqiuired to set both `slack_warnings` and `slack_errors`.  
 If you set `victorops_api_key`, `victorops_routing` is also required.
