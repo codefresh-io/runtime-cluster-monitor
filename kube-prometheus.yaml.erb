@@ -121,7 +121,7 @@ prometheus:
         memory: '<%= defined?(prom_ram) ? prom_ram : "6Gi" %>'
       requests:
         memory: '<%= defined?(prom_ram) ? prom_ram : "6Gi" %>'
-        cpu: '<%= defined?(prom_cpu) ? prom_cpu : "2" %>'
+        cpu: '<%= defined?(prom_cpu) ? prom_cpu : "1" %>'
     externalUrl: https://<%= ENV['cluster'] %>/prometheus/
     routePrefix: /prometheus/
     scrapeInterval: 10s
