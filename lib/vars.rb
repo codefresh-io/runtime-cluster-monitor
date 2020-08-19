@@ -8,6 +8,8 @@ CHARTS = [
 CONTEXTS = [
   { name: 'dev' },
   { name: 'prod' },
+  { name: 'prod8' },
+  { name: 'prod32' },
 ].freeze
 
 NAMESPACE = 'monitoring'
