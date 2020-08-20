@@ -1,8 +1,10 @@
 prometheus-node-exporter:
   resources:
     limits:
+      cpu: '0.5'
       memory: 48Mi
     requests:
+      cpu: '0.1'
       memory: 32Mi
 
 alertmanager:
@@ -14,8 +16,10 @@ alertmanager:
   alertmanagerSpec:
     resources:
       limits:
+        cpu: '0.5'
         memory: 64Mi
       requests:
+        cpu: '0.1'
         memory: 48Mi
     routePrefix: /alertmanager/
     storage:
@@ -30,8 +34,10 @@ alertmanager:
 grafana:
   resources:
     limits:
+      cpu: '0.5'
       memory: 128Mi
     requests:
+      cpu: '0.1'
       memory: 96Mi
   grafana.ini:
     server:
@@ -82,9 +88,11 @@ grafana:
 kube-state-metrics:
   resources:
     limits:
-      memory: 128Mi
+      cpu: '0.5'
+      memory: 256Mi
     requests:
-      memory: 128Mi
+      cpu: '0.1'
+      memory: 192Mi
   <%= template 'affinity.yaml.erb', 2, '_affinity', binding %>
 
 kubeControllerManager:
@@ -108,8 +116,10 @@ kubeScheduler:
 prometheusOperator:
   resources:
     limits:
+      cpu: '0.5'
       memory: 96Mi
     requests:
+      cpu: '0.1'
       memory: 64Mi
   logLevel: error
   <%= template 'affinity.yaml.erb', 2, '_affinity', binding %>
@@ -119,6 +129,7 @@ prometheus:
     resources:
       limits:
         memory: '<%= defined?(prom_ram) ? prom_ram : "6Gi" %>'
+        cpu: '<%= defined?(prom_cpu) ? prom_cpu * 2 : "2" %>'
       requests:
         memory: '<%= defined?(prom_ram) ? prom_ram : "6Gi" %>'
         cpu: '<%= defined?(prom_cpu) ? prom_cpu : "1" %>'

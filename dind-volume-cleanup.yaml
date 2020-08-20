@@ -51,8 +51,10 @@ spec:
               image: codefresh/dind-volume-cleanup
               resources:
                 requests:
+                  cpu: '0.1'
                   memory: 96Mi
                 limits:
+                  cpu: '0.5'
                   memory: 128Mi
 ---
 apiVersion: batch/v1beta1
@@ -76,6 +78,8 @@ spec:
               args: [-m]
               resources:
                 requests:
+                  cpu: '0.1'
                   memory: 96Mi
                 limits:
+                  cpu: '0.5'
                   memory: 128Mi
