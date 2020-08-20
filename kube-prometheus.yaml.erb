@@ -1,10 +1,10 @@
 prometheus-node-exporter:
   resources:
     limits:
-      cpu: '0.5'
+      cpu: '0.1'
       memory: 48Mi
     requests:
-      cpu: '0.1'
+      cpu: '0.02'
       memory: 32Mi
 
 alertmanager:
@@ -34,10 +34,10 @@ alertmanager:
 grafana:
   resources:
     limits:
-      cpu: '0.5'
+      cpu: '0.1'
       memory: 128Mi
     requests:
-      cpu: '0.1'
+      cpu: '0.02'
       memory: 96Mi
   grafana.ini:
     server:
@@ -116,10 +116,10 @@ kubeScheduler:
 prometheusOperator:
   resources:
     limits:
-      cpu: '0.5'
+      cpu: '0.1'
       memory: 96Mi
     requests:
-      cpu: '0.1'
+      cpu: '0.01'
       memory: 64Mi
   logLevel: error
   <%= template 'affinity.yaml.erb', 2, '_affinity', binding %>
