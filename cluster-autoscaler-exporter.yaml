@@ -63,7 +63,7 @@ spec:
           name: cluster-autoscaler-exporter
           resources:
             requests:
-              cpu: '0.02'
+              cpu: '0.01'
               memory: 96Mi
             limits:
               cpu: '0.1'
