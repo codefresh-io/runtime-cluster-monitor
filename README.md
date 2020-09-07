@@ -6,7 +6,7 @@ the runtime cluster, as well as configures exporters and cron jobs. What's inclu
 
 * [Prometheus Operator](https://github.com/coreos/prometheus-operator)
 * [cluster-autoscaler-exporter](https://github.com/codefresh-io/cluster-autoscaler-exporter)
-* `dind-volume-cleanup`, `dind-monitor` and `event-exporter` (custom parts with source code not provided)
+* `dind-volume-cleanup`, `dind-monitor`, `dind-exporter` and `event-exporter` (custom parts with source code not provided)
 
 We create a `monitoring` namespace and put all the things there.
 

@@ -13,4 +13,4 @@ CONTEXTS = [
 ].freeze
 
 NAMESPACE = 'monitoring'
-MANIFESTS = %w[cluster-autoscaler-exporter dind-volume-cleanup dind-monitor event-exporter].freeze
+MANIFESTS = %w[cluster-autoscaler-exporter dind-volume-cleanup dind-monitor dind-exporter event-exporter].freeze
