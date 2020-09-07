@@ -251,7 +251,7 @@
     summary: engine pod completed too long time ago
     
 - alert: dindPvcIsBoundTooLong
-  expr: dind_pvc_status{phase="Bound"} == 1
+  expr: dind_pvc_status{phase="Bound"} == 1 unless on (persistentvolumeclaim) dind_pvc_keep_ts > time()
   for: 183m
   labels:
     alertgroup: dind_problem
