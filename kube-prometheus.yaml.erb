@@ -98,11 +98,13 @@ kube-state-metrics:
 kubeControllerManager:
   enabled: false
 
+<% unless ENV['coredns'] %>
 coreDns:
   enabled: false
 
 kubeDns:
   enabled: true
+<% end %>
 
 kubeEtcd:
   enabled: false

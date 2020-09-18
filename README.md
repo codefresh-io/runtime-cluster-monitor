@@ -34,11 +34,12 @@ If you set `victorops_api_key`, `victorops_routing` is also required.
 
 ## Usage
 * switch your k8s context to needed
-* `rake cluster=... [env=prod] [args=...]` to install or update your installation
+* `rake cluster=... [env=prod] [coredns=1] [args=...]` to install or update your installation
 * `rake destroy` to remove the deployment
 
 `cluster` could be any helpful string to identify alerts.  
 use `env=prod` if you have `env/prod.yaml`, if you don't, just omit this part.  
+use `coredns=1` if you use coredns, not kube-dns.  
 `args` are additional args to Helm, if you don't need it, skip it.
 
 if you need to pass multiple Helm args or whitespace, escape them:
