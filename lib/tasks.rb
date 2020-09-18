@@ -1,12 +1,7 @@
 # frozen_string_literal: true
 
-desc 'create namespace'
-task :namespace do
-  sh "kubectl create namespace #{NAMESPACE} -o yaml --dry-run=client | kubectl apply -f -"
-end
-
 desc 'kubectl apply'
-task apply: :namespace do
+task :apply do
   MANIFESTS.each do |i|
     i = File.join(BASE_DIR, i) if defined? BASE_DIR
     sh "kubectl apply -n #{NAMESPACE} -f #{i}.yaml"
