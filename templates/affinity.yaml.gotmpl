@@ -1,4 +1,5 @@
-<% if defined? affinity %>affinity:
+{{ if hasKey .Values "affinity" }}
+affinity:
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
       nodeSelectorTerms:
@@ -6,10 +7,10 @@
         - key: 'node-type'
           operator: In
           values:
-            - <%= affinity %>
+            - {{ .Values.affinity | quote }}
 tolerations:
   - effect: NoSchedule
     key: nodeType
     operator: Equal
-    value: <%= affinity %>
-<% end %>
+    value: {{ .Values.affinity | quote }}
+{{ end }}

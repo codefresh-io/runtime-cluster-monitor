@@ -1,0 +1,15 @@
+build_metrics:
+  json: |
+{{ readFile "../dashboards/Build metrics.json" | indent 4 }}
+cluster_performance:
+  json: |
+{{ readFile "../dashboards/Cluster performance.json" | indent 4 }}
+dind_and_engine_resources:
+  json: |
+{{ readFile "../dashboards/Dind and engine resources.json" | indent 4 }}
+init_phase_duration_avg:
+  json: |
+{{ readFile "../dashboards/Workflow init phase duration (avg).json" | indent 4 }}
+init_phase_duration_per_build:
+  json: |
+{{ readFile "../dashboards/Workflow init phase duration (per build).json" | indent 4 }}

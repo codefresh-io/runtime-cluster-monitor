@@ -1,0 +1,47 @@
+releases:
+  - name: cprom
+    atomic: true
+    namespace: monitoring
+    chart: stable/prometheus-operator
+    version: 8.16.1
+    values:
+      - templates/values.yaml.gotmpl
+  - name: cf-monitoring
+    atomic: true
+    namespace: monitoring
+    chart: ./chart
+
+environments:
+  default:
+    values:
+      - defaults.yaml.gotmpl
+  local:
+    values:
+      - defaults.yaml.gotmpl
+      - values.yaml
+  dev:
+    values:
+      - defaults.yaml.gotmpl
+    secrets:
+      - ../codefresh.yaml
+      - ../dev.yaml
+  prod:
+    values:
+      - defaults.yaml.gotmpl
+      - ../16.yaml
+    secrets:
+      - ../codefresh.yaml
+      - ../prod.yaml
+  prod32:
+    values:
+      - defaults.yaml.gotmpl
+      - ../32.yaml
+    secrets:
+      - ../codefresh.yaml
+      - ../prod.yaml
+  prod8:
+    values:
+      - defaults.yaml.gotmpl
+    secrets:
+      - ../codefresh.yaml
+      - ../prod.yaml

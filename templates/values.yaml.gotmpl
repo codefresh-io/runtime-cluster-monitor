@@ -1,3 +1,11 @@
+{{ define "cf.affinity.2" }}
+{{ tpl (readFile "affinity.yaml.gotmpl") . | indent 2 }}
+{{ end }}
+
+{{ define "cf.affinity.4" }}
+{{ tpl (readFile "affinity.yaml.gotmpl") . | indent 4 }}
+{{ end }}
+
 prometheus-node-exporter:
   resources:
     limits:
@@ -9,10 +17,10 @@ prometheus-node-exporter:
 
 alertmanager:
   config:
-    <%= template 'alertmanager.yaml.erb', 4, '_alertmanager', binding %>
+{{ tpl (readFile "alertmanager.yaml.gotmpl") . | indent 4 }}
   templateFiles:
     alerts.tmpl: |
-      <%= template 'alerts.tmpl.erb', 6, '_alerts', binding  %>
+{{ tpl (readFile "alerts.tmpl.gotmpl") . | indent 6 }}
   alertmanagerSpec:
     resources:
       limits:
@@ -29,7 +37,7 @@ alertmanager:
           resources:
             requests:
               storage: 2Gi
-    <%= template 'affinity.yaml.erb', 4, '_affinity', binding %>
+{{ template "cf.affinity.4" . }}
 
 grafana:
   resources:
@@ -43,12 +51,12 @@ grafana:
     server:
       root_url: '%(protocol)s://%(domain)s/grafana/'
       serve_from_sub_path: 'true'
-  <% if defined? grafana_pass %>
-  <% if defined? grafana_user %>
-  adminUser: <%= grafana_user %>
-  <% end %>
-  adminPassword: <%= grafana_pass %>
-  <% else %>
+  {{ if hasKey .Values "grafana_pass" }}
+  {{ if hasKey .Values "grafana_user" }}
+  adminUser: {{ .Values.grafana_user | quote }}
+  {{ end }}
+  adminPassword: {{ .Values.grafana_pass | quote }}
+  {{ else }}
     auth:
       disable_login_form: 'true'
       disable_signout_menu: 'true'
@@ -57,7 +65,7 @@ grafana:
     auth.anonymous:
       enabled: 'true'
       org_role: Admin
-  <% end %>
+  {{ end }}
   persistence:
     enabled: true
     size: 10Gi
@@ -75,7 +83,7 @@ grafana:
             path: /var/lib/grafana/dashboards/codefresh
   dashboards:
     codefresh:
-      <%= template 'dashboards.yaml.erb', 6, '_dashboards', binding %>
+{{ tpl (readFile "dashboards.yaml.gotmpl") . | indent 6 }}
   additionalDataSources:
     - name: Loki
       type: loki
@@ -83,7 +91,7 @@ grafana:
       access: proxy
       jsonData:
         maxLines: 10000
-  <%= template 'affinity.yaml.erb', 2, '_affinity', binding %>
+{{ template "cf.affinity.2" . }}
 
 kube-state-metrics:
   resources:
@@ -93,18 +101,18 @@ kube-state-metrics:
     requests:
       cpu: '0.1'
       memory: 192Mi
-  <%= template 'affinity.yaml.erb', 2, '_affinity', binding %>
+{{ template "cf.affinity.2" . }}
 
 kubeControllerManager:
   enabled: false
 
-<% unless ENV['coredns'] %>
+{{ if eq .Values.coredns false }}
 coreDns:
   enabled: false
 
 kubeDns:
   enabled: true
-<% end %>
+{{ end }}
 
 kubeEtcd:
   enabled: false
@@ -124,23 +132,23 @@ prometheusOperator:
       cpu: '0.01'
       memory: 64Mi
   logLevel: error
-  <%= template 'affinity.yaml.erb', 2, '_affinity', binding %>
+{{ template "cf.affinity.2" . }}
 
 prometheus:
   prometheusSpec:
     resources:
       limits:
-        memory: '<%= defined?(prom_ram) ? prom_ram : "6Gi" %>'
-        cpu: '<%= defined?(prom_cpu) ? prom_cpu * 2 : "2" %>'
+        memory: {{ .Values.prom_ram | quote }}
+        cpu: {{ mul 2 .Values.prom_cpu | quote }}
       requests:
-        memory: '<%= defined?(prom_ram) ? prom_ram : "6Gi" %>'
-        cpu: '<%= defined?(prom_cpu) ? prom_cpu : "1" %>'
-    externalUrl: https://<%= ENV['cluster'] %>/prometheus/
+        memory: {{ .Values.prom_ram | quote }}
+        cpu: {{ .Values.prom_cpu | quote }}
+    externalUrl: https://{{ .Values.cluster }}/prometheus/
     routePrefix: /prometheus/
     scrapeInterval: 10s
     retention: 20d
     additionalScrapeConfigs:
-      <%= template 'scrape.yaml.erb', 6, '_scrape', binding %>
+{{ readFile "scrape.yaml" | indent 6 }}
     storageSpec:
       volumeClaimTemplate:
         spec:
@@ -148,7 +156,7 @@ prometheus:
           resources:
             requests:
               storage: 200Gi
-    <%= template 'affinity.yaml.erb', 4, '_affinity', binding %>
+{{ template "cf.affinity.4" . }}
 
 defaultRules:
   rules:
@@ -163,6 +171,6 @@ defaultRules:
 additionalPrometheusRules:
   - name: cf-rules
     groups:
-      <%= template 'alerts.yaml.erb', 6, '_rules', binding %>
-      <%= file 'dind-rules.yaml', 6 %>
-      <%= file 'loki-rules.yaml', 6 %>
+{{ tpl (readFile "alerts.yaml.gotmpl") . | indent 6 }}
+{{ readFile "dind-rules.yaml" | indent 6 }}
+{{ readFile "loki-rules.yaml" | indent 6 }}

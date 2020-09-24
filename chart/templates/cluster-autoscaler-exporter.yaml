@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cluster-autoscaler-exporter
+  labels:
+    app: cluster-autoscaler-exporter
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: cluster-autoscaler-exporter
+  labels:
+    app: cluster-autoscaler-exporter
+rules:
+  - apiGroups: [""]
+    resources: [configmaps]
+    resourceNames: ["cluster-autoscaler-status"]
+    verbs: [get]
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: cluster-autoscaler-exporter
+  labels:
+    app: cluster-autoscaler-exporter
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-autoscaler-exporter
+subjects:
+  - kind: ServiceAccount
+    name: cluster-autoscaler-exporter
+    namespace: {{ .Release.Namespace }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cluster-autoscaler-exporter
+  labels:
+    app: cluster-autoscaler-exporter
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: cluster-autoscaler-exporter
+  template:
+    metadata:
+      labels:
+        app: cluster-autoscaler-exporter
+      annotations:
+        prometheus_io_port: '9100'
+        prometheus_io_scrape: 'true'
+    spec:
+      serviceAccountName: cluster-autoscaler-exporter
+      tolerations:
+        - key: codefresh/dind
+          operator: Exists
+          effect: NoSchedule
+      containers:
+        - image: codefresh/cluster-autoscaler-exporter
+          name: cluster-autoscaler-exporter
+          resources:
+            requests:
+              cpu: '0.01'
+              memory: 96Mi
+            limits:
+              cpu: '0.1'
+              memory: 128Mi

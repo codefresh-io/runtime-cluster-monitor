@@ -1,6 +1,0 @@
-Layout/LineLength:
-  Max: 130
-Style/TrailingCommaInArrayLiteral:
-  Enabled: false
-AllCops:
-  NewCops: enable

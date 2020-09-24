@@ -1,66 +1,65 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: cluster-autoscaler-exporter
+  name: dind-exporter
   labels:
-    app: cluster-autoscaler-exporter
+    app: dind-exporter
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
-  name: cluster-autoscaler-exporter
+  name: dind-exporter
   labels:
-    app: cluster-autoscaler-exporter
+    app: dind-exporter
 rules:
   - apiGroups: [""]
-    resources: [configmaps]
-    resourceNames: ["cluster-autoscaler-status"]
-    verbs: [get]
+    resources: [persistentvolumeclaims]
+    verbs: [list]
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
 metadata:
-  name: cluster-autoscaler-exporter
+  name: dind-exporter
   labels:
-    app: cluster-autoscaler-exporter
+    app: dind-exporter
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: cluster-autoscaler-exporter
+  name: dind-exporter
 subjects:
   - kind: ServiceAccount
-    name: cluster-autoscaler-exporter
-    namespace: monitoring
+    name: dind-exporter
+    namespace: {{ .Release.Namespace }}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cluster-autoscaler-exporter
+  name: dind-exporter
   labels:
-    app: cluster-autoscaler-exporter
+    app: dind-exporter
 spec:
   replicas: 1
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      app: cluster-autoscaler-exporter
+      app: dind-exporter
   template:
     metadata:
       labels:
-        app: cluster-autoscaler-exporter
+        app: dind-exporter
       annotations:
         prometheus_io_port: '9100'
         prometheus_io_scrape: 'true'
     spec:
-      serviceAccountName: cluster-autoscaler-exporter
+      serviceAccountName: dind-exporter
       tolerations:
         - key: codefresh/dind
           operator: Exists
           effect: NoSchedule
       containers:
-        - image: codefresh/cluster-autoscaler-exporter
-          name: cluster-autoscaler-exporter
+        - image: codefresh/dind-exporter
+          name: dind-exporter
           resources:
             requests:
               cpu: '0.01'

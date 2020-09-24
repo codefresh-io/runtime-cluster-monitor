@@ -1,0 +1,7 @@
+apiVersion: v1
+name: runtime-cluster-monitor/chart
+version: 0.1
+keywords:
+  - codefresh
+  - kubernetes
+  - monitoring

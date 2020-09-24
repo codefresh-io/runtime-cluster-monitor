@@ -29,7 +29,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: dind-volume-cleanup
-    namespace: monitoring
+    namespace: {{ .Release.Namespace }}
 ---
 apiVersion: batch/v1beta1
 kind: CronJob
