@@ -11,7 +11,9 @@ the runtime cluster, as well as configures exporters and cron jobs. What's inclu
 We create a `monitoring` namespace and put all the things there.
 
 ## Required
-* kubectl, helm, [helmfile](https://github.com/roboll/helmfile)
+* kubectl
+* helm
+* [helmfile](https://github.com/roboll/helmfile)
 
 ## Configuration
 If you want Slack or VictorOps notifications write a file: `values.yaml`.
