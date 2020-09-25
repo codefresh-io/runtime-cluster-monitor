@@ -5,11 +5,11 @@ route:
   group_wait: 10s
   group_interval: 5m
   repeat_interval: 24h
-  <% if defined? slack_hook %>
+  {{ if hasKey .Values "slack_hook" }}
   receiver: slack_warnings
-  <% else %>
+  {{ else }}
   receiver: 'null'
-  <% end %>
+  {{ end }}
   routes:
     - match:
         alertname: Watchdog
@@ -24,7 +24,7 @@ route:
       group_wait: 2s
       group_interval: 2s
       continue: true
-      <% if defined? slack_hook %>
+    {{ if hasKey .Values "slack_hook" }}
     - match:
         alertname: ReminderCritical
         severity: critical
@@ -32,14 +32,14 @@ route:
       group_by: [severity]
       group_wait: 10m
       receiver: slack_errors
-      <% end %>
-      <% if defined? victorops_api_key %>
+    {{ end }}
+    {{ if hasKey .Values "victorops_api_key" }}
     - match:
         severity: critical
       receiver: victorops
       continue: true
-      <% end %>
-      <% if defined? slack_hook %>
+    {{ end }}
+    {{ if hasKey .Values "slack_hook" }}
     - match:
         severity: critical
       receiver: slack_errors
@@ -48,36 +48,36 @@ route:
       repeat_interval: 3h
       receiver: slack_errors
       continue: true
-      <% end %>
+    {{ end }}
 receivers:
   - name: 'null'
-    <% if defined? slack_hook %>
+  {{ if hasKey .Values "slack_hook" }}
   - name: slack_warnings
     slack_configs:
       - &slack
         send_resolved: true
-        channel: '<%= slack_warnings %>'
-        api_url: <%= slack_hook %>
-        title: '{{ template "cf.title.slack" . }}'
-        title_link: 'https://<%= ENV['cluster'] %>/alertmanager/#/alerts'
-        text: '{{ template "cf.text" . }}'
+        channel: {{ .Values.slack_warnings | quote }}
+        api_url: {{ .Values.slack_hook | quote }}
+        title: '{{`{{ template "cf.title.slack" . }}`}}'
+        title_link: 'https://{{ .Values.cluster }}/alertmanager/#/alerts'
+        text: '{{`{{ template "cf.text" . }}`}}'
   - name: slack_errors
     slack_configs:
       - <<: *slack
-        channel: '<%= slack_errors %>'
-    <% end %>
+        channel: {{ .Values.slack_errors | quote }}
+  {{ end }}
   - name: alert_handler
     webhook_configs:
       - send_resolved: false
         url: http://am-alert-handler:4242
-    <% if defined? victorops_api_key %>
+  {{ if hasKey .Values "victorops_api_key" }}
   - name: victorops
     victorops_configs:
-      - api_key: <%= victorops_api_key %>
-        routing_key: <%= victorops_routing %>
-        entity_display_name: '{{ template "cf.title.victorops" . }}'
-        state_message: '{{ template "cf.text.victorops" . }}'
-    <% end %>
+      - api_key: {{ .Values.victorops_api_key | quote }}
+        routing_key: {{ .Values.victorops_routing | quote }}
+        entity_display_name: '{{`{{ template "cf.title.victorops" . }}`}}'
+        state_message: '{{`{{ template "cf.text.victorops" . }}`}}'
+  {{ end }}
 inhibit_rules:
   - source_match:
       severity: critical

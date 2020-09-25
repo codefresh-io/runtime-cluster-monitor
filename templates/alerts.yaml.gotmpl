@@ -1,0 +1,33 @@
+- name: container.alerts
+  rules:
+{{ readFile "../alerts/container.yaml" | indent 4 }}
+- name: dind.alerts
+  rules:
+{{ readFile "../alerts/dind.yaml" | indent 4 }}
+- name: downtime.alerts
+  rules:
+{{ readFile "../alerts/downtime.yaml" | indent 4 }}
+- name: event.alerts
+  rules:
+{{ readFile "../alerts/event.yaml" | indent 4 }}
+- name: kubernetes-apps.alerts
+  rules:
+{{ readFile "../alerts/kubernetes-apps.yaml" | indent 4 }}
+- name: kubernetes-resources.alerts
+  rules:
+{{ readFile "../alerts/kubernetes-resources.yaml" | indent 4 }}
+- name: kubernetes-system.alerts
+  rules:
+{{ readFile "../alerts/kubernetes-system.yaml" | indent 4 }}
+- name: loki.alerts
+  rules:
+{{ readFile "../alerts/loki.yaml" | indent 4 }}
+- name: monitoring.alerts
+  rules:
+{{ readFile "../alerts/monitoring.yaml" | indent 4 }}
+- name: node.alerts
+  rules:
+{{ readFile "../alerts/node.yaml" | indent 4 }}
+- name: kube-apiserver-error.alerts
+  rules:
+{{ readFile "../alerts/kube-apiserver-error.yaml" | indent 4 }}

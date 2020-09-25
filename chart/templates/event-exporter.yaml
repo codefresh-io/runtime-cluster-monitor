@@ -1,68 +1,64 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: dind-exporter
+  name: event-exporter
   labels:
-    app: dind-exporter
+    app: event-exporter
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
-  name: dind-exporter
+  name: event-exporter
   labels:
-    app: dind-exporter
+    app: event-exporter
 rules:
   - apiGroups: [""]
-    resources: [persistentvolumeclaims]
-    verbs: [list]
+    resources: [events]
+    verbs: [get, list, watch]
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
 metadata:
-  name: dind-exporter
+  name: event-exporter
   labels:
-    app: dind-exporter
+    app: event-exporter
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: dind-exporter
+  name: event-exporter
 subjects:
-  - kind: ServiceAccount
-    name: dind-exporter
-    namespace: monitoring
+- kind: ServiceAccount
+  name: event-exporter
+  namespace: {{ .Release.Namespace }}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dind-exporter
-  labels:
-    app: dind-exporter
+  name: event-exporter
 spec:
   replicas: 1
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      app: dind-exporter
+      app: event-exporter
   template:
     metadata:
       labels:
-        app: dind-exporter
+        app: event-exporter
       annotations:
-        prometheus_io_port: '9100'
+        prometheus_io_port: '9102'
         prometheus_io_scrape: 'true'
     spec:
-      serviceAccountName: dind-exporter
-      tolerations:
-        - key: codefresh/dind
-          operator: Exists
-          effect: NoSchedule
+      serviceAccountName: event-exporter
       containers:
-        - image: codefresh/dind-exporter
-          name: dind-exporter
+        - name: event-exporter
+          image: codefresh/k8s-event-exporter
+          imagePullPolicy: Always
+          args: [--running-in-cluster=true]
           resources:
             requests:
-              cpu: '0.01'
+              cpu: '0.05'
               memory: 96Mi
             limits:
               cpu: '0.1'

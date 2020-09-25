@@ -1,0 +1,4 @@
+cluster: {{ exec "kubectl" (list "config" "current-context") | trimSuffix "\n"}}
+prom_ram: 6Gi
+prom_cpu: 1
+coredns: false

@@ -1,0 +1,2 @@
+*.yaml.gotmpl linguist-language=yaml
+*.tmpl.gotmpl linguist-language=golang

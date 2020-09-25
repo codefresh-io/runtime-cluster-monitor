@@ -2,13 +2,6 @@ runtime-cluster-monitor: https://github.com/codefresh-io/runtime-cluster-monitor
 
 Copyright 2020 Codefresh
 
-This product also contains code derived from https://github.com/coreos/prometheus-operator
-
-Copyright 2015 CoreOS, Inc
-
-This product includes software developed at CoreOS, Inc.
-(http://www.coreos.com/).
-
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this software except in compliance with the License.
 You may obtain a copy of the License at
