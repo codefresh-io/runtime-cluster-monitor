@@ -1,13 +1,11 @@
 releases:
   - name: cprom
-    atomic: true
     namespace: monitoring
     chart: stable/prometheus-operator
     version: 8.16.1
     values:
       - templates/values.yaml.gotmpl
   - name: cf-monitoring
-    atomic: true
     namespace: monitoring
     chart: ./chart
 
