@@ -34,7 +34,7 @@
   expr: up{app="promtail", kubernetes_namespace="loki-boltdb"} == 0
   for: 25m
   labels:
-    severity: critical
+    severity: warning
     alertgroup: downtime
   annotations:
     message: '{{ $labels.kubernetes_pod_name }} is down'
