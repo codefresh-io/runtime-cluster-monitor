@@ -35,7 +35,7 @@
   for: 25m
   labels:
     severity: warning
-    alertgroup: downtime
+    alertgroup: loki
   annotations:
     message: '{{ $labels.kubernetes_pod_name }} is down'
     summary: Promtail is down
