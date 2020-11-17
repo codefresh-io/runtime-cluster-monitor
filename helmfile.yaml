@@ -43,3 +43,11 @@ environments:
     secrets:
       - ../codefresh.yaml
       - ../prod.yaml
+# ops-working-hours VictorOps channel
+  prod-wh:
+    values:
+      - defaults.yaml.gotmpl
+      - ../16.yaml
+    secrets:
+      - ../codefresh.yaml
+      - ../prod-working-hours.yaml
