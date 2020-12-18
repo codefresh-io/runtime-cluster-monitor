@@ -31,3 +31,6 @@
 - name: kube-apiserver-error.alerts
   rules:
 {{ readFile "../alerts/kube-apiserver-error.yaml" | indent 4 }}
+- name: kubernetes-storage.alerts
+  rules:
+{{ readFile "../alerts/kubernetes-storage.yaml" | indent 4 }}
