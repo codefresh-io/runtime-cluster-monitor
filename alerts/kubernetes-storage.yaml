@@ -3,33 +3,33 @@
     message: The PersistentVolume claimed by {{ $labels.persistentvolumeclaim }} in Namespace {{ $labels.namespace }} is only {{ $value | humanizePercentage }} free.
     runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubepersistentvolumefillingup
   expr: |-
-    kubelet_volume_stats_available_bytes{job="kubelet", namespace=~".*", metrics_path="/metrics"}
+    kubelet_volume_stats_available_bytes{job="kubelet", namespace=~".*", metrics_path="/metrics", persistentvolumeclaim!~"pvc-dind-[0-9a-f]{24}"}
       /
-    kubelet_volume_stats_capacity_bytes{job="kubelet", namespace=~".*", metrics_path="/metrics"}
+    kubelet_volume_stats_capacity_bytes{job="kubelet", namespace=~".*", metrics_path="/metrics", persistentvolumeclaim!~"pvc-dind-[0-9a-f]{24}"}
       < 0.03
   for: 1m
   labels:
-    severity: warning
+    severity: critical
 - alert: KubePersistentVolumeFillingUp
   annotations:
     message: Based on recent sampling, the PersistentVolume claimed by {{ $labels.persistentvolumeclaim }} in Namespace {{ $labels.namespace }} is expected to fill up within four days. Currently {{ $value | humanizePercentage }} is available.
     runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubepersistentvolumefillingup
   expr: |-
     (
-      kubelet_volume_stats_available_bytes{job="kubelet", namespace=~".*", metrics_path="/metrics"}
+      kubelet_volume_stats_available_bytes{job="kubelet", namespace=~".*", metrics_path="/metrics", persistentvolumeclaim!~"pvc-dind-[0-9a-f]{24}"}
         /
-      kubelet_volume_stats_capacity_bytes{job="kubelet", namespace=~".*", metrics_path="/metrics"}
+      kubelet_volume_stats_capacity_bytes{job="kubelet", namespace=~".*", metrics_path="/metrics", persistentvolumeclaim!~"pvc-dind-[0-9a-f]{24}"}
     ) < 0.15
     and
     predict_linear(kubelet_volume_stats_available_bytes{job="kubelet", namespace=~".*", metrics_path="/metrics"}[6h], 4 * 24 * 3600) < 0
   for: 1h
   labels:
-    severity: warning
+    severity: critical
 - alert: KubePersistentVolumeErrors
   annotations:
     message: The persistent volume {{ $labels.persistentvolume }} has status {{ $labels.phase }}.
     runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubepersistentvolumeerrors
-  expr: kube_persistentvolume_status_phase{phase=~"Failed|Pending",job="kube-state-metrics"} > 0
+  expr: kube_persistentvolume_status_phase{phase=~"Failed|Pending",job="kube-state-metrics",persistentvolumeclaim!~"pvc-dind-[0-9a-f]{24}"} > 0
   for: 5m
   labels:
-    severity: warning
+    severity: critical
