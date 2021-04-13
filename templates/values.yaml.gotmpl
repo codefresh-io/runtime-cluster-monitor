@@ -127,10 +127,10 @@ prometheusOperator:
   resources:
     limits:
       cpu: '0.1'
-      memory: 96Mi
+      memory: 200Mi
     requests:
-      cpu: '0.01'
-      memory: 64Mi
+      cpu: '0.1'
+      memory: 200Mi
   logLevel: error
 {{ template "cf.affinity.2" . }}
 
