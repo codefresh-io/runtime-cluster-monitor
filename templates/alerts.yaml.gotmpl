@@ -34,3 +34,12 @@
 - name: kubernetes-storage.alerts
   rules:
 {{ readFile "../alerts/kubernetes-storage.yaml" | indent 4 }}
+- name: node-exporter.rules
+  rules:
+{{ readFile "../alerts/node-exporter.rules.yaml" | indent 4 }}
+- name: node.rules
+  rules:
+{{ readFile "../alerts/node.rules.yaml" | indent 4 }}
+- name: node-exporter.alerts
+  rules:
+{{ readFile "../alerts/node-exporter.yaml" | indent 4 }}
