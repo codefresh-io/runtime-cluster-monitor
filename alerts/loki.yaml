@@ -30,6 +30,15 @@
     message: Loki is down
     summary: Loki is down
 
+- alert: LokiRequestPanics
+  expr: sum(increase(loki_panic_total[10m])) by (kubernetes_namespace, job) > 0
+  labels:
+    severity: critical
+    alertgroup: loki
+  annotations:
+    message: '{{ $labels.job }} is experiencing {{ printf "%.2f" $value }}% increase of panics.'
+    summary: Loki is experiencing increase of panics
+
 - alert: PromtailDown
   expr: up{app="promtail", kubernetes_namespace="loki-boltdb"} == 0
   for: 25m
