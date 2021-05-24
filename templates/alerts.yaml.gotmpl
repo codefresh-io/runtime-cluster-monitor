@@ -43,3 +43,6 @@
 - name: node-exporter.alerts
   rules:
 {{ readFile "../alerts/node-exporter.yaml" | indent 4 }}
+- name: promtail.alerts
+  rules:
+{{ readFile "../alerts/promtail.yaml" | indent 4 }}

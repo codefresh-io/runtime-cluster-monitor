@@ -1,0 +1,19 @@
+- name: promtail_rules
+  rules:
+    - record: job:promtail_request_duration_seconds:99quantile
+      expr: histogram_quantile(0.99, sum(rate(promtail_request_duration_seconds[1m])) by (job, le))
+
+    - record: job:promtail_request_duration_seconds:50quantile
+      expr: histogram_quantile(0.5, sum(rate(promtail_request_duration_seconds[1m])) by (job, le))
+
+    - record: job_route:promtail_request_duration_seconds:99quantile
+      expr: histogram_quantile(0.99, sum(rate(promtail_request_duration_seconds_bucket[1m])) by (job, route, le))
+
+    - record: job_route:promtail_request_duration_seconds:50quantile
+      expr: histogram_quantile(0.5, sum(rate(promtail_request_duration_seconds_bucket[1m])) by (job, route, le))
+
+    - record: namespace_job_route:promtail_request_duration_seconds:99quantile
+      expr: histogram_quantile(0.99, sum(rate(promtail_request_duration_seconds_bucket[1m])) by (kubernetes_namespace, job, route, le))
+
+    - record: namespace_job_route:promtail_request_duration_seconds:50quantile
+      expr: histogram_quantile(0.5, sum(rate(promtail_request_duration_seconds_bucket[1m])) by (kubernetes_namespace, job, route, le))
