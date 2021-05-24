@@ -1,3 +1,4 @@
+# copy of alerts from https://github.com/grafana/loki/blob/main/production/loki-mixin/alerts.libsonnet
 - alert: LokiRequestErrors
   expr: |
     100 * sum(rate(loki_request_duration_seconds_count{status_code=~"[45].."}[1m])) by (kubernetes_namespace, job, route)
@@ -38,15 +39,5 @@
   annotations:
     message: '{{ $labels.job }} is experiencing {{ printf "%.2f" $value }}% increase of panics.'
     summary: Loki is experiencing increase of panics
-
-- alert: PromtailDown
-  expr: up{app="promtail", kubernetes_namespace="loki-boltdb"} == 0
-  for: 25m
-  labels:
-    severity: warning
-    alertgroup: loki
-  annotations:
-    message: '{{ $labels.kubernetes_pod_name }} is down'
-    summary: Promtail is down
 
 # TODO: pv -- enough space

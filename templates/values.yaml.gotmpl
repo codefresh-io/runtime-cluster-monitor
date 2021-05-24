@@ -176,3 +176,4 @@ additionalPrometheusRules:
 {{ tpl (readFile "alerts.yaml.gotmpl") . | indent 6 }}
 {{ readFile "dind-rules.yaml" | indent 6 }}
 {{ readFile "loki-rules.yaml" | indent 6 }}
+{{ readFile "promtail-rules.yaml" | indent 6 }}

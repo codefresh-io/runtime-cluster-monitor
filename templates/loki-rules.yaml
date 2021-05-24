@@ -1,3 +1,4 @@
+# took from https://github.com/grafana/loki/blob/main/production/loki-mixin/recording_rules.libsonnet
 - name: loki_rules
   rules:
     - record: job:loki_request_duration_seconds:99quantile
