@@ -13,3 +13,6 @@ init_phase_duration_avg:
 init_phase_duration_per_build:
   json: |
 {{ readFile "../dashboards/Workflow init phase duration (per build).json" | indent 4 }}
+pipeline_metrics:
+  json: |
+{{ readFile "../dashboards/Pipeline metrics.json" | indent 4 }}
