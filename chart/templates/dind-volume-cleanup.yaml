@@ -51,11 +51,11 @@ spec:
               image: codefresh/dind-volume-cleanup
               resources:
                 requests:
-                  cpu: '0.1'
-                  memory: 96Mi
+                  cpu: '1'
+                  memory: 1Gi
                 limits:
-                  cpu: '0.5'
-                  memory: 128Mi
+                  cpu: '1'
+                  memory: 1Gi
 ---
 apiVersion: batch/v1beta1
 kind: CronJob
@@ -78,8 +78,8 @@ spec:
               args: [-m]
               resources:
                 requests:
-                  cpu: '0.1'
-                  memory: 96Mi
+                  cpu: '1'
+                  memory: 1Gi
                 limits:
-                  cpu: '0.5'
-                  memory: 128Mi
+                  cpu: '1'
+                  memory: 1Gi
