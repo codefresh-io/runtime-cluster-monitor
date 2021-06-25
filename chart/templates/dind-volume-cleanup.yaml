@@ -41,14 +41,8 @@ spec:
   schedule: "0,10,20,30,40,50 * * * *"
   concurrencyPolicy: Forbid
   jobTemplate:
-    metadata:
-      labels:
-        cronjob: dind-volume-cleanup
     spec:
       template:
-        metadata:
-          labels:
-            cronjob: dind-volume-cleanup
         spec:
           serviceAccountName: dind-volume-cleanup
           restartPolicy: Never
@@ -73,14 +67,8 @@ spec:
   schedule: "5,15,25,35,45,55 * * * 2-5"
   concurrencyPolicy: Forbid
   jobTemplate:
-    metadata:
-      labels:
-        cronjob: dind-volume-cleanup-m
     spec:
       template:
-        metadata:
-          labels:
-            cronjob: dind-volume-cleanup-m
         spec:
           serviceAccountName: dind-volume-cleanup
           restartPolicy: Never
