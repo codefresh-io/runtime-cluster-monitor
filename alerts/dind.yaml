@@ -384,7 +384,7 @@
     message: CronJob *{{ $labels.owner_name}}* has been failing for the last hour
     summary: CronJob *{{ $labels.owner_name}}* has been failing for the last hour
 
-- alert: KubeCronJobNotRunning
+- alert: KubeCronJobNotScheduled
   expr:
     (
       (time() - kube_cronjob_status_last_schedule_time)
