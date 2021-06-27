@@ -224,17 +224,17 @@
 
 - alert: engineRunTooLong
   expr: dind_pod_status{pod=~"engine.*", phase="Running"} == 1
-  for: 180m
+  for: 12h
   labels:
     alertgroup: dind_problem
     severity: info
     handler: "true"
   annotations:
     message: |
-      {{ $labels.pod }} has run more than 3h on runtimeEnvironment {{ $labels.label_runtime_env }} in namespace {{ $labels.namespace }} on instance {{ $labels.instance }}
+      {{ $labels.pod }} has run more than 12 hours on runtimeEnvironment {{ $labels.label_runtime_env }} in namespace {{ $labels.namespace }} on instance {{ $labels.instance }}
       Workflow URL {{ $labels.workflow_url }}
       Account {{ $labels.label_io_codefresh_accountName }}
-    summary: engine run more than 3h
+    summary: engine run more than 12h
     handler: delete-kubeobj {{ $labels.namespace }} pod/{{ $labels.pod }}
 
 - alert: engineCompletedTooLongTimeAgo
