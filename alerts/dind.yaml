@@ -181,17 +181,17 @@
 
 - alert: dindRunTooLong
   expr: dind_pod_status{pod=~"dind.*", phase="Running"} == 1
-  for: 180m
+  for: 24h
   labels:
     alertgroup: dind_problem
-    severity: info
+    severity: warning
     handler: "true"
   annotations:
     message: |
-      {{ $labels.pod }} has run more than 180 min on runtimeEnvironment {{ $labels.label_runtime_env }} in namespace {{ $labels.namespace }} on instance {{ $labels.instance }}
+      {{ $labels.pod }} has run more than 24 hours on runtimeEnvironment {{ $labels.label_runtime_env }} in namespace {{ $labels.namespace }} on instance {{ $labels.instance }}
       Workflow URL {{ $labels.workflow_url }}
       Account {{ $labels.label_io_codefresh_accountName }}
-    summary: dind run more than 3h
+    summary: dind run more than 24h
     handler: delete-kubeobj {{ $labels.namespace }} pod/{{ $labels.pod }}
 
 - alert: dindRunsWithoutEngine
@@ -224,17 +224,17 @@
 
 - alert: engineRunTooLong
   expr: dind_pod_status{pod=~"engine.*", phase="Running"} == 1
-  for: 180m
+  for: 72h
   labels:
     alertgroup: dind_problem
-    severity: info
+    severity: warning
     handler: "true"
   annotations:
     message: |
-      {{ $labels.pod }} has run more than 3h on runtimeEnvironment {{ $labels.label_runtime_env }} in namespace {{ $labels.namespace }} on instance {{ $labels.instance }}
+      {{ $labels.pod }} has run more than 72 hours on runtimeEnvironment {{ $labels.label_runtime_env }} in namespace {{ $labels.namespace }} on instance {{ $labels.instance }}
       Workflow URL {{ $labels.workflow_url }}
       Account {{ $labels.label_io_codefresh_accountName }}
-    summary: engine run more than 3h
+    summary: engine run more than 72h
     handler: delete-kubeobj {{ $labels.namespace }} pod/{{ $labels.pod }}
 
 - alert: engineCompletedTooLongTimeAgo
@@ -247,24 +247,24 @@
   annotations:
     handler: delete-kubeobj {{ $labels.namespace }} pod/{{ $labels.pod}}
     message: |-
-      pod {{ $labels.pod }} in {{ $labels.namespace }} namespace is {{$labels.phase}} more than 180 
+      pod {{ $labels.pod }} in {{ $labels.namespace }} namespace is {{$labels.phase}} more than 180
     summary: engine pod completed too long time ago
-    
+
 - alert: dindPvcIsBoundTooLong
   expr: dind_pvc_status{phase="Bound"} == 1 unless on (persistentvolumeclaim) dind_pvc_keep_ts > time()
-  for: 183m
+  for: 72h
   labels:
     alertgroup: dind_problem
     severity: warning
     handler: "true"
   annotations:
     message: |
-      dind pvc is bound too long {{ $labels.persistentvolumeclaim }} in namespace={{ $labels.namespace }}
+      dind pvc is bound too long for more than 72h {{ $labels.persistentvolumeclaim }} in namespace={{ $labels.namespace }}
       Runtime Env {{ $labels.label_runtime_env }}
       storageClass {{ $labels.storageclass }}
       Workflow URL {{ $labels.workflow_url }}
       Account {{ $labels.label_io_codefresh_accountName }}
-    summary: dind pvc is bound too long
+    summary: dind pvc is bound too long for more than 72h
     handler: delete-kubeobj {{ $labels.namespace }} pvc/{{ $labels.persistentvolumeclaim }}
 
 - alert: dindPvcPending
