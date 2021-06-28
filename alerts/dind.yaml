@@ -347,3 +347,52 @@
   annotations:
     message: 'pod {{ $labels.pod }} memory usage warning on node {{ $labels.instance }}'
     summary: Dind Volume Provisioner Memory usage warning
+
+- alert: KubeCronJobFailed
+  expr:
+    sum by (owner_name)
+    (
+      clamp_max(
+        (
+          max by (owner_name)
+          (
+            kube_job_status_start_time
+            * on(job_name) group_left(owner_name)
+            kube_job_owner
+          )
+          == on (owner_name)
+          group_right()
+          (
+            kube_job_status_start_time
+            * on(job_name) group_left(owner_name)
+            kube_job_owner
+          )
+        ),
+        1
+      )
+      * on (job_name)
+      group_left()
+      kube_job_status_failed > bool 0
+    ) == 1
+  for: 1h
+  labels:
+    severity: critical
+    alertgroup: downtime
+  annotations:
+    message: CronJob *{{ $labels.owner_name}}* has been failing for the last hour
+    summary: CronJob *{{ $labels.owner_name}}* has been failing for the last hour
+
+- alert: KubeCronJobNotScheduled
+  expr:
+    (
+      (time() - kube_cronjob_status_last_schedule_time)
+      /
+      (kube_cronjob_next_schedule_time - kube_cronjob_status_last_schedule_time)
+    ) > 3
+  for: 10m
+  labels:
+    severity: critical
+    alertgroup: downtime
+  annotations:
+    message: CronJob *{{ $labels.label_cronjob}}* has not been scheduled for the last three times
+    summary: CronJob *{{ $labels.label_cronjob}}* has not been scheduled for the last three times
