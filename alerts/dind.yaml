@@ -357,16 +357,14 @@
           max by (owner_name)
           (
             kube_job_status_start_time
-            * on(job_name)
-            group_right()
+            * on(job_name) group_left(owner_name)
             kube_job_owner
           )
           == on (owner_name)
           group_right()
           (
             kube_job_status_start_time
-            * on(job_name)
-            group_right()
+            * on(job_name) group_left(owner_name)
             kube_job_owner
           )
         ),
