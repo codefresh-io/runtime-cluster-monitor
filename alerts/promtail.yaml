@@ -44,7 +44,7 @@
     summary: Promtail is lagging by more than 1MB for more than 15m
 
 - alert: PromtailFileMissing
-  expr: promtail_file_bytes_total unless promtail_read_bytes_total
+  expr: (promtail_file_bytes_total unless promtail_read_bytes_total) > 0
   for: 15m
   labels:
     severity: critical
