@@ -6,8 +6,8 @@
     kubelet_volume_stats_available_bytes{job="kubelet", namespace=~".*", metrics_path="/metrics", persistentvolumeclaim!~"pvc-dind-[0-9a-f]{24}.*"}
       /
     kubelet_volume_stats_capacity_bytes{job="kubelet", namespace=~".*", metrics_path="/metrics", persistentvolumeclaim!~"pvc-dind-[0-9a-f]{24}.*"}
-      < 0.03
-  for: 1m
+      < 0.1
+  for: 15m
   labels:
     severity: critical
 
@@ -16,6 +16,6 @@
     message: The persistent volume {{ $labels.persistentvolume }} has status {{ $labels.phase }}.
     runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubepersistentvolumeerrors
   expr: kube_persistentvolume_status_phase{phase=~"Failed|Pending",job="kube-state-metrics",persistentvolumeclaim!~"pvc-dind-[0-9a-f]{24}.*"} > 0
-  for: 5m
+  for: 15m
   labels:
     severity: critical
