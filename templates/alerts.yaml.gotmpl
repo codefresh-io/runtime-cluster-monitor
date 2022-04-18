@@ -13,9 +13,6 @@
 - name: kubernetes-apps.alerts
   rules:
 {{ readFile "../alerts/kubernetes-apps.yaml" | indent 4 }}
-- name: kubernetes-resources.alerts
-  rules:
-{{ readFile "../alerts/kubernetes-resources.yaml" | indent 4 }}
 - name: kubernetes-system.alerts
   rules:
 {{ readFile "../alerts/kubernetes-system.yaml" | indent 4 }}
@@ -34,9 +31,6 @@
 - name: node-exporter.rules
   rules:
 {{ readFile "../alerts/node-exporter.rules.yaml" | indent 4 }}
-- name: node.rules
-  rules:
-{{ readFile "../alerts/node.rules.yaml" | indent 4 }}
 - name: node-exporter.alerts
   rules:
 {{ readFile "../alerts/node-exporter.yaml" | indent 4 }}
