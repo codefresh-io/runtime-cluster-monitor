@@ -1,12 +1,16 @@
+repositories:
+  - name: prometheus-community
+    url: https://prometheus-community.github.io/helm-charts
+
 releases:
   - name: cprom
     namespace: monitoring
-    chart: stable/prometheus-operator
-    version: 8.16.1
+    chart: prometheus-community/kube-prometheus-stack
+    version: 34.6.0
     values:
       - templates/values.yaml.gotmpl
   - name: cf-monitoring
-    namespace: monitoring
+    namespace: monitoring 
     chart: ./chart
 
 environments:
