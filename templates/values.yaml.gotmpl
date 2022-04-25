@@ -94,6 +94,13 @@ grafana:
 {{ template "cf.affinity.2" . }}
 
 kube-state-metrics:
+  metricLabelsAllowlist:
+  - nodes=[*]
+  - pods=[*]
+  - services=[*]
+  - deployments=[*]
+  - statefulsets=[*]
+  - daemonsets=[*]
   resources:
     limits:
       cpu: '0.5'
@@ -148,7 +155,6 @@ prometheus:
     scrapeInterval: 10s
     retention: 20d
     additionalScrapeConfigs:
-{{ readFile "scrape.yaml" | indent 6 }}
     storageSpec:
       volumeClaimTemplate:
         spec:
