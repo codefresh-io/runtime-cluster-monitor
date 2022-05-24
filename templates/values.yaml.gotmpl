@@ -155,6 +155,7 @@ prometheus:
     scrapeInterval: 10s
     retention: 20d
     additionalScrapeConfigs:
+{{ readFile "scrape.yaml" | indent 6 }}
     storageSpec:
       volumeClaimTemplate:
         spec:
