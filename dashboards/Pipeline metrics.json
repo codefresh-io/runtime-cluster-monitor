@@ -176,7 +176,7 @@
       "pluginVersion": "7.0.3",
       "targets": [
         {
-          "expr": "avg by (io_codefresh_pipeline_id) (\n\t(docker_volume_kb_total{io_codefresh_pipeline_id=\"$pipeline_id\"} - docker_volume_kb_available{io_codefresh_pipeline_id=\"$pipeline_id\"})\n)",
+          "expr": "avg by (io_codefresh_pipeline_id) (\n\t(docker_volume_kb_total{io_codefresh_pipelineId=\"$pipeline_id\"} - docker_volume_kb_available{io_codefresh_pipelineId=\"$pipeline_id\"})\n)",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -336,7 +336,7 @@
       "pluginVersion": "7.0.3",
       "targets": [
         {
-          "expr": "max by (io_codefresh_pipeline_id) (\n\t(docker_volume_kb_total{io_codefresh_pipeline_id=\"$pipeline_id\"} - docker_volume_kb_available{io_codefresh_pipeline_id=\"$pipeline_id\"})\n)",
+          "expr": "max by (io_codefresh_pipeline_id) (\n\t(docker_volume_kb_total{io_codefresh_pipelineId=\"$pipeline_id\"} - docker_volume_kb_available{io_codefresh_pipelineId=\"$pipeline_id\"})\n)",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -903,14 +903,14 @@
           "refId": "B"
         },
         {
-          "expr": "avg by (io_codefresh_pipeline_id) (\n\t(docker_volume_kb_total{io_codefresh_pipeline_id=\"$pipeline_id\"} - docker_volume_kb_available{io_codefresh_pipeline_id=\"$pipeline_id\"})\n)",
+          "expr": "avg by (io_codefresh_pipeline_id) (\n\t(docker_volume_kb_total{io_codefresh_pipelineId=\"$pipeline_id\"} - docker_volume_kb_available{io_codefresh_pipelineId=\"$pipeline_id\"})\n)",
           "hide": false,
           "interval": "",
           "legendFormat": "Pipeline(avg)={{io_codefresh_pipeline_id}}",
           "refId": "C"
         },
         {
-          "expr": "(docker_volume_kb_total{io_codefresh_pipeline_id=\"$pipeline_id\"} - docker_volume_kb_available{io_codefresh_pipeline_id=\"$pipeline_id\"})",
+          "expr": "(docker_volume_kb_total{io_codefresh_pipelineId=\"$pipeline_id\"} - docker_volume_kb_available{io_codefresh_pipelineId=\"$pipeline_id\"})",
           "interval": "",
           "legendFormat": "Build={{dind_pod_name}}",
           "refId": "D"
