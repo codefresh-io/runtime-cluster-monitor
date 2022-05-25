@@ -170,7 +170,7 @@
       "targets": [
         {
           "datasource": "Prometheus",
-          "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate{pod=~\"(dind|engine)-$build_id\", container!=\"POD\", cluster=\"\"}) by (container)",
+          "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{pod=~\"(dind|engine)-$build_id\", container!=\"POD\", cluster=\"\"}) by (container)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{container}}",
