@@ -394,7 +394,7 @@
       "pluginVersion": "7.0.3",
       "targets": [
         {
-          "expr": "max ( \n  (\n    (max by (pod) (rate(container_cpu_usage_seconds_total{pod=~\"^dind-[0-9].*\",container!=\"POD\"}[40s]))) /\n    (max by (pod) (kube_pod_container_resource_limits_cpu_cores{pod=~\"^dind-[0-9].*\"}))\n  )\n  * on(pod) group_left(label_io_codefresh_pipeline_id) \n  dind_pod_status{label_io_codefresh_pipeline_id=\"$pipeline_id\", label_app=\"dind\", phase=\"Running\"}\n)",
+          "expr": "max ( \n  (\n    (max by (pod) (rate(container_cpu_usage_seconds_total{pod=~\"^dind-[0-9].*\",container!=\"POD\"}[40s]))) /\n    (max by (pod) (kube_pod_container_resource_limits{resource=\"cpu\",unit=\"core\",pod=~\"^dind-[0-9].*\"}))\n  )\n  * on(pod) group_left(label_io_codefresh_pipeline_id) \n  dind_pod_status{label_io_codefresh_pipeline_id=\"$pipeline_id\", label_app=\"dind\", phase=\"Running\"}\n)",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -452,7 +452,7 @@
       "pluginVersion": "7.0.3",
       "targets": [
         {
-          "expr": "max (\n  ( \n    ( max by (pod) (container_memory_usage_bytes{pod=~\"^dind-[0-9].*\", container_name!=\"POD\"}) ) / \n    ( max by (pod) (kube_pod_container_resource_limits_memory_bytes{pod=~\"^dind-[0-9].*\"})  )\n  )\n  * on(pod) group_left(label_io_codefresh_pipeline_id) \n  dind_pod_status{label_io_codefresh_pipeline_id=\"$pipeline_id\", label_app=\"dind\", phase=\"Running\"}\n)",
+          "expr": "max (\n  ( \n    ( max by (pod) (container_memory_usage_bytes{pod=~\"^dind-[0-9].*\", container_name!=\"POD\"}) ) / \n    ( max by (pod) (kube_pod_container_resource_limits{resource=\"memory\",unit=\"byte\",pod=~\"^dind-[0-9].*\"})  )\n  )\n  * on(pod) group_left(label_io_codefresh_pipeline_id) \n  dind_pod_status{label_io_codefresh_pipeline_id=\"$pipeline_id\", label_app=\"dind\", phase=\"Running\"}\n)",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -510,7 +510,7 @@
       "pluginVersion": "7.0.3",
       "targets": [
         {
-          "expr": "max ( \n  (\n    (max by (pod) (rate(container_cpu_usage_seconds_total{pod=~\"^dind-[0-9].*\",container!=\"POD\"}[40s]))) /\n    (max by (pod) (kube_pod_container_resource_limits_cpu_cores{pod=~\"^dind-[0-9].*\"}))\n  )\n  * on(pod) group_left(label_io_codefresh_pipeline_id) \n  dind_pod_status{label_io_codefresh_pipeline_id=\"$pipeline_id\", label_app=\"dind\", phase=\"Running\"}\n)",
+          "expr": "max ( \n  (\n    (max by (pod) (rate(container_cpu_usage_seconds_total{pod=~\"^dind-[0-9].*\",container!=\"POD\"}[40s]))) /\n    (max by (pod) (kube_pod_container_resource_limits{resource=\"cpu\",unit=\"core\",pod=~\"^dind-[0-9].*\"}))\n  )\n  * on(pod) group_left(label_io_codefresh_pipeline_id) \n  dind_pod_status{label_io_codefresh_pipeline_id=\"$pipeline_id\", label_app=\"dind\", phase=\"Running\"}\n)",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -568,7 +568,7 @@
       "pluginVersion": "7.0.3",
       "targets": [
         {
-          "expr": "max (\n  ( \n    ( max by (pod) (container_memory_usage_bytes{pod=~\"^dind-[0-9].*\", container_name!=\"POD\"}) ) / \n    ( max by (pod) (kube_pod_container_resource_limits_memory_bytes{pod=~\"^dind-[0-9].*\"})  )\n  )\n  * on(pod) group_left(label_io_codefresh_pipeline_id) \n  dind_pod_status{label_io_codefresh_pipeline_id=\"$pipeline_id\", label_app=\"dind\", phase=\"Running\"}\n)",
+          "expr": "max (\n  ( \n    ( max by (pod) (container_memory_usage_bytes{pod=~\"^dind-[0-9].*\", container_name!=\"POD\"}) ) / \n    ( max by (pod) (kube_pod_container_resource_limits{resource=\"memory\",unit=\"byte\",pod=~\"^dind-[0-9].*\"})  )\n  )\n  * on(pod) group_left(label_io_codefresh_pipeline_id) \n  dind_pod_status{label_io_codefresh_pipeline_id=\"$pipeline_id\", label_app=\"dind\", phase=\"Running\"}\n)",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -651,7 +651,7 @@
           "refId": "B"
         },
         {
-          "expr": "avg without (pod) (\n  avg by (pod) (\n    kube_pod_container_resource_limits_cpu_cores{pod=~\"^dind-[0-9].*\"}\n  )\n  * on(pod) group_left(label_io_codefresh_pipeline_id) \n  dind_pod_status{label_io_codefresh_pipeline_id=\"$pipeline_id\", label_app=\"dind\", phase=\"Running\"}\n)",
+          "expr": "avg without (pod) (\n  avg by (pod) (\n    kube_pod_container_resource_limits{resource=\"cpu\",unit=\"core\",pod=~\"^dind-[0-9].*\"}\n  )\n  * on(pod) group_left(label_io_codefresh_pipeline_id) \n  dind_pod_status{label_io_codefresh_pipeline_id=\"$pipeline_id\", label_app=\"dind\", phase=\"Running\"}\n)",
           "hide": true,
           "interval": "",
           "legendFormat": "Limit(avg)={{label_io_codefresh_pipeline_id}}",
