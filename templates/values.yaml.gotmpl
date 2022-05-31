@@ -110,26 +110,6 @@ kube-state-metrics:
       memory: 192Mi
 {{ template "cf.affinity.2" . }}
 
-kubeControllerManager:
-  enabled: false
-
-{{ if eq .Values.coredns false }}
-coreDns:
-  enabled: false
-
-kubeDns:
-  enabled: true
-{{ end }}
-
-kubeEtcd:
-  enabled: false
-
-kubeProxy:
-  enabled: false
-
-kubeScheduler:
-  enabled: false
-
 prometheusOperator:
   resources:
     limits:
