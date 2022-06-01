@@ -110,6 +110,18 @@ kube-state-metrics:
       memory: 192Mi
 {{ template "cf.affinity.2" . }}
 
+kubeControllerManager:
+  enabled: false
+
+kubeEtcd:
+  enabled: false
+
+kubeProxy:
+  enabled: false
+
+kubeScheduler:
+  enabled: false
+
 prometheusOperator:
   resources:
     limits:
