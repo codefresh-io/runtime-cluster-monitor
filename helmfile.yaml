@@ -10,8 +10,8 @@ releases:
     values:
       - templates/values.yaml.gotmpl
   - name: cf-monitoring
-    namespace: monitoring 
-    chart: ./chart
+    namespace: monitoring
+    chart: ./charts/cf-monitoring
 
 environments:
   default:
