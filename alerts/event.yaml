@@ -19,27 +19,3 @@
   annotations:
     message: Dind volume {{ $labels.backend_volume_id }} of storage class {{ $labels.storage_class }} wasn't deleted after 4 days
     summary: 'unused volume with TTL more than 4 days has not been deleted yet'
-
-- alert: SpotInstanceTerminationSignal
-  expr: (up{app=~"dind|runtime"}  and on(node) aws_instance_termination_imminent == 1 ) + on(workflow_url) group_left(pod, node) up{app="runtime", pod =~"engine-[0-9].*"}
-  for: 20s
-  labels:
-    alertgroup: dind_problem
-    handler: "nowait"
-    severity: warning
-  annotations:
-    message: "Spot instance {{ $labels.node }} is going down - sending SIGPWR to engine pod ${{ $labels.pod }}"
-    handler: signal-pod {{ $labels.namespace }} {{ $labels.pod }} SIGTERM
-    summary: Spot termination - sending SIGPwR to engine
-
-- alert: SpotInstanceTermination
-  expr: aws_instance_termination_imminent == 1
-  for: 20s
-  labels:
-    alertgroup: dind_problem
-    handler: "nowait"
-    severity: warning
-  annotations:
-    message: "Spot instance {{ $labels.node }} is going down - cordon node"
-    handler: cordon-node {{ $labels.node }}
-    summary: Spot termination - cordon node
