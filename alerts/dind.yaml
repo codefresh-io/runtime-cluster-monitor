@@ -1,13 +1,3 @@
-- alert: DindMonitorDown
-  expr: absent(count(container_start_time_seconds{container="dind-monitor",namespace="monitoring",job="kubelet"}) == 1)
-  for: 2m
-  labels:
-    alertgroup: downtime
-    severity: critical
-  annotations:
-    message: dind-monitor containers count != 1
-    summary: dind-monitor is down
-
 - alert: PodWarningEvent
   expr: kubernetes_events{event_type!="Normal", event_reason!~"FailedScheduling|FailedCreatePodSandBox|FailedMount|FailedAttachVolume", event_kind="Pod", event_name !~ "filebeat.*" } offset 4m  unless on (event_name) kubernetes_events{event_type="Normal", event_reason="Started"}
   for: 2m
