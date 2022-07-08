@@ -146,6 +146,9 @@ prometheus:
     routePrefix: /prometheus/
     scrapeInterval: 10s
     retention: 20d
+    serviceMonitorNamespaceSelector: {}
+    serviceMonitorSelector: {}
+    serviceMonitorSelectorNilUsesHelmValues: false
     additionalScrapeConfigs:
 {{ readFile "scrape.yaml" | indent 6 }}
     storageSpec:
