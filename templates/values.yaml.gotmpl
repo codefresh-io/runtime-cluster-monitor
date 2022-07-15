@@ -135,6 +135,8 @@ prometheusOperator:
 
 prometheus:
   prometheusSpec:
+    enableFeatures:
+    - memory-snapshot-on-shutdown
     resources:
       limits:
         memory: {{ .Values.prom_ram | quote }}
