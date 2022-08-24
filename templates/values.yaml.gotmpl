@@ -179,3 +179,7 @@ additionalPrometheusRules:
     groups:
 {{ tpl (readFile "alerts.yaml.gotmpl") . | indent 6 }}
 {{ readFile "dind-rules.yaml" | indent 6 }}
+
+event-exporter:
+  serviceMonitor:
+    enabled: true
