@@ -31,6 +31,22 @@ subjects:
   name: event-exporter
   namespace: {{ .Release.Namespace }}
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: event-exporter
+  labels:
+    app: event-exporter
+spec:
+  type: ClusterIP
+  ports:
+  - port: 9102
+    targetPort: metrics
+    protocol: TCP
+    name: metrics
+  selector:
+    app: event-exporter
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -56,6 +72,9 @@ spec:
           image: codefresh/k8s-event-exporter
           imagePullPolicy: Always
           args: [--running-in-cluster=true]
+          ports:
+            - name: metrics
+              containerPort: 9102
           resources:
             requests:
               cpu: '0.05'
