@@ -82,6 +82,7 @@ spec:
               cpu: '0.1'
               memory: 128Mi
 ---
+{{- if and ( .Capabilities.APIVersions.Has "monitoring.coreos.com/v1" ) ( index .Values "event-exporter" "serviceMonitor" "enabled" ) }}
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
@@ -94,3 +95,4 @@ spec:
       app: event-exporter
   endpoints:
   - port: metrics
+{{- end }}
