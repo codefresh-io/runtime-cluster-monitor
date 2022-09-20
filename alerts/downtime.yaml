@@ -69,3 +69,13 @@
   annotations:
     message: am-alert-handler container count != 1
     summary: Alert Handler is down
+
+- alert: DeploymentDown
+  expr: kube_deployment_status_replicas_unavailable > 0
+  for: 10m
+  labels:
+    alertgroup: downtime
+    severity: warning
+  annotations:
+    message: 'deployment {{$labels.deployment}} has {{$value}} replicas unavailable'
+    summary: 'deployment {{$labels.deployment}} has inssuficient replicas'

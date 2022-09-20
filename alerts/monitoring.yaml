@@ -7,3 +7,14 @@
   annotations:
     message: 'prometheus: process_resident_memory_bytes = {{ $value }}'
     summary: Prometheus memory warning
+
+- alert: AutoscalerMax
+  expr: cluster_autoscaler_pool_target / cluster_autoscaler_pool_max >= 0.8
+  labels:
+    alertgroup: autoscaler
+    severity: critical
+  annotations:
+    message: |
+      autoscaler pool {{ $labels.name }} is close to maximum capability of {{ $value }}
+      please consider enlarging the pool
+    summary: 'autoscaler pool {{ $labels.name }} hit the ceiling'
