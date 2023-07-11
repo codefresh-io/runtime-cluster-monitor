@@ -83,10 +83,10 @@
 
 - alert: TooManyPvcProvisionFailure
   expr: count by (event_source) (kubernetes_events{event_kind="PersistentVolumeClaim", event_reason="ProvisioningFailed"}) > 10
-  for: 5m
+  for: 30m
   labels:
     alertgroup: dind_storage
-    severity: critical
+    severity: warning
   annotations:
     message: |
       Too Many PVC Provisioning failures. event_source = {{ $labels.event_source }}
