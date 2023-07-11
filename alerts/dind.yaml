@@ -300,10 +300,10 @@
 
 - alert: TooManyDindPodFailures
   expr: count(dind_pod_status{pod=~"dind.*", phase!~"Running|Succeeded"} == 1) > 10
-  for: 15m
+  for: 30m
   labels:
     alertgroup: downtime
-    severity: critical
+    severity: warning
   annotations:
     message: Too many dind Pod failures
     summary: Too many dind Pod failures
