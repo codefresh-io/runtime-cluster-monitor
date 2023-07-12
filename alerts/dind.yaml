@@ -386,3 +386,13 @@
   annotations:
     message: CronJob *{{ $labels.label_cronjob}}* has not been scheduled for the last three times
     summary: CronJob *{{ $labels.label_cronjob}}* has not been scheduled for the last three times
+
+- alert: EngineFailedToCreateLoggerContainer
+  expr: count(workflow_step_status{step_name="Creating Flow Logging Container"} >= 2) by (process_id) > 0
+  for: 5m
+  labels:
+    severity: warning
+  annotations:
+    summary: Engine is failing to create logger container
+    description: |
+      engine-{{ $labels.process_id }} pod is failing to create logger container in dind-{{ $labels.process_id }} docker daemon.
